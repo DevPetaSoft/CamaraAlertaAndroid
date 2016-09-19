@@ -24,4 +24,14 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void registrarConta(View view){
+        Intent intent = new Intent(this, Registrar.class);
+        startActivity(intent);
+    }
+
+    public void esqueciSenha(View view){
+        Intent intent = new Intent(this, EsqueciSenha.class);
+        startActivity(intent);
+    }
+
 }

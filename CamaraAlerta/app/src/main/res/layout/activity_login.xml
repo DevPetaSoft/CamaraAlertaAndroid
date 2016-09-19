@@ -60,11 +60,32 @@
         android:onClick="normalLogin"/>
 
     <TextView
-        android:id="@+id/ouText"
+        android:id="@+id/esqueciSenha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Esqueci minha senha"
         android:layout_below="@+id/loginButton"
+        android:layout_margin="10dp"
+        android:onClick="esqueciSenha"
+        />
+
+    <TextView
+        android:id="@+id/registro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Registre-se"
+        android:layout_below="@+id/loginButton"
+        android:layout_alignRight="@+id/loginButton"
+        android:layout_margin="10dp"
+        android:onClick="registrarConta"
+        />
+
+    <TextView
+        android:id="@+id/ouText"
+        android:layout_below="@+id/esqueciSenha"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:layout_height="wrap_content"
         android:text="OU"
         />
@@ -72,7 +93,10 @@
     <Button
         android:id="@+id/facebookStub"
         android:layout_width="145dp"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ouText"
         android:background="#39579B"
@@ -80,7 +104,10 @@
     <Button
         android:id="@+id/gPlusStub"
         android:layout_width="145dp"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/facebookStub"
         android:layout_alignBaseline="@+id/facebookStub"
