@@ -90,17 +90,17 @@
         android:text="OU"
         />
 
-    <Button
-        android:id="@+id/facebookStub"
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/login_button"
         android:layout_width="145dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ouText"
-        android:background="#39579B"
-        />
+        android:layout_height="110dp"
+        android:layout_below="@+id/ouText" />
+
+
     <Button
         android:id="@+id/gPlusStub"
         android:layout_width="145dp"
@@ -109,8 +109,10 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/facebookStub"
-        android:layout_alignBaseline="@+id/facebookStub"
+        android:layout_toRightOf="@+id/login_button"
+        android:layout_below="@+id/ouText"
         android:background="#DD4B39"
         />
+
+
 </RelativeLayout>
