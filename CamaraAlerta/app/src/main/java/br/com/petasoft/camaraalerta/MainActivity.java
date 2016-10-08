@@ -1,5 +1,7 @@
 package br.com.petasoft.camaraalerta;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -42,6 +44,20 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        } else if (this.isTaskRoot()) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Fechar a aplicação")
+                    .setMessage("Tem certeza que deseja fechar o CamaraAlerta?")
+                    .setPositiveButton("Sim", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+
+                    })
+                    .setNegativeButton("Não", null)
+                    .show();
         } else {
             super.onBackPressed();
         }
@@ -102,4 +118,5 @@ public class MainActivity extends AppCompatActivity
         return true;
 
     }
+
 }

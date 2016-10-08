@@ -48,6 +48,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onSuccess(LoginResult loginResult) {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
+                finish();
                 System.out.println("onSuccess");
             }
 
@@ -66,6 +67,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
+                .requestProfile()
                 .build();
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
@@ -76,18 +78,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         signInButton.setScopes(gso.getScopeArray());
 
 
-        //G+ Login
-        //GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
     }
 
-    /*private void obterConfiguracoesPadraoLogin(){
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this,this).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
-
-    }*/
 
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
@@ -124,6 +116,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             System.out.println("onSuccess");
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
+            finish();
         } else {
             // Signed out, show unauthenticated UI.
             System.out.println("onFalse");
@@ -138,6 +131,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     public void normalLogin(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
     public void registrarConta(View view){
