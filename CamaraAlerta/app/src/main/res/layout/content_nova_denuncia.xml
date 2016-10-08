@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="br.com.petasoft.camaraalerta.MainActivity"
-    tools:showIn="@layout/app_bar_main">
-    <FrameLayout
-        android:id="@+id/content_frame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </FrameLayout>
+    tools:context="br.com.petasoft.camaraalerta.NovaDenuncia"
+    tools:showIn="@layout/activity_nova_denuncia">
 
+    <ImageView
+        android:id="@+id/fotosDenuncia"
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        android:scaleType="centerCrop"/>
 </RelativeLayout>
