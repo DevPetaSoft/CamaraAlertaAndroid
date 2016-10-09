@@ -4,30 +4,33 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_first_layout"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="First Layout" />
+            android:icon="@drawable/home"
+            android:title="Home" />
         <item
             android:id="@+id/nav_second_layout"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Second Layout" />
+            android:icon="@drawable/novadenuncia"
+            android:title="Nova Denúncia" />
         <item
             android:id="@+id/nav_third_layout"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Third Layout" />
+            android:icon="@drawable/mapadedenuncias"
+            android:title="Mapa de Denúncias" />
+        <item
+            android:id="@+id/nav_fourth_layout"
+            android:icon="@drawable/minhasdenuncias"
+            android:title="Minhas Denúncias" />
+        <item
+            android:id="@+id/nav_fifth_layout"
+            android:icon="@drawable/configuracao"
+            android:title="Configuração" />
+        <item
+            android:id="@+id/nav_sixth_layout"
+            android:icon="@drawable/info"
+            android:title="Informação" />
+        <item
+            android:id="@+id/nav_seventh_layout"
+            android:icon="@drawable/sair"
+            android:title="Sair" />
 
     </group>
-
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-        </menu>
-    </item>
 
 </menu>
