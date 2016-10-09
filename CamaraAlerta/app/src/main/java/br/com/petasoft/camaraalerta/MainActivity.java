@@ -129,4 +129,8 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    public void mapaDenuncias(View v){
+
+    }
+
 }

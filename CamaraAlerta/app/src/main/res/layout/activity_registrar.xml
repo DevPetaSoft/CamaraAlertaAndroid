@@ -12,8 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:maxWidth="150dp"
-        android:maxHeight="150dp"
+        android:maxWidth="120dp"
         android:scaleType="fitCenter"
         android:layout_marginBottom="20dp"
         android:layout_gravity="center"
@@ -29,10 +28,10 @@
 
     <EditText
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="16dp"
         android:layout_marginLeft="10dp"
-        android:layout_width="335dp"
+        android:layout_width="305dp"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:backgroundTint="@color/white"/>
@@ -47,10 +46,10 @@
 
     <EditText
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="16dp"
         android:layout_marginLeft="10dp"
-        android:layout_width="335dp"
+        android:layout_width="305dp"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:backgroundTint="@color/white"/>
@@ -65,10 +64,10 @@
 
     <EditText
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="16dp"
         android:layout_marginLeft="10dp"
-        android:layout_width="335dp"
+        android:layout_width="305dp"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:backgroundTint="@color/white"/>
@@ -84,10 +83,10 @@
     <EditText
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="16dp"
         android:layout_marginLeft="10dp"
-        android:layout_width="335dp"
+        android:layout_width="305dp"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:textColor="@color/white"
@@ -104,14 +103,35 @@
     <EditText
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="16dp"
         android:layout_marginLeft="10dp"
-        android:layout_width="335dp"
+        android:layout_width="305dp"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:textColor="@color/white"
         android:backgroundTint="@color/white"/>
+
+    <CheckBox android:id="@+id/checkbox_termos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@android:color/white"
+        android:layout_marginRight="16dp"
+        android:layout_gravity="right"
+        android:text="Aceito os Termos e Condições"
+        android:textColor="@android:color/white"
+        android:onClick="onCheckboxClicked"/>
+
+    <Button
+        android:id="@+id/registrarButton"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:layout_width="305dp"
+        android:layout_height="wrap_content"
+        android:text="REGISTRAR"
+        android:textColor="#FFFFFF"
+        android:background="#A5CA6F"
+        android:onClick="novoRegistro"/>
 
 
 </LinearLayout>
