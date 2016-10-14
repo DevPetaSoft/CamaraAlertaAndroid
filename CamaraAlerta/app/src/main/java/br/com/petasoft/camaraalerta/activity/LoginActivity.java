@@ -2,14 +2,19 @@ package br.com.petasoft.camaraalerta.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.facebook.CallbackManager;
@@ -25,6 +30,11 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.auth.api.Auth;
 
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import br.com.petasoft.camaraalerta.R;
 import model.Configuration;
 
@@ -35,7 +45,10 @@ import model.Configuration;
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
     private Configuration configuration;
     private LoginButton loginButton;
+    private EditText editLogin, editPass;
     private CallbackManager callbackManager;
+
+    private Intent intent;
 
     private SignInButton signInButton;
     private GoogleApiClient mGoogleApiClient;
@@ -49,7 +62,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         //Facebook facebook = new Facebook("@string/facebook_app_id");
         setContentView(R.layout.activity_login);
         callbackManager = CallbackManager.Factory.create();
+
+        // Buscando os componentes da tela
         loginButton = (LoginButton) findViewById(R.id.login_button);
+        editLogin = (EditText) findViewById(R.id.editLogin);
+        editPass = (EditText) findViewById(R.id.editPassword);
+
         loginButton.setReadPermissions("email");
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -138,27 +156,51 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     public void normalLogin(View view) {
 
+        intent = new Intent(this, MainActivity.class);
         //Realiza conexão com o webservice para realizar o login
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = configuration.base_url+"user/login";
         //atualmente nao esta enviando dados ainda
-        //TODO: passar os dados do login
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        StringRequest getRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+                        Log.d("Response", response);
+                        //Toast.makeText()
+
+                        Toast toast = Toast.makeText(getApplicationContext(), "Login efetuado com sucesso", Toast.LENGTH_LONG );
+                        toast.show();
+                        //Redireciona a aplicação para a tela principal
+                        startActivity(intent);
+                        finish();
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        Log.d("Error.Response", "teste");
+
+                        Toast toast = Toast.makeText(getApplicationContext(), "Login ou senha não estão corretos", Toast.LENGTH_LONG );
+                        toast.show();
+                    }
+                }
+        ) {
             @Override
-            public void onResponse(String response) {
-                Log.i("TESTE",response.substring(0,34));
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("login", editLogin.getText().toString());
+                params.put("senha", editPass.getText().toString());
+
+                return params;
             }
-        },new Response.ErrorListener(){
-            @Override
-            public void onErrorResponse(VolleyError error){
-                Log.i("TESTE", error.getMessage());
-            }
-        });
-        queue.add(stringRequest);
-        //Redireciona a aplicação para a tela principal
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
+        };
+        queue.add(getRequest);
+
     }
 
     public void registrarConta(View view){
