@@ -1,4 +1,4 @@
-package br.com.petasoft.camaraalerta;
+package br.com.petasoft.camaraalerta.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

@@ -1,7 +1,9 @@
-package br.com.petasoft.camaraalerta;
+package br.com.petasoft.camaraalerta.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import br.com.petasoft.camaraalerta.R;
 
 public class EsqueciSenha extends AppCompatActivity {
 

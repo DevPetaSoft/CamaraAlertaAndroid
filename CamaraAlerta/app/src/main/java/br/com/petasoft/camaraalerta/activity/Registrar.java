@@ -1,9 +1,11 @@
-package br.com.petasoft.camaraalerta;
+package br.com.petasoft.camaraalerta.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
+
+import br.com.petasoft.camaraalerta.R;
 
 public class Registrar extends AppCompatActivity {
 

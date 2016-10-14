@@ -1,4 +1,4 @@
-package br.com.petasoft.camaraalerta;
+package br.com.petasoft.camaraalerta.activity;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -7,15 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import br.com.petasoft.camaraalerta.R;
+
 /**
  * Created by Gustavo on 07/09/16.
  */
-public class ThirdFragment extends Fragment {
+public class SecondFragment extends Fragment {
     View myView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        myView = inflater.inflate(R.layout.third_layout,container,false);
+        myView = inflater.inflate(R.layout.second_layout,container,false);
         return myView;
     }
 }

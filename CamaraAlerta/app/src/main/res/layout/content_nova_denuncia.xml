@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="br.com.petasoft.camaraalerta.NovaDenuncia"
+    tools:context="br.com.petasoft.camaraalerta.activity.NovaDenuncia"
     tools:showIn="@layout/activity_nova_denuncia">
 
     <RelativeLayout
