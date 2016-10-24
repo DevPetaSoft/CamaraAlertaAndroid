@@ -29,13 +29,19 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.auth.api.Auth;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import br.com.petasoft.camaraalerta.R;
+import model.Cidadao;
 import model.Configuration;
 
 /**
@@ -43,7 +49,7 @@ import model.Configuration;
  */
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
-    private Configuration configuration;
+    private static Configuration configuration;
     private LoginButton loginButton;
     private EditText editLogin, editPass;
     private CallbackManager callbackManager;
@@ -154,13 +160,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         Log.e(TAG,"onConnectionFailed "+connectionResult.getErrorMessage());
     }
 
+    // Função para realizar login com e-mail/login e senha
     public void normalLogin(View view) {
-
         intent = new Intent(this, MainActivity.class);
         //Realiza conexão com o webservice para realizar o login
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = configuration.base_url+"user/login";
-        //atualmente nao esta enviando dados ainda
         StringRequest getRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
@@ -170,11 +175,29 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         Log.d("Response", response);
                         //Toast.makeText()
 
-                        Toast toast = Toast.makeText(getApplicationContext(), "Login efetuado com sucesso", Toast.LENGTH_LONG );
-                        toast.show();
-                        //Redireciona a aplicação para a tela principal
-                        startActivity(intent);
-                        finish();
+                        try {
+                            //Realiza o parser do JSON vindo do WebService
+                            JSONObject json = new JSONObject(response);
+                            JsonParser parser = new JsonParser();
+                            JsonElement mJson = parser.parse(json.getString("data"));
+                            /* Transforma o JSON em um objeto Cidadao
+                             * Grava o cidadao no objeto estático de configurações para ser acessado
+                             * por qualquer arquivo.*/
+                            configuration.usuario = configuration.gson.fromJson(mJson,Cidadao.class);
+                            if(configuration.usuario == null){
+                                Log.i("Error", "não foi possível realizar o login");
+                            }else{
+                                Toast toast = Toast.makeText(getApplicationContext(), "Login efetuado com sucesso", Toast.LENGTH_LONG );
+                                toast.show();
+                                //Redireciona a aplicação para a tela principal
+                                startActivity(intent);
+                                finish();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
                     }
                 },
                 new Response.ErrorListener()
@@ -182,10 +205,21 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // error
-                        Log.d("Error.Response", "teste");
+                        if(error.networkResponse != null && error.networkResponse.data != null) {
+                            String result = new String(error.networkResponse.data);
+                            try {
 
-                        Toast toast = Toast.makeText(getApplicationContext(), "Login ou senha não estão corretos", Toast.LENGTH_LONG );
-                        toast.show();
+                                JSONObject json = new JSONObject(result);
+
+                                Toast toast = Toast.makeText(getApplicationContext(), json.getString("message"), Toast.LENGTH_LONG);
+                                toast.show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }else{
+                            Toast toast = Toast.makeText(getApplicationContext(), "Não foi possível se conectar com o servidor", Toast.LENGTH_LONG);
+                            toast.show();
+                        }
                     }
                 }
         ) {

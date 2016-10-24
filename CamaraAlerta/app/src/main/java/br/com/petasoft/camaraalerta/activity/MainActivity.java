@@ -15,12 +15,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import android.app.FragmentManager;
+import android.widget.TextView;
 
 import br.com.petasoft.camaraalerta.R;
+import model.Configuration;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    private Configuration configuration;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity
                 .commit();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -72,6 +75,13 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        // Troca o nome do menu lateral pelo nome da conta que foi logada
+        TextView navUserName = (TextView) findViewById(R.id.nav_user_name_text);
+        TextView navUserEmail = (TextView) findViewById(R.id.nav_user_name_email);
+        navUserName.setText(configuration.usuario.getNome());
+        navUserEmail.setText(configuration.usuario.getEmail());
+
+
         return true;
     }
 
