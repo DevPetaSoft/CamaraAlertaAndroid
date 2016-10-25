@@ -27,6 +27,7 @@
         />
 
     <EditText
+        android:id="@+id/registerName"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="5dp"
         android:layout_marginRight="16dp"
@@ -45,6 +46,7 @@
         />
 
     <EditText
+        android:id="@+id/registerLogin"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="5dp"
         android:layout_marginRight="16dp"
@@ -63,6 +65,7 @@
         />
 
     <EditText
+        android:id="@+id/registerEmail"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="5dp"
         android:layout_marginRight="16dp"
@@ -81,6 +84,7 @@
         />
 
     <EditText
+        android:id="@+id/registerPassword"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_marginBottom="5dp"
@@ -101,6 +105,7 @@
         />
 
     <EditText
+        android:id="@+id/registerConfirmPassword"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_marginBottom="5dp"
