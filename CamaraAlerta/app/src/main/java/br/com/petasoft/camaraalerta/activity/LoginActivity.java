@@ -234,7 +234,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
         };
         queue.add(getRequest);
-
+        startActivity(intent);
+        finish();
     }
 
     public void registrarConta(View view){
