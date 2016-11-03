@@ -97,7 +97,8 @@
         android:layout_marginBottom="15dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="4dp"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        android:id="@+id/textView" />
 
     <TextView
         android:id="@+id/registro"
@@ -125,26 +126,26 @@
         android:text="OU"
         />
 
+
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
+        android:textSize="14dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="13dp"
         android:layout_width="145dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_height="110dp"
-        android:layout_below="@+id/ouText" />
-
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ouText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignBottom="@+id/sign_in_button" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
         android:layout_width="145dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/login_button"
-        android:layout_below="@+id/ouText"/>
+        android:layout_below="@+id/ouText"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
