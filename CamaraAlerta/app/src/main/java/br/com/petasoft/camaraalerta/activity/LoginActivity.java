@@ -102,15 +102,21 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         Bundle bFacebookData = getFacebookData(object);
                         try {
                             Log.i("Email", object.getString("email"));
-                            Log.i("Name", profile.getName());
-                            facebookLogin(loginResul,object.getString("email"),profile.getName(),object.getString("id"));
+                            String name =  object.getString("first_name")+" " +object.getString("last_name");
+                            Log.i("Name", name);
+                            //TODO: Passar a foto para o banco de dados
+                            if (object.has("picture")) {
+                                String profilePicUrl = object.getJSONObject("picture").getJSONObject("data").getString("url");
+                                // set profile image to imageview using Picasso or Native methods
+                            }
+                            facebookLogin(loginResul,object.getString("email"),name,object.getString("id"));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
                 });
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "id, first_name, last_name, email,gender, birthday, location"); // Parámetros que pedimos a facebook
+                parameters.putString("fields", "id, first_name, last_name, email,gender, birthday, location, picture.type(large)"); // Parámetros que pedimos a facebook
                 request.setParameters(parameters);
                 request.executeAsync();
             }
@@ -198,6 +204,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         //Realiza conexão com o webservice para realizar o login
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = configuration.base_url + "user/login";
+        Log.i("URL", configuration.base_url + "user/login");
         StringRequest getRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -263,8 +270,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
         };
         queue.add(getRequest);
-        startActivity(intent);
-        finish();
+       /* startActivity(intent);
+        finish();*/
     }
 
     public void facebookLogin(final LoginResult loginResult, final String email,final String name, final String token) {

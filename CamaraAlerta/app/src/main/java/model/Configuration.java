@@ -8,7 +8,7 @@ import com.google.gson.GsonBuilder;
  */
 
 public class Configuration {
-    public static String base_url = "http://192.168.0.110:8080/CamaraAlertaWS/";
+    public static String base_url = "http://10.0.2.2:8080/CamaraAlertaWS/";
     public static Cidadao usuario;
     public static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
 
