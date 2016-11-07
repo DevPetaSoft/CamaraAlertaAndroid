@@ -64,6 +64,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private LoginResult loginResul;
     private ProgressDialog progressDialog;
 
+
     private Intent intent;
 
     private SignInButton signInButton;
@@ -78,7 +79,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         //Facebook facebook = new Facebook("@string/facebook_app_id");
         setContentView(R.layout.activity_login);
         callbackManager = CallbackManager.Factory.create();
-
+        progressDialog = new ProgressDialog(this);
         // Buscando os componentes da tela
         loginButton = (LoginButton) findViewById(R.id.login_button);
         editLogin = (EditText) findViewById(R.id.editLogin);
@@ -92,6 +93,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 final Profile profile = Profile.getCurrentProfile();
                 String accessToken = loginResult.getAccessToken().getToken();
                 Log.i("accessToken", accessToken);
+                progressDialog.setTitle("Carregando");
+                progressDialog.setMessage("Espere enquanto está sendo realizado o login...");
+                progressDialog.setCancelable(false); // disable dismiss by tapping outside of the dialog
+                progressDialog.show();
 
                 GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
 
@@ -120,7 +125,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 request.setParameters(parameters);
                 request.executeAsync();
             }
-            //facebookLogin(loginResult);
 
 
             @Override
@@ -301,11 +305,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 Toast toast = Toast.makeText(getApplicationContext(), "Login efetuado com sucesso", Toast.LENGTH_LONG);
                                 toast.show();
                                 //Redireciona a aplicação para a tela principal
+
                                 startActivity(intent);
+
+                                progressDialog.dismiss();
                                 finish();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+
+                            progressDialog.dismiss();
                         }
 
 
@@ -315,6 +324,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Error", "Error response");
+
+                        progressDialog.dismiss();
                         // error
                         if (error.networkResponse != null && error.networkResponse.data != null) {
                             String result = new String(error.networkResponse.data);
