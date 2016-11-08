@@ -9,15 +9,15 @@
         <item
             android:id="@+id/nav_second_layout"
             android:icon="@drawable/novadenuncia"
-            android:title="Nova Denúncia" />
+            android:title="Nova Solicitação" />
         <item
             android:id="@+id/nav_third_layout"
             android:icon="@drawable/mapadedenuncias"
-            android:title="Mapa de Denúncias" />
+            android:title="Mapa de Solicitações" />
         <item
             android:id="@+id/nav_fourth_layout"
             android:icon="@drawable/minhasdenuncias"
-            android:title="Minhas Denúncias" />
+            android:title="Minhas Solicitações" />
         <item
             android:id="@+id/nav_fifth_layout"
             android:icon="@drawable/configuracao"

@@ -58,6 +58,7 @@
                 android:layout_width="170dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@android:color/holo_green_light"
                 android:gravity="center_horizontal"
                 android:layout_marginTop="10dp"
                 android:text="0"
@@ -72,12 +73,13 @@
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal"
                 android:layout_weight="1"
-                android:text="denúncias"
+                android:text="solicitações"
                 android:textSize="24dp"/>
             <TextView
                 android:layout_width="180dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textColor="@android:color/holo_green_light"
                 android:gravity="center_horizontal"
                 android:text="resolvidos"
                 android:textSize="24dp"/>
@@ -91,7 +93,7 @@
         android:layout_margin="16dp"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:text="NOVA DENÚNCIA"
+        android:text="NOVA SOLICITÇÃO"
         android:textColor="#FFFFFF"
         android:background="@color/orange"
         android:onClick="novaDenuncia"/>
@@ -100,7 +102,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:text="MAPA DE DENÚNCIAS"
+        android:text="MAPA DE SOLICITAÇÕES"
         android:textColor="#FFFFFF"
         android:background="@color/blue"
         android:onClick="mapaDenuncias"/>

@@ -47,7 +47,11 @@
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:layout_width="480dp"
+        android:inputType="text"
+        android:maxLines="1"
+        android:scrollHorizontally="true"
         android:layout_height="wrap_content"
+        android:textCursorDrawable="@null"
         android:textColor="@color/white"
         android:backgroundTint="@color/white"
         />
@@ -62,6 +66,7 @@
         android:layout_width="480dp"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
+        android:textCursorDrawable="@null"
         android:textColor="@color/white"
         android:backgroundTint="@color/white"/>
 
