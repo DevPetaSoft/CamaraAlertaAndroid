@@ -274,8 +274,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
         };
         queue.add(getRequest);
-       /* startActivity(intent);
-        finish();*/
+        startActivity(intent);
+        finish();
     }
 
     public void facebookLogin(final LoginResult loginResult, final String email,final String name, final String token) {

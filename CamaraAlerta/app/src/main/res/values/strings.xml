@@ -26,4 +26,5 @@
     <string name="btn_revoke_access">Revoke Access</string>
     <string name="title_activity_floating_action_button_basic">floating_action_button_basic</string>
     <string name="title_activity_nova_denuncia">NovaDenuncia</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
