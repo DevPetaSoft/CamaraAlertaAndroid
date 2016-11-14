@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="br.com.petasoft.camaraalerta.activity.FirstFrameDenuncia">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="75dp"
+            android:layout_height="5dp"
+            android:layout_margin="16dp"
+            android:src="@drawable/page_1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Título"
+            android:layout_marginLeft="16dp"
+            android:textColor="@color/dark_green"/>
+
+        <EditText
+            android:id="@+id/editTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:maxLines="1"
+            android:scrollHorizontally="true"
+            android:textColor="@color/grey"
+            android:backgroundTint="@color/grey"
+            android:textCursorDrawable="@null"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vereador"
+            android:layout_marginLeft="16dp"
+            android:textColor="@color/dark_green"/>
+
+        <Spinner
+            android:id="@+id/vereadores_spinner"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Endereço"
+            android:layout_marginLeft="16dp"
+            android:textColor="@color/dark_green"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="24dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@android:color/white"
+            android:layout_weight="1"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@android:color/white"
+            android:text="PRÓXIMO"
+            android:onClick="proximoFrame"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

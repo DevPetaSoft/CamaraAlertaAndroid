@@ -14,10 +14,12 @@
         android:layout_height="230dp">
 
         <ImageView
+            android:id="@+id/thumbnail"
             android:layout_width="match_parent"
             android:layout_height="230dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/avatardefault"/>
+            android:src="@drawable/avatardefault"
+            android:onClick="listaDeFotos"/>
 
         <ImageView
             android:id="@+id/fotosDenuncia"
@@ -26,10 +28,10 @@
             android:scaleType="centerCrop"/>
     </RelativeLayout>
 
-    <android.support.v7.widget.CardView
+    <FrameLayout
+        android:id="@+id/denuncia_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-    </android.support.v7.widget.CardView>
+    </FrameLayout>
 
 </LinearLayout>
