@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import br.com.petasoft.camaraalerta.R;
@@ -15,6 +17,7 @@ import br.com.petasoft.camaraalerta.R;
 public class FirstFrameDenuncia extends Fragment {
     View myView;
     private Bundle savedState = null;
+    private InterfaceFrame1 listener = null;
 
     @Nullable
     @Override
@@ -27,7 +30,23 @@ public class FirstFrameDenuncia extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dropdown.setAdapter(adapter);
 
+        listener = (InterfaceFrame1) getActivity();
+
+        Button next = (Button) myView.findViewById(R.id.buttonNextDenuncia);
+        next.setOnClickListener(new View.OnClickListener(){
+           public void onClick(View v) {
+               EditText editText = (EditText) myView.findViewById(R.id.editTitulo);
+               String str = editText.getText().toString();
+               listener.onFragment1EditTextChanged(str);
+               ((NovaDenuncia)getActivity()).proximoFrame();
+           }
+        });
         return myView;
+    }
+
+
+    public interface InterfaceFrame1 {
+        public void onFragment1EditTextChanged(String string);
     }
 
     public void adicionarItensSpinner(){

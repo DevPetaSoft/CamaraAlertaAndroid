@@ -72,12 +72,12 @@
             android:layout_weight="1"/>
 
         <Button
+            android:id="@+id/buttonNextDenuncia"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="@android:color/white"
-            android:text="PRÓXIMO"
-            android:onClick="proximoFrame"/>
+            android:text="PRÓXIMO"/>
 
     </LinearLayout>
 

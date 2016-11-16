@@ -9,6 +9,8 @@ import android.widget.LinearLayout;
 
 import br.com.petasoft.camaraalerta.R;
 
+import static android.widget.ImageView.ScaleType.CENTER_CROP;
+import static android.widget.ImageView.ScaleType.FIT_CENTER;
 import static android.widget.ImageView.ScaleType.FIT_XY;
 
 /**
@@ -29,13 +31,13 @@ public class FotosTiradasActivity extends AppCompatActivity {
             ImageView image = new ImageView(this);
             image.setLayoutParams(new android.view.ViewGroup.LayoutParams(360,360));
 
-            image.setScaleType(FIT_XY);
+            image.setScaleType(CENTER_CROP);
 
 
             Bitmap myBitmap = BitmapFactory.decodeFile(paths[i]);
 
             //redimensaionar o bitmap
-            myBitmap = Bitmap.createScaledBitmap(myBitmap, 360, 360, false);
+            myBitmap = Bitmap.createScaledBitmap(myBitmap, myBitmap.getScaledWidth(50), myBitmap.getScaledHeight(50), false);
 
             image.setImageBitmap(myBitmap);
 
