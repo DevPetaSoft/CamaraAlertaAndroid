@@ -48,12 +48,12 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
         <Button
+            android:id="@+id/buttonPreviousDenuncia"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:backgroundTint="@android:color/white"
             android:text="ANTERIOR"
-            android:layout_weight="1"
-            android:onClick="anteriorFrame"/>
+            android:layout_weight="1"/>
 
         <Button
             android:id="@+id/buttonEnviarDenuncia"

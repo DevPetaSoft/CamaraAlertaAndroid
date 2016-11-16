@@ -159,7 +159,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
             ImageView fotoDenuncia = (ImageView) findViewById(R.id.fotosDenuncia);
 
             Bitmap myBitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
-            myBitmap = Bitmap.createScaledBitmap(myBitmap, myBitmap.getScaledWidth(50), myBitmap.getScaledHeight(50), false);
+            myBitmap = Bitmap.createScaledBitmap(myBitmap, myBitmap.getScaledWidth(100), myBitmap.getScaledHeight(100), false);
 
             //colocar o caminho dentro da ArrayList para a proxima activity
             listaPaths.add(mCurrentPhotoPath);
@@ -234,11 +234,11 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
 
 
         if (titulo.equals("")){
-            //mensagem para incluir titulo
+            Toast.makeText(getApplicationContext(), "Você precisa incluir um título.", Toast.LENGTH_LONG).show();
         } else if (descricao.equals("")){
-            //mensagem para colocar descrição
+            Toast.makeText(getApplicationContext(), "Você precisa incluir uma descrição.", Toast.LENGTH_LONG).show();
         } else if(listaPaths.isEmpty()){
-            //mensagem para tirar pelo menos uma foto
+            Toast.makeText(getApplicationContext(), "Você precisa incluir pelo menos uma foto.", Toast.LENGTH_LONG).show();
         } else {
             Denuncia denuncia = new Denuncia();
             denuncia.setDescricao(descricao);
@@ -291,7 +291,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                         @Override
                         public void onResponse(String response)
                         {
-                            Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Nova Solicitação criada com sucesso!", Toast.LENGTH_LONG).show();
                         }
                     },
                     new Response.ErrorListener()
@@ -299,7 +299,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                         @Override
                         public void onErrorResponse(VolleyError error)
                         {
-                            Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Erro na criaçao de nova Solicitação", Toast.LENGTH_LONG).show();
                         }
                     })
             {

@@ -23,6 +23,16 @@ public class SecondFrameDenuncia extends Fragment {
 
         listener = (InterfaceFrame2) getActivity();
 
+        Button previous = (Button) myView.findViewById(R.id.buttonPreviousDenuncia);
+        previous.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                EditText editText = (EditText) myView.findViewById(R.id.descricao);
+                String str = editText.getText().toString();
+                listener.onFragment2EditTextChanged(str);
+                ((NovaDenuncia)getActivity()).anteriorFrame();
+            }
+        });
+
         Button next = (Button) myView.findViewById(R.id.buttonEnviarDenuncia);
         next.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
