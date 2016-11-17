@@ -3,9 +3,11 @@ package model;
 /**
  * Created by Lucas on 11/15/2016.
  */
+import java.io.Serializable;
 
+public class Coordenadas implements Serializable{
 
-public class Coordenadas {
+    private static final long serialVersionUID = 1L;
     private int id;
     private double latitude;
     private double longitude;

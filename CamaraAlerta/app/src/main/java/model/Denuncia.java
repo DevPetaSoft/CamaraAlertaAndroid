@@ -4,10 +4,13 @@ package model;
  * Created by Lucas on 11/15/2016.
  */
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Denuncia {
+public class Denuncia implements Serializable{
+
+    private static final long serialVersionUID = 1L;
     private int id;
     private String descricao;
     private Date data;

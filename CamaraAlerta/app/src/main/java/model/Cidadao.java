@@ -12,6 +12,8 @@ import java.util.StringTokenizer;
  */
 
 public class Cidadao extends User implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     private Date dataNascimento;
     private String genero;
     private Date dataCriacao;

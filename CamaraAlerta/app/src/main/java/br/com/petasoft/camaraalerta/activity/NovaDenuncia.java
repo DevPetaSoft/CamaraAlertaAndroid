@@ -33,12 +33,15 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -71,6 +74,8 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
 
     private String fotosJuntas = "";
     Vereador vereador;
+
+    private String dDTOString = "";
 
 
 
@@ -228,9 +233,6 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
 
 
     public void enviarDenuncia(){
-        //escolha de vereador, por enquanto setar como 1
-
-        //
 
 
         if (titulo.equals("")){
@@ -272,14 +274,14 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
             }
 
             DenunciaDTO dDTO = new DenunciaDTO(denuncia, listaDeFotos);
-            //Log.d("Objeto", dDTO.toString());
 
 
+            //Log.d("dDTOString: Tamanho ", ""+dDTOString.length());
 
-            /* Parte do JsonObjectRequest
-            Map<String, DenunciaDTO> postParam= new HashMap<String, DenunciaDTO>();
-            postParam.put("dDTO", dDTO);
-            */
+            Gson gson = new Gson();
+            final String myJSONString = gson.toJson(dDTO);
+
+            Log.d("Gson ", myJSONString);
 
             RequestQueue queue = Volley.newRequestQueue(this);
             String url = Configuration.base_url + "denuncia/novaDenuncia";
@@ -307,52 +309,13 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                 protected Map<String, String> getParams()
                 {
                     Map<String, String> params = new HashMap<String, String>();
-                    params.put("descricao", descricao);
-                    params.put("anonima", anonima.toString());
-                    params.put("mensagem", titulo);
-                    params.put("fotos", fotosJuntas);
-                    params.put("cidadao", Configuration.usuario.toString());
-                    params.put("vereador", vereador.toString());
+                    params.put("dDTOString", myJSONString);
                     return params;
                 }
             };
 
             queue.add(strRequest);
             //VolleySingleton.getInstance(this).addToRequestQueue(strRequest);
-
-
-            /* Parte do JsonObjectRequest
-            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                    url, new JSONObject(postParam),
-                    new Response.Listener<JSONObject>() {
-
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            Log.d("Response", response.toString());
-                            Toast toast = Toast.makeText(getApplicationContext(), "Denuncia criada com sucesso!", Toast.LENGTH_LONG);
-                            toast.show();
-                        }
-                    }, new Response.ErrorListener() {
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    VolleyLog.d("Erro", "Error: " + error.getMessage());
-                }
-            }) {
-
-                /**
-                 * Passing some request headers
-                 * *
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    HashMap<String, String> headers = new HashMap<String, String>();
-                    headers.put("Content-Type", "application/json; charset=utf-8");
-                    return headers;
-                }
-
-            };
-
-            VolleySingleton.getInstance(this).addToRequestQueue(jsonObjReq);*/
 
         }
     }
