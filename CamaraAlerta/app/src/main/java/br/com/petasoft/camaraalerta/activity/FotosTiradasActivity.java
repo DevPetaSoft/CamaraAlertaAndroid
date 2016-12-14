@@ -26,7 +26,7 @@ public class FotosTiradasActivity extends AppCompatActivity {
         Bundle b = this.getIntent().getExtras();
         String[] paths = b.getStringArray("fotos");
 
-        LinearLayout layout = (LinearLayout)findViewById(R.id.myLinearLayout);
+        LinearLayout layout = (LinearLayout)findViewById(R.id.layoutFotos);
         for(int i=0;i<paths.length;i++){
             ImageView image = new ImageView(this);
             image.setLayoutParams(new android.view.ViewGroup.LayoutParams(360,360));

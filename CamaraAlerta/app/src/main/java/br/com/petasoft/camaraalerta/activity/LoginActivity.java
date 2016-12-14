@@ -207,6 +207,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         intent = new Intent(this, MainActivity.class);
         //Realiza conexão com o webservice para realizar o login
         RequestQueue queue = Volley.newRequestQueue(this);
+        Log.d("Configuracaobase ", configuration.base_url);
         String url = configuration.base_url + "user/login";
         Log.i("URL", configuration.base_url + "user/login");
         StringRequest getRequest = new StringRequest(Request.Method.POST, url,
@@ -275,8 +276,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
         };
         queue.add(getRequest);
-       /* startActivity(intent);
-        finish();*/
+        //startActivity(intent);
+        //finish();
     }
 
     public void facebookLogin(final LoginResult loginResult, final String email,final String name, final String token) {

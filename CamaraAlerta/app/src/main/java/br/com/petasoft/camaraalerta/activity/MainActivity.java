@@ -84,13 +84,15 @@ public class MainActivity extends AppCompatActivity
         // Troca o nome do menu lateral pelo nome da conta que foi logada
         TextView navUserName = (TextView) findViewById(R.id.nav_user_name_text);
         TextView navUserEmail = (TextView) findViewById(R.id.nav_user_name_email);
-        navUserName.setText(configuration.usuario.getNome());
-        navUserEmail.setText(configuration.usuario.getEmail());
-
+        if(configuration.usuario != null) {
+            navUserName.setText(configuration.usuario.getNome());
+            navUserEmail.setText(configuration.usuario.getEmail());
+        }
 
         return true;
     }
 
+    /* Menu de opções retirado
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -105,6 +107,7 @@ public class MainActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+    */
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

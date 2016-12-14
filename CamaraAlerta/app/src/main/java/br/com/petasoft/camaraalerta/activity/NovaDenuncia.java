@@ -1,6 +1,7 @@
 package br.com.petasoft.camaraalerta.activity;
 
 import android.app.FragmentManager;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -62,6 +63,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private List<String> listaPaths;
+    private ProgressDialog progress;
 
     FirstFrameDenuncia f1;
 
@@ -193,6 +195,16 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
 
     }
 
+    public void returnFotos(){
+        FragmentManager fragmentManager = getFragmentManager();
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.denuncia_frame
+                        , f1)
+                .commit();
+
+    }
+
     public void onCheckboxClicked(View view) {
         // Is the view now checked?
         boolean checked = ((CheckBox) view).isChecked();
@@ -216,9 +228,20 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
 
             Bundle b = new Bundle();
             b.putStringArray("fotos", strings);
+
+            /*
             Intent i = new Intent(NovaDenuncia.this, FotosTiradasActivity.class);
             i.putExtras(b);
             startActivity(i);
+            */
+            FragmentManager fragmentManager = getFragmentManager();
+            ThirdFrameDenuncia f3 = new ThirdFrameDenuncia();
+            f3.setArguments(b);
+            fragmentManager.beginTransaction()
+                    .replace(R.id.denuncia_frame
+                            , f3)
+                    .commit();
+
         }
     }
     @Override
@@ -242,79 +265,91 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
         } else if(listaPaths.isEmpty()){
             Toast.makeText(getApplicationContext(), "Você precisa incluir pelo menos uma foto.", Toast.LENGTH_LONG).show();
         } else {
-            Denuncia denuncia = new Denuncia();
-            denuncia.setDescricao(descricao);
-            denuncia.setData(new Date());
-            denuncia.setAnonima(anonima);
-            denuncia.setCidadao(Configuration.usuario);
+            progress=new ProgressDialog(this);
+            progress.setMessage("Enviando Denuncia");
+            progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progress.setIndeterminate(true);
+            progress.setProgress(0);
+            progress.show();
 
-            //por agora
-            vereador = new Vereador();
-            //
-            denuncia.setVereador(vereador);
-
-            List<String> listaDeFotos = new ArrayList<String>();
-
-            for(String s : listaPaths){
-                try {
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream(3000);
-                    Bitmap src = BitmapFactory.decodeFile(s);
-                    src = Bitmap.createScaledBitmap(src, src.getScaledWidth(100), src.getScaledHeight(100), false);
-                    src.compress(Bitmap.CompressFormat.PNG, 0, baos);
-                    baos.flush();
-                    byte[] bytes = baos.toByteArray();
-                    baos.close();
-                    listaDeFotos.add(Base64.encodeToString(bytes, Base64.NO_WRAP));
-
-                    //RequesString
-                    fotosJuntas+= Base64.encodeToString(bytes, Base64.NO_WRAP) + ",";
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            DenunciaDTO dDTO = new DenunciaDTO(denuncia, listaDeFotos);
-
-
-            //Log.d("dDTOString: Tamanho ", ""+dDTOString.length());
-
-            Gson gson = new Gson();
-            final String myJSONString = gson.toJson(dDTO);
-
-            Log.d("Gson ", myJSONString);
-
-            RequestQueue queue = Volley.newRequestQueue(this);
-            String url = Configuration.base_url + "denuncia/novaDenuncia";
-
-
-            StringRequest strRequest = new StringRequest(Request.Method.POST, url,
-                    new Response.Listener<String>()
-                    {
-                        @Override
-                        public void onResponse(String response)
-                        {
-                            Toast.makeText(getApplicationContext(), "Nova Solicitação criada com sucesso!", Toast.LENGTH_LONG).show();
-                        }
-                    },
-                    new Response.ErrorListener()
-                    {
-                        @Override
-                        public void onErrorResponse(VolleyError error)
-                        {
-                            Toast.makeText(getApplicationContext(), "Erro na criaçao de nova Solicitação", Toast.LENGTH_LONG).show();
-                        }
-                    })
-            {
+            final Thread t = new Thread() {
                 @Override
-                protected Map<String, String> getParams()
-                {
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("dDTOString", myJSONString);
-                    return params;
+                public void run() {
+                    Denuncia denuncia = new Denuncia();
+                    denuncia.setDescricao(descricao);
+                    denuncia.setData(new Date());
+                    denuncia.setAnonima(anonima);
+                    denuncia.setCidadao(Configuration.usuario);
+
+                    //por agora
+                    vereador = new Vereador();
+                    //
+                    denuncia.setVereador(vereador);
+
+                    List<String> listaDeFotos = new ArrayList<String>();
+                    for(String s : listaPaths){
+                        try {
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream(3000);
+                            Bitmap src = BitmapFactory.decodeFile(s);
+                            src = Bitmap.createScaledBitmap(src, src.getScaledWidth(100), src.getScaledHeight(100), false);
+                            src.compress(Bitmap.CompressFormat.PNG, 0, baos);
+                            baos.flush();
+                            byte[] bytes = baos.toByteArray();
+                            baos.close();
+                            listaDeFotos.add(Base64.encodeToString(bytes, Base64.NO_WRAP));
+
+                            //RequesString
+                            fotosJuntas+= Base64.encodeToString(bytes, Base64.NO_WRAP) + ",";
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    DenunciaDTO dDTO = new DenunciaDTO(denuncia, listaDeFotos);
+
+
+                    //Log.d("dDTOString: Tamanho ", ""+dDTOString.length());
+
+                    Gson gson = new Gson();
+                    final String myJSONString = gson.toJson(dDTO);
+
+                    Log.d("Gson ", myJSONString);
+
+                    final RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                    String url = Configuration.base_url + "denuncia/novaDenuncia";
+
+
+                    final StringRequest strRequest = new StringRequest(Request.Method.POST, url,
+                            new Response.Listener<String>()
+                            {
+                                @Override
+                                public void onResponse(String response)
+                                {
+                                    Toast.makeText(getApplicationContext(), "Nova Solicitação criada com sucesso!", Toast.LENGTH_LONG).show();
+                                }
+                            },
+                            new Response.ErrorListener()
+                            {
+                                @Override
+                                public void onErrorResponse(VolleyError error)
+                                {
+                                    Toast.makeText(getApplicationContext(), "Erro na criaçao de nova Solicitação", Toast.LENGTH_LONG).show();
+                                }
+                            })
+                    {
+                        @Override
+                        protected Map<String, String> getParams()
+                        {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("dDTOString", myJSONString);
+                            return params;
+                        }
+                    };
+                    queue.add(strRequest);
+                    progress.dismiss();
                 }
             };
+            t.start();
 
-            queue.add(strRequest);
             //VolleySingleton.getInstance(this).addToRequestQueue(strRequest);
 
         }
