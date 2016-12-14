@@ -84,8 +84,8 @@ public class MainActivity extends AppCompatActivity
         // Troca o nome do menu lateral pelo nome da conta que foi logada
         TextView navUserName = (TextView) findViewById(R.id.nav_user_name_text);
         TextView navUserEmail = (TextView) findViewById(R.id.nav_user_name_email);
-//        navUserName.setText(configuration.usuario.getNome());
-//        navUserEmail.setText(configuration.usuario.getEmail());
+        navUserName.setText(configuration.usuario.getNome());
+        navUserEmail.setText(configuration.usuario.getEmail());
 
 
         return true;

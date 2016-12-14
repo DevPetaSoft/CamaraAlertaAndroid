@@ -219,23 +219,24 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                         try {
                             //Realiza o parser do JSON vindo do WebService
-                            JSONObject json = new JSONObject(response);
-                            JsonParser parser = new JsonParser();
-                            JsonElement mJson = parser.parse(json.getString("data"));
+                            //JSONObject json = new JSONObject(response);
+                            //JsonParser parser = new JsonParser();
+                            //JsonElement mJson = parser.parse(json.getString("data"));
                             /* Transforma o JSON em um objeto Cidadao
                              * Grava o cidadao no objeto estático de configurações para ser acessado
                              * por qualquer arquivo.*/
-                            configuration.usuario = configuration.gson.fromJson(mJson, Cidadao.class);
+                            configuration.usuario = configuration.gson.fromJson(response, Cidadao.class);
                             if (configuration.usuario == null) {
                                 Log.i("Error", "não foi possível realizar o login");
                             } else {
                                 Toast toast = Toast.makeText(getApplicationContext(), "Login efetuado com sucesso", Toast.LENGTH_LONG);
                                 toast.show();
+                                Log.i("Nome", configuration.usuario.getNome());
                                 //Redireciona a aplicação para a tela principal
                                 startActivity(intent);
                                 finish();
                             }
-                        } catch (JSONException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 
@@ -274,8 +275,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
         };
         queue.add(getRequest);
-        startActivity(intent);
-        finish();
+       /* startActivity(intent);
+        finish();*/
     }
 
     public void facebookLogin(final LoginResult loginResult, final String email,final String name, final String token) {
@@ -289,14 +290,15 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     @Override
                     public void onResponse(String response) {
                         try {
+                            Log.i("Response", response.substring(0,30));
                             //Realiza o parser do JSON vindo do WebService
-                            JSONObject json = new JSONObject(response);
+                            /*JSONObject json = new JSONObject(response);
                             JsonParser parser = new JsonParser();
                             JsonElement mJson = parser.parse(json.getString("data"));
                             /* Transforma o JSON em um objeto Cidadao
                              * Grava o cidadao no objeto estático de configurações para ser acessado
                              * por qualquer arquivo.*/
-                            configuration.usuario = configuration.gson.fromJson(mJson, Cidadao.class);
+                            configuration.usuario = configuration.gson.fromJson(response, Cidadao.class);
                             Log.i("Facebook Login", "Envio do rest");
                             if (configuration.usuario == null) {
                                 Log.i("Error", "não foi possível realizar o login");
@@ -311,7 +313,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 progressDialog.dismiss();
                                 finish();
                             }
-                        } catch (JSONException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
 
                             progressDialog.dismiss();
