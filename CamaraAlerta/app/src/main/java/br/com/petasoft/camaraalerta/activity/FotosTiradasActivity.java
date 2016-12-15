@@ -1,5 +1,6 @@
 package br.com.petasoft.camaraalerta.activity;
 
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -18,34 +19,48 @@ import static android.widget.ImageView.ScaleType.FIT_XY;
  */
 
 public class FotosTiradasActivity extends AppCompatActivity {
+    private ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fotos_tiradas_layout);
-        Bundle b = this.getIntent().getExtras();
-        String[] paths = b.getStringArray("fotos");
+        final Bundle b = this.getIntent().getExtras();
+        progress=new ProgressDialog(this);
+        progress.setMessage("Carregando fotos");
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.setProgress(0);
+        progress.show();
 
-        LinearLayout layout = (LinearLayout)findViewById(R.id.layoutFotos);
-        for(int i=0;i<paths.length;i++){
-            ImageView image = new ImageView(this);
-            image.setLayoutParams(new android.view.ViewGroup.LayoutParams(360,360));
+        final Thread t = new Thread() {
+            @Override
+            public void run() {
+                String[] paths = b.getStringArray("fotos");
 
-            image.setScaleType(CENTER_CROP);
+                LinearLayout layout = (LinearLayout)findViewById(R.id.layoutFotos);
+                for (int i = 0; i < paths.length; i++) {
+                    ImageView image = new ImageView(getApplicationContext());
+                    image.setLayoutParams(new android.view.ViewGroup.LayoutParams(360, 360));
 
-
-            Bitmap myBitmap = BitmapFactory.decodeFile(paths[i]);
-
-            //redimensaionar o bitmap
-            myBitmap = Bitmap.createScaledBitmap(myBitmap, myBitmap.getScaledWidth(50), myBitmap.getScaledHeight(50), false);
-
-            image.setImageBitmap(myBitmap);
+                    image.setScaleType(CENTER_CROP);
 
 
-            // Adds the view to the layout
-            layout.addView(image);
+                    Bitmap myBitmap = BitmapFactory.decodeFile(paths[i]);
 
-        }
+                    //redimensaionar o bitmap
+                    myBitmap = Bitmap.createScaledBitmap(myBitmap, myBitmap.getScaledWidth(50), myBitmap.getScaledHeight(50), false);
+
+                    image.setImageBitmap(myBitmap);
+
+
+                    // Adds the view to the layout
+                    layout.addView(image);
+
+                }
+            }
+        };
+        t.start();
     }
 
 }

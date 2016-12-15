@@ -1,5 +1,6 @@
 package br.com.petasoft.camaraalerta.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,7 +32,7 @@ import model.Configuration;
 public class Registrar extends AppCompatActivity {
     private static Configuration configuration;
     private EditText editTextNome;
-    private EditText editTextLogin;
+    //private EditText editTextLogin;
     private EditText editTextEmail;
     private EditText editTextPassword;
     private EditText editTextConfirmPassword;
@@ -41,7 +42,7 @@ public class Registrar extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrar);
         editTextNome = (EditText) findViewById(R.id.registerName);
-        editTextLogin = (EditText) findViewById(R.id.registerLogin);
+       //editTextLogin = (EditText) findViewById(R.id.registerLogin);
         editTextEmail = (EditText) findViewById(R.id.registerEmail);
         editTextPassword = (EditText) findViewById(R.id.registerPassword);
         editTextConfirmPassword = (EditText) findViewById(R.id.registerConfirmPassword);
@@ -105,7 +106,7 @@ public class Registrar extends AppCompatActivity {
             {
                 Map<String, String>  params = new HashMap<String, String>();
                 params.put("nome",  editTextNome.getText().toString());
-                params.put("login", editTextLogin.getText().toString());
+                //params.put("login", editTextLogin.getText().toString());
                 params.put("email", editTextEmail.getText().toString());
                 params.put("senha", editTextPassword.getText().toString());
 
@@ -123,5 +124,10 @@ public class Registrar extends AppCompatActivity {
         }
 
 
+    }
+
+    public void termosCondicoes(View v){
+        Intent intent = new Intent(this, TermoCompromisso.class);
+        startActivity(intent);
     }
 }

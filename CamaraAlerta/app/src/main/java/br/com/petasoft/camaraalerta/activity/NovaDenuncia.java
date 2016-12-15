@@ -1,16 +1,23 @@
 package br.com.petasoft.camaraalerta.activity;
 
+import android.Manifest;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -34,6 +41,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -55,6 +63,8 @@ import br.com.petasoft.camaraalerta.R;
 
 import dto.DenunciaDTO;
 import model.Cidadao;
+import model.Cidade;
+import model.Coordenadas;
 import model.Denuncia;
 import model.Configuration;
 import model.Vereador;
@@ -64,6 +74,8 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private List<String> listaPaths;
     private ProgressDialog progress;
+    private double latitude = 0;
+    private double longitude = 0;
 
     FirstFrameDenuncia f1;
 
@@ -78,7 +90,6 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
     Vereador vereador;
 
     private String dDTOString = "";
-
 
 
     @Override
@@ -102,7 +113,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               dispatchTakePictureIntent();
+                dispatchTakePictureIntent();
             }
         });
 
@@ -157,6 +168,37 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
         }
     }
 
+    public ArrayList<Double> getLocation() {
+        Double lat = new Double(0);
+        Double lon = new Double(0);
+        // Get the location manager
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String bestProvider = locationManager.getBestProvider(criteria, false);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            Location location = locationManager.getLastKnownLocation(bestProvider);
+            try {
+                lat = location.getLatitude ();
+                lon = location.getLongitude ();
+            }
+            catch (NullPointerException e){
+                e.printStackTrace();
+
+            }
+        }
+        ArrayList<Double> coordenadas = new ArrayList<Double>();
+        coordenadas.add(lat);
+        coordenadas.add(lon);
+        return coordenadas;
+    }
+
 
     //Receber resultado da foto
     //Utiliza o caminho da foto atual para criar a thumbnail
@@ -172,10 +214,19 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
             listaPaths.add(mCurrentPhotoPath);
 
             fotoDenuncia.setImageBitmap(myBitmap);
+
+            /* Localização está dando crash no app por enquanto
+            if(latitude == 0 && longitude ==0) {
+                ArrayList<Double> coordenadas = getLocation();
+                latitude = coordenadas.get(0);
+                longitude = coordenadas.get(1);
+            }
+            */
+
         }
     }
 
-    public void proximoFrame(){
+    public void proximoFrame() {
         FragmentManager fragmentManager = getFragmentManager();
 
         fragmentManager.beginTransaction()
@@ -185,7 +236,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
 
     }
 
-    public void anteriorFrame(){
+    public void anteriorFrame() {
         FragmentManager fragmentManager = getFragmentManager();
 
         fragmentManager.beginTransaction()
@@ -195,7 +246,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
 
     }
 
-    public void returnFotos(){
+    public void returnFotos() {
         FragmentManager fragmentManager = getFragmentManager();
 
         fragmentManager.beginTransaction()
@@ -210,19 +261,19 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
         boolean checked = ((CheckBox) view).isChecked();
 
         // Check which checkbox was clicked
-        switch(view.getId()) {
+        switch (view.getId()) {
             case R.id.checkbox_denuncia_anonima:
                 if (checked) {
                     anonima = true;
-                }else {
+                } else {
                     anonima = false;
                 }
                 break;
         }
     }
 
-    public void listaDeFotos(View v){
-        if(!listaPaths.isEmpty()) {
+    public void listaDeFotos(View v) {
+        if (!listaPaths.isEmpty()) {
             String[] strings = new String[listaPaths.size()];
             strings = listaPaths.toArray(strings);
 
@@ -244,12 +295,14 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
 
         }
     }
+
     @Override
-    public void onFragment1EditTextChanged(String s){
+    public void onFragment1EditTextChanged(String s) {
         titulo = s;
     }
+
     @Override
-    public void onFragment2EditTextChanged(String s){
+    public void onFragment2EditTextChanged(String s) {
         descricao = s;
     }
 
@@ -281,10 +334,26 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                     denuncia.setAnonima(anonima);
                     denuncia.setCidadao(Configuration.usuario);
 
-                    //por agora
+                    /*coordenadas dao crash no app por enquanto
+                    Coordenadas coordenadas = new Coordenadas();
+                    coordenadas.setLatitude(latitude);
+                    coordenadas.setLongitude(longitude);
+
+                    denuncia.setCoordenadas(coordenadas);
+                    */
+
+                    /*por agora
                     vereador = new Vereador();
+                    Cidade cidade = new Cidade();
+                    cidade.setEstado("MG");
+                    cidade.setNome("Lavras");
+                    vereador.setCidade(cidade);
+                    vereador.setNome("Vereador 1");
+                    vereador.setDataCadastro(new Date());
+                    vereador.setEmail("vereador1@email.com");
                     //
                     denuncia.setVereador(vereador);
+                    */
 
                     List<String> listaDeFotos = new ArrayList<String>();
                     for(String s : listaPaths){

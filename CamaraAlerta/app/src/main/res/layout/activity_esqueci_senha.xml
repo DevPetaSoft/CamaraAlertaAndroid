@@ -7,12 +7,54 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/bg"
     tools:context="br.com.petasoft.camaraalerta.activity.EsqueciSenha">
-
-    <TextView
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Esqueci Senha"
-        android:textSize="20dp"
+        android:adjustViewBounds="true"
+        android:maxWidth="120dp"
+        android:layout_marginBottom="20dp"
+        android:scaleType="fitCenter"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/logosmall"/>
+    <TextView
+        android:id="@+id/usuarioRecuperar"
+        android:layout_marginLeft="25dp"
+        android:layout_above="@+id/emailRecuperar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="Email"
         />
+    <EditText
+        android:id="@+id/emailRecuperar"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/recuperarSenha"
+        android:layout_marginBottom="25dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_width="480dp"
+        android:inputType="text"
+        android:maxLines="1"
+        android:scrollHorizontally="true"
+        android:layout_height="wrap_content"
+        android:textCursorDrawable="@null"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/white"
+        />
+
+
+
+    <Button
+        android:id="@+id/recuperarSenha"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
+        android:layout_width="460dp"
+        android:layout_height="wrap_content"
+        android:text="RECUPERAR SENHA"
+        android:textColor="#FFFFFF"
+        android:background="#A5CA6F"
+        android:onClick="recuperarSenha"/>
 </RelativeLayout>

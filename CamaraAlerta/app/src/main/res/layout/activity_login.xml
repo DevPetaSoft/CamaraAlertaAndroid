@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/editLogin"
         android:textColor="@color/white"
-        android:text="Usuário"
+        android:text="Email"
         />
 
     <TextView
