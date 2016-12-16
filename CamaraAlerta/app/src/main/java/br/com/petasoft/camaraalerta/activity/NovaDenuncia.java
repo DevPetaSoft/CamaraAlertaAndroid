@@ -342,7 +342,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
             Toast.makeText(getApplicationContext(), "Você precisa incluir pelo menos uma foto.", Toast.LENGTH_LONG).show();
         } else {
             progress=new ProgressDialog(this);
-            progress.setMessage("Enviando Denuncia");
+            progress.setMessage("Enviando Solicitação");
             progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progress.setIndeterminate(true);
             progress.setProgress(0);

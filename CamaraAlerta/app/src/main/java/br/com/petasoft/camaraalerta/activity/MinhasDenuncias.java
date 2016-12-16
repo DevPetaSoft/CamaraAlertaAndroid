@@ -60,7 +60,7 @@ public class MinhasDenuncias extends Fragment {
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) myView.findViewById(R.id.toolbar_layout);
         collapsingToolbar.setTitleEnabled(false);
 
-        toolbar.setTitle("Minhas Denuncias");
+        toolbar.setTitle("Minhas Solicitações");
 
         FloatingActionButton fab = (FloatingActionButton) myView.findViewById(R.id.fabNovaDenuncia);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +72,7 @@ public class MinhasDenuncias extends Fragment {
         });
 
         progress=new ProgressDialog(getActivity());
-        progress.setMessage("Enviando Denuncia");
+        progress.setMessage("Recebendo Solicitações");
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progress.setIndeterminate(true);
         progress.setProgress(0);
