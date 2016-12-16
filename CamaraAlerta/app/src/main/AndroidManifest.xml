@@ -100,7 +100,8 @@
             android:label="Nova Solicitação - Fotos"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-        <activity android:name=".activity.TermoCompromisso"></activity>
+        <activity android:name=".activity.TermoCompromisso" />
+
     </application>
 
 </manifest>

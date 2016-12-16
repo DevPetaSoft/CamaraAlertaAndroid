@@ -1,9 +1,11 @@
 package br.com.petasoft.camaraalerta.activity;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -19,6 +21,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
@@ -72,7 +76,7 @@ import model.Vereador;
 public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenuncia.InterfaceFrame1, SecondFrameDenuncia.InterfaceFrame2 {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    private List<String> listaPaths;
+    private ArrayList<String> listaPaths;
     private ProgressDialog progress;
     private double latitude = 0;
     private double longitude = 0;
@@ -306,7 +310,26 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
         descricao = s;
     }
 
+    @Override
+    public void onBackPressed() {
+        Log.d("Valores", "" + titulo.length() + descricao.length() + listaPaths.size());
+        if(titulo.length()!=0 || descricao.length()!=0 || listaPaths.size()!= 0){
+            new AlertDialog.Builder(this)
+                    .setMessage("Deseja descartar as modificações feitas?")
+                    .setPositiveButton("Sim", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
 
+                    })
+                    .setNegativeButton("Não", null)
+                    .show();
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     public void enviarDenuncia(){
 
@@ -333,6 +356,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                     denuncia.setData(new Date());
                     denuncia.setAnonima(anonima);
                     denuncia.setCidadao(Configuration.usuario);
+                    denuncia.setFotos(listaPaths);
 
                     /*coordenadas dao crash no app por enquanto
                     Coordenadas coordenadas = new Coordenadas();
@@ -394,6 +418,12 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                                 public void onResponse(String response)
                                 {
                                     Toast.makeText(getApplicationContext(), "Nova Solicitação criada com sucesso!", Toast.LENGTH_LONG).show();
+                                    progress.dismiss();
+                                    /*Atualizar numero de denuncias apos fim da denuncia
+                                    Intent returnIntent = new Intent();
+                                    setResult(RESULT_OK, returnIntent);
+                                    */
+                                    finish();
                                 }
                             },
                             new Response.ErrorListener()
@@ -402,6 +432,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                                 public void onErrorResponse(VolleyError error)
                                 {
                                     Toast.makeText(getApplicationContext(), "Erro na criaçao de nova Solicitação", Toast.LENGTH_LONG).show();
+                                    progress.dismiss();
                                 }
                             })
                     {
@@ -414,7 +445,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                         }
                     };
                     queue.add(strRequest);
-                    progress.dismiss();
+
                 }
             };
             t.start();

@@ -99,6 +99,22 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /*Atualizar numero de denuncias apos fim da denuncia
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("Dentro", "entrou");
+        if (requestCode == 1) {
+
+            if(resultCode == RESULT_OK){
+                FirstFragment fragment = (FirstFragment) getFragmentManager().findFragmentById(R.id.first_layout);
+                fragment.atualizarNumeroDenuncias();
+            }
+            if (resultCode == RESULT_CANCELED) {
+                //Do nothing?
+            }
+        }
+    }//onActivityResult
+    */
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -153,6 +169,11 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.content_frame
                             , new ThirdFragment())
                     .commit();
+        } else if (id == R.id.nav_fourth_layout){
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_frame
+                            , new MinhasDenuncias())
+                    .commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -162,9 +183,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void novaDenuncia(View v){
+        /*/*Atualizar numero de denuncias apos fim da denuncia
+        Intent i = new Intent(this, NovaDenuncia.class);
+        startActivityForResult(i, 1);
+        */
         Intent intent = new Intent(this, NovaDenuncia.class);
         startActivity(intent);
-
     }
 
     public void mapaDenuncias(View v){

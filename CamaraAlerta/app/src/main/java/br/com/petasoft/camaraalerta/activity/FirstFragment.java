@@ -43,6 +43,11 @@ public class FirstFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.first_layout,container,false);
+        atualizarNumeroDenuncias();;
+        return myView;
+    }
+
+    public void atualizarNumeroDenuncias(){
         numeroDenuncias = (TextView) myView.findViewById(R.id.numeroDenuncias);
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         String url = configuration.base_url + "user/numeroDenuncias";
@@ -86,6 +91,5 @@ public class FirstFragment extends Fragment {
             }
         };
         queue.add(getRequest);
-        return myView;
     }
 }
