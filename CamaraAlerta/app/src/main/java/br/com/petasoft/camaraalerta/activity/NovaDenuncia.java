@@ -47,6 +47,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
 
@@ -55,6 +56,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -80,6 +82,9 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
     private ProgressDialog progress;
     private double latitude = 0;
     private double longitude = 0;
+    private Configuration configuration;
+
+    View myView;
 
     FirstFrameDenuncia f1;
 
@@ -105,6 +110,9 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
         listaPaths = new ArrayList<String>();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+        this.carregarVereadores();
 
         //inserindo fragmento inicial
         FragmentManager fragmentManager = getFragmentManager();
@@ -298,6 +306,46 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                     .commit();
 
         }
+    }
+
+    /**
+     * Carrega uma lista de vereadores por cidade
+     * TODO: passar a cidade como parametro
+     * @return
+     */
+    private List<Vereador> carregarVereadores(){
+        progress=new ProgressDialog(this);
+        progress.setMessage("Buscando vereadores");
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.setProgress(0);
+        progress.show();
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = configuration.base_url + "vereador/listPorCidade";
+        StringRequest getRequest = new StringRequest(Request.Method.GET,url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i("Response",response.substring(0,30));
+                        Type listType = new TypeToken<ArrayList<Vereador>>(){}.getType();
+
+                        List<Vereador> vereadorList = new Gson().fromJson(response, listType);
+
+                        Log.i("Numero de vereadores", String.valueOf(vereadorList.size()));
+                        progress.dismiss();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Response","error");
+                        progress.dismiss();
+                    }
+                }
+        );
+        queue.add(getRequest);
+        return null;
     }
 
     @Override
