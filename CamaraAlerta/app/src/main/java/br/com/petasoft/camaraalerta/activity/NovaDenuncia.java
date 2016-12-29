@@ -111,9 +111,6 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-        this.carregarVereadores();
-
         //inserindo fragmento inicial
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
@@ -313,40 +310,6 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
      * TODO: passar a cidade como parametro
      * @return
      */
-    private List<Vereador> carregarVereadores(){
-        progress=new ProgressDialog(this);
-        progress.setMessage("Buscando vereadores");
-        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progress.setIndeterminate(true);
-        progress.setProgress(0);
-        progress.show();
-
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url = configuration.base_url + "vereador/listPorCidade";
-        StringRequest getRequest = new StringRequest(Request.Method.GET,url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.i("Response",response.substring(0,30));
-                        Type listType = new TypeToken<ArrayList<Vereador>>(){}.getType();
-
-                        List<Vereador> vereadorList = new Gson().fromJson(response, listType);
-
-                        Log.i("Numero de vereadores", String.valueOf(vereadorList.size()));
-                        progress.dismiss();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i("Response","error");
-                        progress.dismiss();
-                    }
-                }
-        );
-        queue.add(getRequest);
-        return null;
-    }
 
     @Override
     public void onFragment1EditTextChanged(String s) {
@@ -405,6 +368,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                     denuncia.setAnonima(anonima);
                     denuncia.setCidadao(Configuration.usuario);
                     denuncia.setFotos(listaPaths);
+                    denuncia.setVereador(f1.getVereadorEscolhido());
 
                     /*coordenadas dao crash no app por enquanto
                     Coordenadas coordenadas = new Coordenadas();
