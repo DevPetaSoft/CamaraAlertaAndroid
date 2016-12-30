@@ -25,10 +25,12 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.test.mock.MockPackageManager;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -80,9 +82,19 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private ArrayList<String> listaPaths;
     private ProgressDialog progress;
+    private Configuration configuration;
+    private boolean flagLocalizacao = false;
+
+
+    //Variaveis relacionadas a localização ---------------------------------------------------------
+    private static final int REQUEST_CODE_PERMISSION = 2;
+    String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
+    private Context context;
+    // GPSTracker class
+    GPSTracker gps;
     private double latitude = 0;
     private double longitude = 0;
-    private Configuration configuration;
+    //----------------------------------------------------------------------------------------------
 
     View myView;
 
@@ -107,6 +119,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
         f1 = new FirstFrameDenuncia();
         f2 = new SecondFrameDenuncia();
         setContentView(R.layout.activity_nova_denuncia);
+        context = this;
         listaPaths = new ArrayList<String>();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -223,14 +236,43 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
             listaPaths.add(mCurrentPhotoPath);
 
             fotoDenuncia.setImageBitmap(myBitmap);
+            //Pegando localização-----------------------------------------------------------
+            if(flagLocalizacao == false) {
+                try {
+                    if (ActivityCompat.checkSelfPermission(this, mPermission)
+                            != MockPackageManager.PERMISSION_GRANTED) {
 
-            /* Localização está dando crash no app por enquanto
-            if(latitude == 0 && longitude ==0) {
-                ArrayList<Double> coordenadas = getLocation();
-                latitude = coordenadas.get(0);
-                longitude = coordenadas.get(1);
+                        ActivityCompat.requestPermissions(this, new String[]{mPermission},
+                                REQUEST_CODE_PERMISSION);
+
+                        // If any permission above not allowed by user, this condition will
+                        //execute every time, else your else part will work
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                // create class object
+                gps = new GPSTracker(NovaDenuncia.this);
+
+                // check if GPS enabled
+                if (gps.canGetLocation()) {
+
+                    latitude = gps.getLatitude();
+                    longitude = gps.getLongitude();
+
+                    // Mostrar localização no log
+                    Log.d("Your Location is - ", "Lat: " + latitude + "\nLong: " + longitude);
+                } else {
+                    // can't get location
+                    // GPS or Network is not enabled
+                    // Ask user to enable GPS/network in settings
+                    gps.showSettingsAlert();
+                }
+
+
+                flagLocalizacao = true;
             }
-            */
+            //------------------------------------------------------------------------------
 
         }
     }
@@ -362,6 +404,10 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
             final Thread t = new Thread() {
                 @Override
                 public void run() {
+                    Coordenadas c = new Coordenadas();
+                    c.setLatitude(latitude);
+                    c.setLongitude(longitude);
+
                     Denuncia denuncia = new Denuncia();
                     denuncia.setDescricao(descricao);
                     denuncia.setData(new Date());
@@ -369,6 +415,9 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                     denuncia.setCidadao(Configuration.usuario);
                     denuncia.setFotos(listaPaths);
                     denuncia.setVereador(f1.getVereadorEscolhido());
+                    denuncia.setCoordenadas(c);
+
+
 
                     /*coordenadas dao crash no app por enquanto
                     Coordenadas coordenadas = new Coordenadas();
