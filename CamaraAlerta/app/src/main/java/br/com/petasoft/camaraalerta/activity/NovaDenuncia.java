@@ -409,6 +409,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                     c.setLongitude(longitude);
 
                     Denuncia denuncia = new Denuncia();
+                    denuncia.setTitulo(titulo);
                     denuncia.setDescricao(descricao);
                     denuncia.setData(new Date());
                     denuncia.setAnonima(anonima);
