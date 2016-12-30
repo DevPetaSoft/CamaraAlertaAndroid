@@ -18,6 +18,7 @@ public class Denuncia implements Serializable{
     private boolean anonima;
     private String mensagem;
     private ArrayList<String> fotos;
+    private ArrayList<String> fotosServidor;
     private Coordenadas coordenadas;
     private int status;
     private boolean comunicacaoPermitida;
@@ -68,6 +69,14 @@ public class Denuncia implements Serializable{
 
     public void setMensagem(String mensagem) {
         this.mensagem = mensagem;
+    }
+
+    public ArrayList<String> getFotosServidor() {
+        return fotosServidor;
+    }
+
+    public void setFotosServidor(ArrayList<String> fotosServidor) {
+        this.fotosServidor = fotosServidor;
     }
 
     public ArrayList<String> getFotos() {
