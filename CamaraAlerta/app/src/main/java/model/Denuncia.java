@@ -25,6 +25,7 @@ public class Denuncia implements Serializable{
     private Cidadao cidadao;
     private Vereador vereador;
     private boolean deleted;
+    private boolean novo;
 
     public int getId() {
         return id;
@@ -132,6 +133,14 @@ public class Denuncia implements Serializable{
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public boolean isNovo() {
+        return novo;
+    }
+
+    public void setNovo(boolean novo) {
+        this.novo = novo;
     }
 
 }
