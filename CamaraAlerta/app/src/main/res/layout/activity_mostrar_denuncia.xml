@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_mostrar_denuncia"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="br.com.petasoft.camaraalerta.activity.MostrarDenuncia">
+
+    <ImageView
+        android:id="@+id/fotoDenuncia"
+        android:layout_width="match_parent"
+        android:layout_height="230dp" />
+    <TextView
+        android:id="@+id/tituloDenuncia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fotoDenuncia"
+        android:layout_margin="16dp"
+        android:textSize="32dp"
+        />
+
+    <TextView
+        android:id="@+id/descricaoDenuncia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tituloDenuncia"
+        android:layout_margin="16dp"/>
+
+    <Button
+        android:id="@+id/buttonMensagens"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="MENSAGENS (0)"
+        android:layout_below="@+id/descricaoDenuncia"
+        android:layout_centerHorizontal="true"/>
+</RelativeLayout>

@@ -2,19 +2,23 @@ package br.com.petasoft.camaraalerta.activity;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -45,9 +49,8 @@ import model.Denuncia;
 
 import static android.widget.ImageView.ScaleType.CENTER_CROP;
 
-public class MinhasDenuncias extends Fragment {
+public class MinhasDenuncias extends Fragment{
     View myView;
-    private Configuration configuration;
     private ProgressDialog progress;
 
     @Nullable
@@ -79,7 +82,7 @@ public class MinhasDenuncias extends Fragment {
         progress.show();
 
         RequestQueue queue = Volley.newRequestQueue(getActivity());
-        String url = configuration.base_url + "denuncia/minhasDenuncias";
+        String url = Configuration.base_url + "denuncia/minhasDenuncias";
         StringRequest getRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -87,8 +90,8 @@ public class MinhasDenuncias extends Fragment {
                         Log.d("Solicitacoes", response);
                         //Type collectionType = new TypeToken<Collection<Denuncia>>(){}.getType();
                         //Collection<Denuncia> denuncias = configuration.gson.fromJson(response, collectionType);
-                        MinhasDenunciasDTO denuncias = configuration.gson.fromJson(response, MinhasDenunciasDTO.class);
-                        ArrayList<Denuncia> minhasDenuncias = denuncias.getMinhasDenuncias();
+                        MinhasDenunciasDTO denuncias = Configuration.gson.fromJson(response, MinhasDenunciasDTO.class);
+                        final ArrayList<Denuncia> minhasDenuncias = denuncias.getMinhasDenuncias();
                         if(minhasDenuncias == null){
                             Log.i("Error", "Usuário nao possui denuncias!");
                             Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Usuário nao possui denuncias!", Toast.LENGTH_LONG);
@@ -97,6 +100,14 @@ public class MinhasDenuncias extends Fragment {
                             //ArrayList<Denuncia> minhasDenuncias = denuncias.getMinhasDenuncias();
                             LinearLayout layout = (LinearLayout)getActivity().findViewById(R.id.layoutMinhasDenuncias);
                             for (int i = 0; i < minhasDenuncias.size(); i++) {
+                                CardView card = new CardView(getActivity().getApplicationContext());
+                                card.setId(i);
+                                CardView.LayoutParams layoutParams = new CardView.LayoutParams(CardView.LayoutParams.MATCH_PARENT,
+                                        CardView.LayoutParams.WRAP_CONTENT);
+                                card.setLayoutParams(layoutParams);
+                                //card.setBackgroundColor(Color.WHITE);
+                                card.setMaxCardElevation(5);
+                                card.setUseCompatPadding(true);
                                 ImageView image = new ImageView(getActivity().getApplicationContext());
                                 image.setLayoutParams(new android.view.ViewGroup.LayoutParams(360, 360));
 
@@ -128,7 +139,18 @@ public class MinhasDenuncias extends Fragment {
 
 
                                     // Adds the view to the layout
-                                    layout.addView(image);
+                                    card.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Log.d("Id denuncia", ""+v.getId());
+                                            int id = v.getId();
+                                            Intent intent = new Intent(getActivity(), MostrarDenuncia.class);
+                                            intent.putExtra("Denuncia", minhasDenuncias.get(id));
+                                            startActivity(intent);
+                                        }
+                                    });
+                                    card.addView(image);
+                                    layout.addView(card);
                                 }
                                 /*
                                 Bitmap myBitmap = BitmapFactory.decodeFile(minhasDenuncias.get(i).getFotos().get(0));
@@ -174,7 +196,7 @@ public class MinhasDenuncias extends Fragment {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("idUsuario", "" + configuration.usuario.getId());
+                params.put("idUsuario", "" + Configuration.usuario.getId());
 
                 return params;
             }
