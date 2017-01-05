@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,12 +16,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -57,9 +61,10 @@ public class MinhasDenuncias extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.activity_minhas_denuncias,container,false);
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        //((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
+        /*
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) myView.findViewById(R.id.toolbar_layout);
         collapsingToolbar.setTitleEnabled(false);
 
@@ -73,6 +78,7 @@ public class MinhasDenuncias extends Fragment{
                         .setAction("Action", null).show();
             }
         });
+        */
 
         progress=new ProgressDialog(getActivity());
         progress.setMessage("Recebendo Solicitações");
@@ -106,9 +112,10 @@ public class MinhasDenuncias extends Fragment{
                                         CardView.LayoutParams.WRAP_CONTENT);
                                 card.setLayoutParams(layoutParams);
                                 //card.setBackgroundColor(Color.WHITE);
-                                card.setMaxCardElevation(5);
+                                card.setMaxCardElevation(15);
                                 card.setUseCompatPadding(true);
                                 ImageView image = new ImageView(getActivity().getApplicationContext());
+                                image.setId(i+42);
                                 image.setLayoutParams(new android.view.ViewGroup.LayoutParams(360, 360));
 
                                 image.setScaleType(CENTER_CROP);
@@ -149,21 +156,30 @@ public class MinhasDenuncias extends Fragment{
                                             startActivity(intent);
                                         }
                                     });
-                                    card.addView(image);
+                                    RelativeLayout relative = new RelativeLayout(getActivity().getApplicationContext());
+                                    relative.addView(image);
+
+                                    TextView textoCartao = new TextView(getActivity().getApplicationContext());
+                                    textoCartao.setText(minhasDenuncias.get(i).getTitulo());
+                                    textoCartao.setTextSize(24);
+                                    textoCartao.setTextColor(Color.DKGRAY);
+
+                                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                                            RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                            RelativeLayout.LayoutParams.WRAP_CONTENT);
+                                    lp.addRule(RelativeLayout.RIGHT_OF, image.getId());
+                                    lp.setMargins(20,0,0,0);
+                                    relative.addView(textoCartao, lp);
+
+                                    card.addView(relative);
+                                    card.setBackgroundColor(Color.WHITE);
+                                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                                            LinearLayout.LayoutParams.MATCH_PARENT,
+                                            LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    params.setMargins(0,0,0,20);
+                                    card.setLayoutParams(params);
                                     layout.addView(card);
                                 }
-                                /*
-                                Bitmap myBitmap = BitmapFactory.decodeFile(minhasDenuncias.get(i).getFotos().get(0));
-
-                                //redimensaionar o bitmap
-                                myBitmap = Bitmap.createScaledBitmap(myBitmap, myBitmap.getScaledWidth(50), myBitmap.getScaledHeight(50), false);
-
-                                image.setImageBitmap(myBitmap);
-
-
-                                // Adds the view to the layout
-                                layout.addView(image);
-                                */
 
                             }
                         }

@@ -1,9 +1,11 @@
 package br.com.petasoft.camaraalerta.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -36,13 +38,49 @@ import br.com.petasoft.camaraalerta.R;
 import model.Cidadao;
 import model.Configuration;
 
+import static android.R.attr.filter;
+import static android.R.attr.start;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private Configuration configuration;
+    private SmoothActionBarDrawerToggle mDrawerToggle;
 
     public TextView nomeTextView;
     public TextView emailTextView;
 
+
+    private class SmoothActionBarDrawerToggle extends ActionBarDrawerToggle {
+
+        private Runnable runnable;
+
+        public SmoothActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, Toolbar toolbar, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
+            super(activity, drawerLayout, toolbar, openDrawerContentDescRes, closeDrawerContentDescRes);
+        }
+
+        @Override
+        public void onDrawerOpened(View drawerView) {
+            super.onDrawerOpened(drawerView);
+            invalidateOptionsMenu();
+        }
+        @Override
+        public void onDrawerClosed(View view) {
+            super.onDrawerClosed(view);
+            invalidateOptionsMenu();
+        }
+        @Override
+        public void onDrawerStateChanged(int newState) {
+            super.onDrawerStateChanged(newState);
+            if (runnable != null && newState == DrawerLayout.STATE_IDLE) {
+                runnable.run();
+                runnable = null;
+            }
+        }
+
+        public void runWhenIdle(Runnable runnable) {
+            this.runnable = runnable;
+        }
+    }
 
 
     @Override
@@ -66,13 +104,15 @@ public class MainActivity extends AppCompatActivity
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        mDrawerToggle = new SmoothActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close);
+        drawer.setDrawerListener(mDrawerToggle);
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
 
     @Override
@@ -152,32 +192,51 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        FragmentManager fragmentManager = getFragmentManager();
+        final FragmentManager fragmentManager = getFragmentManager();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //drawer.closeDrawer(GravityCompat.START);
 
         if (id == R.id.nav_first_layout) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame
-                            , new FirstFragment())
-                    .commit();
+            mDrawerToggle.runWhenIdle(new Runnable(){
+                @Override
+                public void run(){
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.content_frame
+                                    , new FirstFragment())
+                            .commit();
+                }
+            });
+            drawer.closeDrawers();
         } else if (id == R.id.nav_second_layout) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame
-                            , new SecondFragment())
-                    .commit();
+            mDrawerToggle.runWhenIdle(new Runnable(){
+                @Override
+                public void run(){
+                    Intent intent = new Intent(MainActivity.this, NovaDenuncia.class);
+                    startActivity(intent);
+                }
+            });
+            drawer.closeDrawers();
         } else if (id == R.id.nav_third_layout) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame
-                            , new ThirdFragment())
-                    .commit();
+            mDrawerToggle.runWhenIdle(new Runnable(){
+                @Override
+                public void run(){
+                    Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                    startActivity(intent);
+                }
+            });
+            drawer.closeDrawers();
         } else if (id == R.id.nav_fourth_layout){
-            fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame
-                            , new MinhasDenuncias())
-                    .commit();
+            mDrawerToggle.runWhenIdle(new Runnable(){
+                @Override
+                public void run(){
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.content_frame
+                                    , new MinhasDenuncias())
+                            .commit();
+                }
+            });
+            drawer.closeDrawers();
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         return true;
 
     }

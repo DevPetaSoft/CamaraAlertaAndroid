@@ -29,7 +29,12 @@
 
     Autem choro appetere vel ut, wisi nulla urbanitas eu eos. Sea quidam nominati ad. Vis duis regione labitur no, veri probatus per ea. Eu elitr facete honestatis vel, alii fastidii ut pri, et aperiri epicuri democritum sit.</string>
 
+
     <!-- Button text -->
+
+    <string name="open">Open navigation drawer</string>
+    <string name="close">Close navigation drawer</string>
+
     <string name="btn_logout_from_google">Logout from Google</string>
     <string name="btn_revoke_access">Revoke Access</string>
     <string name="title_activity_floating_action_button_basic">floating_action_button_basic</string>

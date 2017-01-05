@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_mostrar_mensagens"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="br.com.petasoft.camaraalerta.activity.MostrarMensagens">
+
+    <LinearLayout
+        android:id="@+id/layoutNovaMensagem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+        <EditText
+            android:id="@+id/editTextMensagem"
+            android:layout_marginTop="3dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/darker_gray"
+            android:layout_weight="1"
+            android:maxLines="4"/>
+        <ImageView
+            android:id="@+id/buttonEnviarMensagem"
+            android:src="@drawable/send"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#A5CA6F"/>
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/layoutNovaMensagem"
+        android:layout_alignParentTop="true">
+        <LinearLayout
+            android:id="@+id/layoutMensagens"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

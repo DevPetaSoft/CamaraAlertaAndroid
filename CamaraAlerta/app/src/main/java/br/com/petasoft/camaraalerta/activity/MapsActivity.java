@@ -144,7 +144,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         final ArrayList<Denuncia> minhasDenuncias = denunciasDTO.getMinhasDenuncias();
-
+        Log.d("DenunciasMapa", ""+minhasDenuncias.size());
         for(int i = 0; i < minhasDenuncias.size(); i++){
             Denuncia atual = minhasDenuncias.get(i);
             createMarker(atual.getCoordenadas().getLatitude(), atual.getCoordenadas().getLongitude(), ""+(i+1)+"- "+atual.getTitulo(),
@@ -170,9 +170,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         int height = getResources().getDisplayMetrics().heightPixels;
         int padding = (int) (width * 0.10); // offset from edges of the map 12% of screen
 
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
+        CameraUpdate camUpd = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
 
-        mMap.animateCamera(cu);
+        mMap.animateCamera(camUpd);
 
         // Add a marker in Sydney and move the camera
         /*
@@ -183,12 +183,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     protected void createMarker(double latitude, double longitude, String title, String snippet) {
-
+        Log.d("AdicionandoMarker", title);
         markers.add(mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(latitude, longitude))
                 .anchor(0.5f, 0.5f)
                 .title(title)
                 .snippet(snippet)));
+
     }
 
 }
