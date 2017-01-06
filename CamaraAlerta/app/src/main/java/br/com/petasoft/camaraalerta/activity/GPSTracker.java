@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -52,13 +53,16 @@ public class GPSTracker extends Service implements LocationListener {
         getLocation();
     }
 
+    //in the if for build version
+    // && ContextCompat.checkSelfPermission( mContext, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+
     public Location getLocation() {
         if ( Build.VERSION.SDK_INT >= 23 &&
-                ContextCompat.checkSelfPermission( mContext, android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission( mContext, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ContextCompat.checkSelfPermission( mContext, android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
             return location;
         } else {
             try {
+
                 locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
 
                 // getting GPS status
@@ -119,6 +123,7 @@ public class GPSTracker extends Service implements LocationListener {
             return location;
         }
     }
+
 
     /**
      * Stop using GPS listener

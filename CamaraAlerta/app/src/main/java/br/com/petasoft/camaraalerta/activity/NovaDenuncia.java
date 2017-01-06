@@ -4,10 +4,12 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Criteria;
@@ -16,6 +18,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.BaseColumns;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -55,10 +58,13 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Type;
+import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -87,14 +93,21 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
 
 
     //Variaveis relacionadas a localização ---------------------------------------------------------
-    private static final int REQUEST_CODE_PERMISSION = 2;
-    String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
+    String gpsPermission = Manifest.permission.ACCESS_FINE_LOCATION;
     private Context context;
     // GPSTracker class
     GPSTracker gps;
     private double latitude = 0;
     private double longitude = 0;
     //----------------------------------------------------------------------------------------------
+
+    String write_external_storagePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
+    String cameraPermission = Manifest.permission.CAMERA;
+
+    String read_external_storagePermission = Manifest.permission.READ_EXTERNAL_STORAGE;
+
+    private static final int MULTIPLE_REQUEST_PERMISSION = 123;
 
     View myView;
 
@@ -111,6 +124,9 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
     Vereador vereador;
 
     private String dDTOString = "";
+    private ArrayList<String> GalleryList = new ArrayList<String>();
+    private File currentFile = null;
+    private Uri currentUri = null;
 
 
     @Override
@@ -138,8 +154,80 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                 dispatchTakePictureIntent();
             }
         });
+        try {
+            if (ActivityCompat.checkSelfPermission(this, gpsPermission) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
+                ActivityCompat.requestPermissions(this, new String[]{gpsPermission, write_external_storagePermission, cameraPermission, read_external_storagePermission},
+                        MULTIPLE_REQUEST_PERMISSION);
+
+                // If any permission above not allowed by user, this condition will
+                //execute every time, else your else part will work
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MULTIPLE_REQUEST_PERMISSION:{
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    /**
+                     * Fazendo travar a aplicação
+                     */
+                    /*
+                    FillPhotoList();
+                    */
+
+                } else {
+                    finish();
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+            }
+        }
+    }
+
+    /**
+     * Fazendo travar a aplicação
+     */
+    /*
+    //Pegar fotos na galeria;
+    private void FillPhotoList()
+    {
+        // initialize the list!
+        GalleryList.clear();
+        String[] projection = { MediaStore.Images.ImageColumns.DISPLAY_NAME };
+        // intialize the Uri and the Cursor, and the current expected size.
+        Cursor c = null;
+        Uri u = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        //
+        // Query the Uri to get the data path.  Only if the Uri is valid.
+        if (u != null)
+        {
+            c = managedQuery(u, projection, null, null, null);
+        }
+
+        // If we found the cursor and found a record in it (we also have the id).
+        if ((c != null) && (c.moveToFirst()))
+        {
+            do
+            {
+                // Loop each and add to the list.
+                GalleryList.add(c.getString(0));
+            }
+            while (c.moveToNext());
+        }
+    }
+    */
 
     //Caminho para ultima foto tirada
     String mCurrentPhotoPath;
@@ -160,6 +248,8 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
 
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.getAbsolutePath();
+        currentFile = image;
+        currentUri = Uri.fromFile(currentFile);
         return image;
     }
 
@@ -190,43 +280,96 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
         }
     }
 
-    public ArrayList<Double> getLocation() {
-        Double lat = new Double(0);
-        Double lon = new Double(0);
-        // Get the location manager
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        String bestProvider = locationManager.getBestProvider(criteria, false);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            Location location = locationManager.getLastKnownLocation(bestProvider);
-            try {
-                lat = location.getLatitude ();
-                lon = location.getLongitude ();
-            }
-            catch (NullPointerException e){
-                e.printStackTrace();
-
-            }
-        }
-        ArrayList<Double> coordenadas = new ArrayList<Double>();
-        coordenadas.add(lat);
-        coordenadas.add(lon);
-        return coordenadas;
-    }
-
-
     //Receber resultado da foto
     //Utiliza o caminho da foto atual para criar a thumbnail
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+
+
+            /**
+             * Fazendo travar a aplicação
+             */
+            /*
+            //Tratando foto duplicada na galera e deletando:
+
+
+            // This is ##### ridiculous.  Some versions of Android save
+            // to the MediaStore as well.  Not sure why!  We don't know what
+            // name Android will give either, so we get to search for this
+            // manually and remove it.
+            String[] projection = {MediaStore.Images.ImageColumns.SIZE,
+                    MediaStore.Images.ImageColumns.DISPLAY_NAME,
+                    MediaStore.Images.ImageColumns.DATA,
+                    BaseColumns._ID,};
+            //
+            // intialize the Uri and the Cursor, and the current expected size.
+            Cursor c = null;
+            Uri u = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+            //
+            if (currentFile != null) {
+                // Query the Uri to get the data path.  Only if the Uri is valid,
+                // and we had a valid size to be searching for.
+                if ((u != null) && (currentFile.length() > 0)) {
+                    c = managedQuery(u, projection, null, null, null);
+                }
+                //
+                // If we found the cursor and found a record in it (we also have the size).
+                if ((c != null) && (c.moveToFirst())) {
+                    do {
+                        // Check each area in the gallary we built before.
+                        boolean bFound = false;
+                        for (String sGallery : GalleryList) {
+                            if (sGallery.equalsIgnoreCase(c.getString(1))) {
+                                bFound = true;
+                                break;
+                            }
+                        }
+                        //
+                        // To here we looped the full gallery.
+                        if (!bFound) {
+                            // This is the NEW image.  If the size is bigger, copy it.
+                            // Then delete it!
+                            File f = new File(c.getString(2));
+
+                            // Ensure it's there, check size, and delete!
+                            if ((f.exists()) && (currentFile.length() < c.getLong(0)) && (currentFile.delete())) {
+                                // Finally we can stop the copy.
+                                try {
+                                    currentFile.createNewFile();
+                                    FileChannel source = null;
+                                    FileChannel destination = null;
+                                    try {
+                                        source = new FileInputStream(f).getChannel();
+                                        destination = new FileOutputStream(currentFile).getChannel();
+                                        destination.transferFrom(source, 0, source.size());
+                                    } finally {
+                                        if (source != null) {
+                                            source.close();
+                                        }
+                                        if (destination != null) {
+                                            destination.close();
+                                        }
+                                    }
+                                } catch (IOException e) {
+                                    // Could not copy the file over.
+                                    Toast.makeText(getApplicationContext(), "Erro ao criar arquivo", Toast.LENGTH_LONG).show();;
+                                }
+                            }
+                            //
+                            ContentResolver cr = getContentResolver();
+                            cr.delete(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                    BaseColumns._ID + "=" + c.getString(3), null);
+                            break;
+                        }
+                    }
+                    while (c.moveToNext());
+                }
+            }
+            */
+            //fim do tratamento de foto duplicada
+
+
             ImageView fotoDenuncia = (ImageView) findViewById(R.id.fotosDenuncia);
 
             Bitmap myBitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
@@ -238,19 +381,6 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
             fotoDenuncia.setImageBitmap(myBitmap);
             //Pegando localização-----------------------------------------------------------
             if(flagLocalizacao == false) {
-                try {
-                    if (ActivityCompat.checkSelfPermission(this, mPermission)
-                            != MockPackageManager.PERMISSION_GRANTED) {
-
-                        ActivityCompat.requestPermissions(this, new String[]{mPermission},
-                                REQUEST_CODE_PERMISSION);
-
-                        // If any permission above not allowed by user, this condition will
-                        //execute every time, else your else part will work
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
                 // create class object
                 gps = new GPSTracker(NovaDenuncia.this);
 
