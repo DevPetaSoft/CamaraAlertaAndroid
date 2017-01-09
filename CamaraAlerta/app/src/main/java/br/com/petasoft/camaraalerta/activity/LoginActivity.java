@@ -1,8 +1,11 @@
 package br.com.petasoft.camaraalerta.activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -18,6 +21,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -26,6 +31,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -63,6 +69,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private Profile profile;
     private LoginResult loginResul;
     private ProgressDialog progressDialog;
+    public static final String MY_PREFS_NAME = "package br.com.petasoft.camaraalerta.FB_LOGIN_FILE";
 
 
     private Intent intent;
@@ -72,6 +79,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private static final String TAG = "TAG";
     private static final int RC_SIGN_IN = 10;
 
+    private AccessTokenTracker accessTokenTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,11 +88,18 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         //Facebook facebook = new Facebook("@string/facebook_app_id");
         setContentView(R.layout.activity_login);
         callbackManager = CallbackManager.Factory.create();
+        //SharedPreferences sharedPref = this.getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE);
         progressDialog = new ProgressDialog(this);
         // Buscando os componentes da tela
         loginButton = (LoginButton) findViewById(R.id.login_button);
         editLogin = (EditText) findViewById(R.id.editLogin);
         editPass = (EditText) findViewById(R.id.editPassword);
+        accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken newAccessToken) {
+                updateWithToken(newAccessToken);
+            }
+        };
 
         loginButton.setReadPermissions("public_profile", "email");
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -106,9 +122,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         // Get facebook data from login
                         Bundle bFacebookData = getFacebookData(object);
                         try {
-                            Log.i("Email", object.getString("email"));
+                            String email = object.getString("email");
+                            Log.i("Email", email);
                             String name =  object.getString("first_name")+" " +object.getString("last_name");
                             Log.i("Name", name);
+                            saveNameAndEmail(name, email);
                             //TODO: Passar a foto para o banco de dados
                             if (object.has("picture")) {
                                 String profilePicUrl = object.getJSONObject("picture").getJSONObject("data").getString("url");
@@ -121,7 +139,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     }
                 });
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "id, first_name, last_name, email,gender, birthday, location, picture.type(large)"); // Parámetros que pedimos a facebook
+                parameters.putString("fields", "id, first_name, last_name, email, picture.type(large)"); // Parámetros que pedimos a facebook
+                //parameters.putString("fields", "id, first_name, last_name, email,gender, birthday, location, picture.type(large)"); // Parámetros que pedimos a facebook
                 request.setParameters(parameters);
                 request.executeAsync();
             }
@@ -152,7 +171,197 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setScopes(gso.getScopeArray());
 
+        updateWithToken(AccessToken.getCurrentAccessToken());
+        normalLoginAlreadyLogged();
+    }
 
+    private void saveNameAndEmail(String name, String email){
+        SharedPreferences.Editor editor = getApplication().getApplicationContext().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        Log.d("Facebook before n", name);
+        Log.d("Facebook before e", email);
+        editor.putString("fbName", name);
+        editor.putString("fbEmail", email);
+        boolean voltou = editor.commit();
+        if(voltou){
+            Log.d("Facebook", "deu commit");
+        } else {
+            Log.d("Facebook", "nao deu commit");
+        }
+    }
+
+    private void normalLoginAlreadyLogged(){
+        SharedPreferences prefs = getApplication().getApplicationContext().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        int alreadyLogged = prefs.getInt("nlFeito", -1);
+        if(alreadyLogged!=1){
+            //Não faz nada, não está logado
+        } else {
+            Log.d("alreadyLogged", "logando");
+            final String email = prefs.getString("nlEmail", "No email found");
+            final String pass = prefs.getString("nlPass", "No pass found");
+            if(!email.equals("No email found")){
+                editLogin.setText(email);
+                editPass.setText(pass);
+                intent = new Intent(this, MainActivity.class);
+                RequestQueue queue = Volley.newRequestQueue(this);
+                String url = configuration.base_url + "user/login";
+                Log.i("URL", configuration.base_url + "user/login");
+                StringRequest getRequest = new StringRequest(Request.Method.POST, url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                // response
+                                Log.d("Response", response);
+                                //Toast.makeText()
+
+                                try {
+                                    //Realiza o parser do JSON vindo do WebService
+                                    //JSONObject json = new JSONObject(response);
+                                    //JsonParser parser = new JsonParser();
+                                    //JsonElement mJson = parser.parse(json.getString("data"));
+                            /* Transforma o JSON em um objeto Cidadao
+                             * Grava o cidadao no objeto estático de configurações para ser acessado
+                             * por qualquer arquivo.*/
+                                    configuration.usuario = configuration.gson.fromJson(response, Cidadao.class);
+                                    if (configuration.usuario == null) {
+                                        Log.i("Error", "não foi possível realizar o login");
+                                    } else {
+                                        Toast toast = Toast.makeText(getApplicationContext(), "Login efetuado com sucesso", Toast.LENGTH_LONG);
+                                        toast.show();
+                                        Log.i("Nome", configuration.usuario.getNome());
+                                        //Redireciona a aplicação para a tela principal
+
+                                        Configuration.loginNormal = true;
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // error
+                                if (error.networkResponse != null && error.networkResponse.data != null) {
+                                    String result = new String(error.networkResponse.data);
+                                    try {
+
+                                        JSONObject json = new JSONObject(result);
+
+                                        Toast toast = Toast.makeText(getApplicationContext(), json.getString("message"), Toast.LENGTH_LONG);
+                                        toast.show();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                } else {
+                                    Toast toast = Toast.makeText(getApplicationContext(), "Não foi possível se conectar com o servidor", Toast.LENGTH_LONG);
+                                    toast.show();
+                                }
+                            }
+                        }
+                ) {
+                    @Override
+                    protected Map<String, String> getParams() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("login", email);
+                        params.put("senha", pass);
+
+                        return params;
+                    }
+                };
+                queue.add(getRequest);
+            }
+        }
+
+    }
+
+    private void updateWithToken(final AccessToken currentAccessToken){
+        if(currentAccessToken != null) {
+            Log.d("Facebook", "ja logado");
+            SharedPreferences prefs = getApplication().getApplicationContext().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+            final String name = prefs.getString("fbName", "No name found");
+            final String email = prefs.getString("fbEmail", "No email found");
+            Log.d("Facebook token", currentAccessToken.getToken());
+
+            Log.d("Facebook name rec", name);
+            Log.d("Facebook email rec", email);
+            Log.d("Facebook", "reached");
+
+
+            intent = new Intent(LoginActivity.this, MainActivity.class);
+            RequestQueue queue = Volley.newRequestQueue(this);
+            String url = configuration.base_url + "user/facebookJaLogado";
+            StringRequest getRequest = new StringRequest(Request.Method.POST, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                Log.i("Response", response.substring(0,30));
+
+                                configuration.usuario = configuration.gson.fromJson(response, Cidadao.class);
+                                Log.i("Facebook Login", "Envio do rest");
+                                if (configuration.usuario == null) {
+                                    Log.i("Error", "não foi possível realizar o login");
+                                } else {
+                                    Log.i("Name", configuration.usuario.getNome());
+                                    Toast toast = Toast.makeText(getApplicationContext(), "Login efetuado com sucesso", Toast.LENGTH_LONG);
+                                    toast.show();
+                                    //Redireciona a aplicação para a tela principal
+                                    Configuration.loginFacebook = true;
+                                    startActivity(intent);
+
+                                    progressDialog.dismiss();
+                                    finish();
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+
+                                progressDialog.dismiss();
+                            }
+
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.i("Error", "Error response");
+
+                            progressDialog.dismiss();
+                            // error
+                            if (error.networkResponse != null && error.networkResponse.data != null) {
+                                String result = new String(error.networkResponse.data);
+                                try {
+
+                                    JSONObject json = new JSONObject(result);
+
+                                    Toast toast = Toast.makeText(getApplicationContext(), json.getString("message"), Toast.LENGTH_LONG);
+                                    toast.show();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                Toast toast = Toast.makeText(getApplicationContext(), "Não foi possível se conectar com o servidor", Toast.LENGTH_LONG);
+                                toast.show();
+                            }
+                        }
+                    }
+            ) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("email",email);
+
+                    return params;
+                }
+            };
+            queue.add(getRequest);
+        } else {
+            Log.d("Facebook", "nao logado");
+        }
     }
 
 
@@ -229,16 +438,33 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             configuration.usuario = configuration.gson.fromJson(response, Cidadao.class);
                             if (configuration.usuario == null) {
                                 Log.i("Error", "não foi possível realizar o login");
+                                Toast toast = Toast.makeText(getApplicationContext(), "Não foi possível realizar o login", Toast.LENGTH_LONG);
+                                toast.show();
                             } else {
                                 Toast toast = Toast.makeText(getApplicationContext(), "Login efetuado com sucesso", Toast.LENGTH_LONG);
                                 toast.show();
                                 Log.i("Nome", configuration.usuario.getNome());
                                 //Redireciona a aplicação para a tela principal
+
+                                SharedPreferences.Editor editor = getApplication().getApplicationContext().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                                editor.putString("nlEmail", editLogin.getText().toString());
+                                editor.putString("nlPass", editPass.getText().toString());
+                                editor.putInt("nlFeito", 1); //1- login feito e nao teve logout , 0 - logout
+                                boolean voltou = editor.commit();
+                                if(voltou){
+                                    Log.d("Normal", "deu commit");
+                                } else {
+                                    Log.d("Normal", "nao deu commit");
+                                }
+
+                                Configuration.loginNormal = true;
                                 startActivity(intent);
                                 finish();
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
+                            Toast toast = Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG);
+                            toast.show();
                         }
 
 
@@ -308,7 +534,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 Toast toast = Toast.makeText(getApplicationContext(), "Login efetuado com sucesso", Toast.LENGTH_LONG);
                                 toast.show();
                                 //Redireciona a aplicação para a tela principal
-
+                                Configuration.loginFacebook = true;
                                 startActivity(intent);
 
                                 progressDialog.dismiss();

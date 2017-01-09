@@ -181,7 +181,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
                     /**
-                     * Fazendo travar a aplicação
+                     * FillPhotoList() fazendo travar a aplicação
                      */
                     /*
                     FillPhotoList();
@@ -549,29 +549,6 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                     denuncia.setVereador(f1.getVereadorEscolhido());
                     denuncia.setCoordenadas(c);
 
-
-
-                    /*coordenadas dao crash no app por enquanto
-                    Coordenadas coordenadas = new Coordenadas();
-                    coordenadas.setLatitude(latitude);
-                    coordenadas.setLongitude(longitude);
-
-                    denuncia.setCoordenadas(coordenadas);
-                    */
-
-                    /*por agora
-                    vereador = new Vereador();
-                    Cidade cidade = new Cidade();
-                    cidade.setEstado("MG");
-                    cidade.setNome("Lavras");
-                    vereador.setCidade(cidade);
-                    vereador.setNome("Vereador 1");
-                    vereador.setDataCadastro(new Date());
-                    vereador.setEmail("vereador1@email.com");
-                    //
-                    denuncia.setVereador(vereador);
-                    */
-
                     List<String> listaDeFotos = new ArrayList<String>();
                     for(String s : listaPaths){
                         try {
@@ -593,12 +570,10 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                     DenunciaDTO dDTO = new DenunciaDTO(denuncia, listaDeFotos);
 
 
-                    //Log.d("dDTOString: Tamanho ", ""+dDTOString.length());
-
                     Gson gson = new Gson();
                     final String myJSONString = gson.toJson(dDTO);
 
-                    Log.d("Gson ", myJSONString);
+                    //Log.d("Gson ", myJSONString);
 
                     final RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
                     String url = Configuration.base_url + "denuncia/novaDenuncia";

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -27,6 +28,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.facebook.login.LoginManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -121,19 +123,35 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if (this.isTaskRoot()) {
-            new AlertDialog.Builder(this)
-                    .setTitle("Fechar a aplicação")
-                    .setMessage("Tem certeza que deseja fechar o CamaraAlerta?")
-                    .setPositiveButton("Sim", new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
+            if(Configuration.loginNormal) {
+                new AlertDialog.Builder(this)
+                        .setTitle("Fechar a aplicação")
+                        .setMessage("Tem certeza que deseja fechar o CamaraAlerta?")
+                        .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
 
-                    })
-                    .setNegativeButton("Não", null)
-                    .show();
+                        })
+                        .setNegativeButton("Não", null)
+                        .show();
+            } else if (Configuration.loginFacebook){
+                new AlertDialog.Builder(this)
+                        .setTitle("Fechar a aplicação")
+                        .setMessage("Tem certeza que deseja fechar o CamaraAlerta?")
+                        .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+
+                        })
+                        .setNegativeButton("Não", null)
+                        .show();
+            } else if (Configuration.loginGoogle){
+
+            }
         } else {
             super.onBackPressed();
         }
@@ -236,6 +254,67 @@ public class MainActivity extends AppCompatActivity
                 }
             });
             drawer.closeDrawers();
+        } else if (id == R.id.nav_fifth_layout){
+            mDrawerToggle.runWhenIdle(new Runnable(){
+                @Override
+                public void run(){
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.content_frame
+                                    , new MyPreferenceFragment())
+                            .commit();
+                }
+            });
+            drawer.closeDrawers();
+        } else if (id == R.id.nav_sixth_layout) {
+
+        } else if (id == R.id.nav_seventh_layout){
+            if(Configuration.loginNormal) {
+                new AlertDialog.Builder(this)
+                        .setTitle("Fechar a aplicação e fazer Logout")
+                        .setMessage("Tem certeza que deseja fechar o CamaraAlerta e fazer Logout?")
+                        .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                SharedPreferences.Editor editor = getApplication().getApplicationContext().getSharedPreferences(LoginActivity.MY_PREFS_NAME, MODE_PRIVATE).edit();
+                                editor.putString("nlEmail", "");
+                                editor.putString("nlPass", "");
+                                editor.putInt("nlFeito", 0); //1- login feito e nao teve logout , 0 - logout
+                                boolean voltou = editor.commit();
+                                if(voltou){
+                                    Log.d("Normal", "deu commit");
+                                } else {
+                                    Log.d("Normal", "nao deu commit");
+                                }
+                                finish();
+                            }
+
+                        })
+                        .setNegativeButton("Não", null)
+                        .show();
+            } else if(Configuration.loginFacebook){
+                new AlertDialog.Builder(this)
+                        .setTitle("Fechar a aplicação e fazer Logout")
+                        .setMessage("Tem certeza que deseja fechar o CamaraAlerta e fazer Logout?")
+                        .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                LoginManager.getInstance().logOut();
+                                SharedPreferences.Editor editor = getApplication().getApplicationContext().getSharedPreferences(LoginActivity.MY_PREFS_NAME, MODE_PRIVATE).edit();
+                                editor.putString("fbName", "");
+                                editor.putString("fbEmail", "");
+                                boolean voltou = editor.commit();
+                                if(voltou){
+                                    Log.d("Facebook", "deu commit logout");
+                                } else {
+                                    Log.d("Facebook", "nao deu  logout");
+                                }
+                                finish();
+                            }
+
+                        })
+                        .setNegativeButton("Não", null)
+                        .show();
+            }
         }
         return true;
 

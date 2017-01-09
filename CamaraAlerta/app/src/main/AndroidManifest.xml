@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
@@ -104,7 +105,14 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".activity.TermoCompromisso" />
         <activity android:name=".activity.MostrarDenuncia" />
-        <activity android:name=".activity.MostrarMensagens"></activity>
+        <activity android:name=".activity.MostrarMensagens" />
+        <activity
+            android:name=".activity.ConfiguracoesActivity"
+            android:label="@string/title_activity_configuracoes" />
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:label="@string/title_activity_settings" />
+        <activity android:name=".activity.EditarPerfilActivity"></activity>
     </application>
 
 </manifest>

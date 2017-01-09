@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference android:title="Permitir Notificações"
+        android:defaultValue="false"
+        android:summary="Essa opção, se selecionada, liga as notificações de novas mensagens recebidas."
+        android:key="applicationUpdates" />
+</PreferenceScreen>
