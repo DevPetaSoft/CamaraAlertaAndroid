@@ -284,12 +284,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             SharedPreferences prefs = getApplication().getApplicationContext().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
             final String name = prefs.getString("fbName", "No name found");
             final String email = prefs.getString("fbEmail", "No email found");
+            /*
             Log.d("Facebook token", currentAccessToken.getToken());
 
             Log.d("Facebook name rec", name);
             Log.d("Facebook email rec", email);
             Log.d("Facebook", "reached");
-
+            */
 
             intent = new Intent(LoginActivity.this, MainActivity.class);
             RequestQueue queue = Volley.newRequestQueue(this);
@@ -318,7 +319,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
-
+                                Toast toast = Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG);
+                                toast.show();
                                 progressDialog.dismiss();
                             }
 

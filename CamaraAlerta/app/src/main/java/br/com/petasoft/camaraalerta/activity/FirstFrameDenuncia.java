@@ -59,14 +59,16 @@ public class FirstFrameDenuncia extends Fragment {
     }
 
     private void atualizarSpinner(){
-        Spinner dropdown = (Spinner)myView.findViewById(R.id.vereadores_spinner);
-        String[] items = new String[listaVereadores.size()];
-        for(int i = 0; i < listaVereadores.size() ; i++){
-            items[i] = listaVereadores.get(i).getNome();
+        if(listaVereadores.size()>0) {
+            Spinner dropdown = (Spinner) myView.findViewById(R.id.vereadores_spinner);
+            String[] items = new String[listaVereadores.size()];
+            for (int i = 0; i < listaVereadores.size(); i++) {
+                items[i] = listaVereadores.get(i).getNome();
+            }
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            dropdown.setAdapter(adapter);
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dropdown.setAdapter(adapter);
     }
 
     public Vereador getVereadorEscolhido(){
