@@ -4,9 +4,17 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#FFFFFF</color>
+    <color name="red">#FF0000</color>
     <color name="orange">#FF7043</color>
+    <color name="orange_pressed">#CC5935</color>
+    <color name="orange_focused">#CC5935</color>
     <color name="light_green">#8BC34A</color>
     <color name="dark_green">#7DAF42</color>
     <color name="blue">#2196F3</color>
+    <color name="blue_pressed">#1A78C2</color>
+    <color name="blue_focused">#1A78C2</color>
     <color name="grey">#737373</color>
+    <color name="green_button">#A5CA6F</color>
+    <color name="green_button_pressed">#84A158</color>
+    <color name="green_button_focused">#84A158</color>
 </resources>

@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -59,14 +60,20 @@ public class FirstFrameDenuncia extends Fragment {
     }
 
     private void atualizarSpinner(){
-        Spinner dropdown = (Spinner)myView.findViewById(R.id.vereadores_spinner);
-        String[] items = new String[listaVereadores.size()];
-        for(int i = 0; i < listaVereadores.size() ; i++){
-            items[i] = listaVereadores.get(i).getNome();
+        if(listaVereadores.size()>0) {
+            Spinner dropdown = (Spinner) myView.findViewById(R.id.vereadores_spinner);
+            String[] items = new String[listaVereadores.size()];
+            for (int i = 0; i < listaVereadores.size(); i++) {
+                items[i] = listaVereadores.get(i).getNome();
+            }
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            dropdown.setAdapter(adapter);
+        } else {
+            Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Essa região não possui vereador cadastrado!", Toast.LENGTH_LONG);
+            toast.show();
+            getActivity().finish();
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dropdown.setAdapter(adapter);
     }
 
     public Vereador getVereadorEscolhido(){

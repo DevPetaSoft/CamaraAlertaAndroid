@@ -47,7 +47,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private ProgressDialog progress;
-    private MinhasDenunciasDTO denunciasDTO;
+    private MinhasDenunciasDTO denunciasDTO = null;
     private ArrayList<Marker> markers = new ArrayList<Marker>();
 
     @Override
@@ -142,38 +142,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        final ArrayList<Denuncia> minhasDenuncias = denunciasDTO.getMinhasDenuncias();
-        Log.d("DenunciasMapa", ""+minhasDenuncias.size());
-        for(int i = 0; i < minhasDenuncias.size(); i++){
-            Denuncia atual = minhasDenuncias.get(i);
-            createMarker(atual.getCoordenadas().getLatitude(), atual.getCoordenadas().getLongitude(), ""+(i+1)+"- "+atual.getTitulo(),
-                    atual.getDescricao());
-        }
-        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-            @Override
-            public void onInfoWindowClick(Marker marker) {
-                String titulo[] = marker.getTitle().split("-");
-                int numeroDenuncia = Integer.parseInt(titulo[0]) - 1;
-                Intent intent = new Intent(MapsActivity.this, MostrarDenuncia.class);
-                intent.putExtra("Denuncia", denunciasDTO.getMinhasDenuncias().get(numeroDenuncia));
-                startActivity(intent);
+        if(denunciasDTO.getNumeroDeDenuncias()>0){
+            final ArrayList<Denuncia> minhasDenuncias = denunciasDTO.getMinhasDenuncias();
+            Log.d("DenunciasMapa", "" + minhasDenuncias.size());
+            for (int i = 0; i < minhasDenuncias.size(); i++) {
+                Denuncia atual = minhasDenuncias.get(i);
+                createMarker(atual.getCoordenadas().getLatitude(), atual.getCoordenadas().getLongitude(), "" + (i + 1) + "- " + atual.getTitulo(),
+                        atual.getDescricao());
             }
-        });
+            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                @Override
+                public void onInfoWindowClick(Marker marker) {
+                    String titulo[] = marker.getTitle().split("-");
+                    int numeroDenuncia = Integer.parseInt(titulo[0]) - 1;
+                    Intent intent = new Intent(MapsActivity.this, MostrarDenuncia.class);
+                    intent.putExtra("Denuncia", denunciasDTO.getMinhasDenuncias().get(numeroDenuncia));
+                    startActivity(intent);
+                }
+            });
 
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (Marker marker : markers) {
-            builder.include(marker.getPosition());
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            for (Marker marker : markers) {
+                builder.include(marker.getPosition());
+            }
+            LatLngBounds bounds = builder.build();
+            int width = getResources().getDisplayMetrics().widthPixels;
+            int height = getResources().getDisplayMetrics().heightPixels;
+            int padding = (int) (width * 0.10); // offset from edges of the map 12% of screen
+
+            CameraUpdate camUpd = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
+
+            mMap.animateCamera(camUpd);
         }
-        LatLngBounds bounds = builder.build();
-        int width = getResources().getDisplayMetrics().widthPixels;
-        int height = getResources().getDisplayMetrics().heightPixels;
-        int padding = (int) (width * 0.10); // offset from edges of the map 12% of screen
-
-        CameraUpdate camUpd = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
-
-        mMap.animateCamera(camUpd);
-
         // Add a marker in Sydney and move the camera
         /*
         LatLng sydney = new LatLng(-34, 151);

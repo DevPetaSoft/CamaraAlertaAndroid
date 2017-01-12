@@ -79,7 +79,7 @@
         android:layout_height="wrap_content"
         android:text="ENTRAR"
         android:textColor="#FFFFFF"
-        android:background="#A5CA6F"
+        android:background="@drawable/green_button_background"
         android:onClick="normalLogin"/>
 
     <TextView

@@ -4,8 +4,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -80,6 +82,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private static final int RC_SIGN_IN = 10;
 
     private AccessTokenTracker accessTokenTracker;
+    private boolean facebookButtonPressed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +109,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onSuccess(LoginResult loginResult) {
                 loginResul = loginResult;
+                facebookButtonPressed = true;
                 final Profile profile = Profile.getCurrentProfile();
                 String accessToken = loginResult.getAccessToken().getToken();
                 Log.i("accessToken", accessToken);
@@ -279,18 +283,18 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void updateWithToken(final AccessToken currentAccessToken){
-        if(currentAccessToken != null) {
+        if(currentAccessToken != null && !facebookButtonPressed) {
             Log.d("Facebook", "ja logado");
             SharedPreferences prefs = getApplication().getApplicationContext().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
             final String name = prefs.getString("fbName", "No name found");
             final String email = prefs.getString("fbEmail", "No email found");
+            /*
             Log.d("Facebook token", currentAccessToken.getToken());
 
             Log.d("Facebook name rec", name);
             Log.d("Facebook email rec", email);
             Log.d("Facebook", "reached");
-
-
+            */
             intent = new Intent(LoginActivity.this, MainActivity.class);
             RequestQueue queue = Volley.newRequestQueue(this);
             String url = configuration.base_url + "user/facebookJaLogado";
@@ -307,7 +311,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                     Log.i("Error", "não foi possível realizar o login");
                                 } else {
                                     Log.i("Name", configuration.usuario.getNome());
-                                    Toast toast = Toast.makeText(getApplicationContext(), "Login efetuado com sucesso", Toast.LENGTH_LONG);
+                                    Toast toast = Toast.makeText(getApplicationContext(), "Login com Facebook efetuado com sucesso", Toast.LENGTH_LONG);
                                     toast.show();
                                     //Redireciona a aplicação para a tela principal
                                     Configuration.loginFacebook = true;
@@ -318,7 +322,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
-
+                                Toast toast = Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG);
+                                toast.show();
                                 progressDialog.dismiss();
                             }
 
@@ -531,7 +536,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 Log.i("Error", "não foi possível realizar o login");
                             } else {
                                 Log.i("Name", configuration.usuario.getNome());
-                                Toast toast = Toast.makeText(getApplicationContext(), "Login efetuado com sucesso", Toast.LENGTH_LONG);
+                                Toast toast = Toast.makeText(getApplicationContext(), "Login com Facebook efetuado com sucesso", Toast.LENGTH_LONG);
                                 toast.show();
                                 //Redireciona a aplicação para a tela principal
                                 Configuration.loginFacebook = true;
