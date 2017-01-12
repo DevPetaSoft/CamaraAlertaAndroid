@@ -96,7 +96,7 @@
         android:layout_height="wrap_content"
         android:text="NOVA SOLICITAÇÃO"
         android:textColor="#FFFFFF"
-        android:background="@color/orange"
+        android:background="@drawable/orange_button_background"
         android:onClick="novaDenuncia"/>
     <Button
         android:id="@+id/buttonMapaDenuncias"
@@ -105,7 +105,7 @@
         android:layout_height="wrap_content"
         android:text="MAPA DE SOLICITAÇÕES"
         android:textColor="#FFFFFF"
-        android:background="@color/blue"
+        android:background="@drawable/blue_button_background"
         android:onClick="mapaDenuncias"/>
     
 </LinearLayout>

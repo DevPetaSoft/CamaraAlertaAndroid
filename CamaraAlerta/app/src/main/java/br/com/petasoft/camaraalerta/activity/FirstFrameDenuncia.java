@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -68,6 +69,10 @@ public class FirstFrameDenuncia extends Fragment {
             ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             dropdown.setAdapter(adapter);
+        } else {
+            Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Essa região não possui vereador cadastrado!", Toast.LENGTH_LONG);
+            toast.show();
+            getActivity().finish();
         }
     }
 
