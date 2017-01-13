@@ -10,7 +10,9 @@ import com.google.gson.GsonBuilder;
 public class Configuration {
     //public static String base_url = "http://10.0.2.2:9000/";
     //public static String base_url = "http://192.168.1.4:9000/";
-    public static String base_url = "http://191.252.0.77:80/";
+
+    //Ip do servidor de testes
+    public static String base_url = "http://191.252.0.77/";
     public static Cidadao usuario;
     public static boolean loginNormal = false;
     public static boolean loginFacebook = false;
