@@ -3,10 +3,13 @@ package br.com.petasoft.camaraalerta.activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -35,7 +38,7 @@ import model.Configuration;
 import model.MensagemChat;
 
 
-public class MostrarMensagens extends AppCompatActivity {
+public class MostrarMensagens extends AppCompatActivity{
     EditText editTextMensagem;
     ImageView botaoEnviar;
     MensagensDTO mensagensDTO;
@@ -48,6 +51,10 @@ public class MostrarMensagens extends AppCompatActivity {
         editTextMensagem = (EditText)findViewById(R.id.editTextMensagem);
         botaoEnviar = (ImageView)findViewById(R.id.buttonEnviarMensagem);
         layoutMensagens = (LinearLayout)findViewById(R.id.layoutMensagens);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMensagens);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
         Intent intent = getIntent();
         mensagensDTO = (MensagensDTO)intent.getSerializableExtra("MensagensDTO");
         List<MensagemChat> mensagens = mensagensDTO.getList();
@@ -145,6 +152,17 @@ public class MostrarMensagens extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void incluirMensagem(String mensagemASerEnviada){

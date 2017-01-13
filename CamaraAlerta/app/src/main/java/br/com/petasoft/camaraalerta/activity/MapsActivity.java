@@ -168,7 +168,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LatLngBounds bounds = builder.build();
             int width = getResources().getDisplayMetrics().widthPixels;
             int height = getResources().getDisplayMetrics().heightPixels;
-            int padding = (int) (width * 0.10); // offset from edges of the map 12% of screen
+            int padding = (int) (width * 0.10); // offset das bordas do mapa
+
 
             CameraUpdate camUpd = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
 

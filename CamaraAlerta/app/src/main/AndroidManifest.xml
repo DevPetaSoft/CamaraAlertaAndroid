@@ -82,7 +82,12 @@
             android:name=".activity.NovaDenuncia"
             android:label="Nova Solicitação"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".activity.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.com.petasoft.camaraalerta.activity.MainActivity"/>
+        </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -108,9 +113,11 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.MostrarDenuncia"
             android:label="Solicitação"
+            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.MostrarMensagens"
             android:label="Mensagens"
+            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.EditarPerfilActivity"
             android:label="Editar Perfil"

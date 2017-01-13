@@ -113,10 +113,10 @@ public class MinhasDenuncias extends Fragment{
                                 card.setLayoutParams(layoutParams);
                                 //card.setBackgroundColor(Color.WHITE);
                                 card.setMaxCardElevation(15);
-                                card.setUseCompatPadding(true);
+                                //card.setUseCompatPadding(true);
                                 ImageView image = new ImageView(getActivity().getApplicationContext());
                                 image.setId(i+42);
-                                image.setLayoutParams(new android.view.ViewGroup.LayoutParams(360, 360));
+                                image.setLayoutParams(new android.view.ViewGroup.LayoutParams(260, 260));
 
                                 image.setScaleType(CENTER_CROP);
 
@@ -161,15 +161,62 @@ public class MinhasDenuncias extends Fragment{
 
                                     TextView textoCartao = new TextView(getActivity().getApplicationContext());
                                     textoCartao.setText(minhasDenuncias.get(i).getTitulo());
-                                    textoCartao.setTextSize(24);
+                                    textoCartao.setTextSize(16);
+                                    textoCartao.setId((image.getId()+35));
                                     textoCartao.setTextColor(Color.DKGRAY);
 
                                     RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                                             RelativeLayout.LayoutParams.WRAP_CONTENT,
                                             RelativeLayout.LayoutParams.WRAP_CONTENT);
                                     lp.addRule(RelativeLayout.RIGHT_OF, image.getId());
-                                    lp.setMargins(20,0,0,0);
+                                    lp.setMargins(20,10,0,0);
+
                                     relative.addView(textoCartao, lp);
+
+                                    TextView status = new TextView(getActivity().getApplicationContext());
+                                    status.setText("Status: ");
+                                    status.setTextSize(12);
+                                    status.setId((textoCartao.getId()+35));
+                                    status.setTextColor(Color.DKGRAY);
+
+                                    RelativeLayout.LayoutParams lp2 = new RelativeLayout.LayoutParams(
+                                            RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                            RelativeLayout.LayoutParams.WRAP_CONTENT);
+                                    lp2.addRule(RelativeLayout.RIGHT_OF, image.getId());
+                                    lp2.addRule(RelativeLayout.BELOW, textoCartao.getId());
+                                    lp2.setMargins(20,20,0,0);
+
+                                    relative.addView(status, lp2);
+
+                                    TextView textoStatus = new TextView(getActivity().getApplicationContext());
+                                    switch(minhasDenuncias.get(i).getStatus()){
+                                        case 0:
+                                            textoStatus.setText("Pendente");
+                                            textoStatus.setTextColor(Color.LTGRAY);
+                                            break;
+                                        case 1:
+                                            textoStatus.setText("PlaceHolder 1");
+                                            textoStatus.setTextColor(Color.LTGRAY);
+                                            break;
+                                        case 2:
+                                            textoStatus.setText("PlaceHolder 2");
+                                            textoStatus.setTextColor(Color.LTGRAY);
+                                            break;
+                                        case 3:
+                                            textoStatus.setText("Resolvida");
+                                            textoStatus.setTextColor(Color.GREEN);
+                                            break;
+                                    }
+                                    textoStatus.setTextSize(12);
+
+                                    RelativeLayout.LayoutParams lp3 = new RelativeLayout.LayoutParams(
+                                            RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                            RelativeLayout.LayoutParams.WRAP_CONTENT);
+                                    lp3.addRule(RelativeLayout.RIGHT_OF, status.getId());
+                                    lp3.addRule(RelativeLayout.BELOW, textoCartao.getId());
+                                    lp3.setMargins(0,20,0,0);
+
+                                    relative.addView(textoStatus, lp3);
 
                                     card.addView(relative);
                                     card.setBackgroundColor(Color.WHITE);

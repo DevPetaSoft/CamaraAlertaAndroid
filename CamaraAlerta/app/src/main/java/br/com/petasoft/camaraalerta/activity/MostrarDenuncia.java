@@ -8,7 +8,9 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -25,6 +27,7 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -46,6 +49,7 @@ public class MostrarDenuncia extends AppCompatActivity {
     private ImageView imagem;
     private TextView titulo;
     private TextView descricao;
+    private TextView statusTexto;
     private Button botao;
     private ProgressDialog progress;
     private MensagensDTO mensagensDTO;
@@ -57,7 +61,12 @@ public class MostrarDenuncia extends AppCompatActivity {
         imagem = (ImageView)findViewById(R.id.fotoDenuncia);
         titulo = (TextView)findViewById(R.id.tituloDenuncia);
         descricao = (TextView)findViewById(R.id.descricaoDenuncia);
+        statusTexto = (TextView)findViewById(R.id.statusTexto);
         botao = (Button)findViewById(R.id.buttonMensagens);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarDenuncia);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         Intent intent = getIntent();
         Denuncia denuncia = (Denuncia)intent.getSerializableExtra("Denuncia");
@@ -148,6 +157,35 @@ public class MostrarDenuncia extends AppCompatActivity {
 
         titulo.setText(denuncia.getTitulo());
         descricao.setText(denuncia.getDescricao());
+        switch(denuncia.getStatus()){
+            case 0:
+                statusTexto.setText(" Pendente");
+                statusTexto.setTextColor(Color.LTGRAY);
+                break;
+            case 1:
+                statusTexto.setText(" PlaceHolder 1");
+                statusTexto.setTextColor(Color.LTGRAY);
+                break;
+            case 2:
+                statusTexto.setText(" PlaceHolder 2");
+                statusTexto.setTextColor(Color.LTGRAY);
+                break;
+            case 3:
+                statusTexto.setText(" Resolvida");
+                statusTexto.setTextColor(Color.GREEN);
+                break;
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void mudarBotao(int numeroMensagens){

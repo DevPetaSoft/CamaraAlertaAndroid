@@ -140,6 +140,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
         listaPaths = new ArrayList<String>();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //inserindo fragmento inicial
         FragmentManager fragmentManager = getFragmentManager();
@@ -152,7 +153,12 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dispatchTakePictureIntent();
+                if(listaPaths.size()<4) {
+                    dispatchTakePictureIntent();
+                } else {
+                    Toast toast = Toast.makeText(NovaDenuncia.this, "Número máximo de fotos é 4!", Toast.LENGTH_LONG);
+                    toast.show();
+                }
             }
         });
         try {
