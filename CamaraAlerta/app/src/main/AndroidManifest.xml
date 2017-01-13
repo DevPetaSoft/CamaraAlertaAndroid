@@ -103,16 +103,18 @@
             android:label="Nova Solicitação - Fotos"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-        <activity android:name=".activity.TermoCompromisso" />
-        <activity android:name=".activity.MostrarDenuncia" />
-        <activity android:name=".activity.MostrarMensagens" />
-        <activity
-            android:name=".activity.ConfiguracoesActivity"
-            android:label="@string/title_activity_configuracoes" />
-        <activity
-            android:name=".activity.SettingsActivity"
-            android:label="@string/title_activity_settings" />
-        <activity android:name=".activity.EditarPerfilActivity"></activity>
+        <activity android:name=".activity.TermoCompromisso"
+            android:label="Termos e Condições"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MostrarDenuncia"
+            android:label="Solicitação"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.MostrarMensagens"
+            android:label="Mensagens"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.EditarPerfilActivity"
+            android:label="Editar Perfil"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

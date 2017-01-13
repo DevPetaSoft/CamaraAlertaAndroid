@@ -32,6 +32,7 @@ import android.test.mock.MockPackageManager;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -169,6 +170,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
         } catch (Exception e) {
             e.printStackTrace();
         }
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
