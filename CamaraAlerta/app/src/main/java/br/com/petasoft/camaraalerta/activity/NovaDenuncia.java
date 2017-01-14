@@ -72,6 +72,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 
 import br.com.petasoft.camaraalerta.R;
@@ -518,7 +519,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
 
     public void enviarDenuncia(){
 
-
+        Log.i("re","ee");
         if (titulo.equals("")){
             Toast.makeText(getApplicationContext(), "Você precisa incluir um título.", Toast.LENGTH_LONG).show();
         } else if (descricao.equals("")){
@@ -544,11 +545,22 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                     denuncia.setNovo(true);
                     denuncia.setTitulo(titulo);
                     denuncia.setDescricao(descricao);
-                    //denuncia.setData(new Date());
+
+                  //  denuncia.setData(null);
+                    if(denuncia.getData() != null) {
+                        Log.i("DATA", denuncia.getData().toString());
+                    }
+                    else {
+                        Log.i("Data","error");
+                    }
                     denuncia.setAnonima(anonima);
-                    denuncia.setCidadao(Configuration.usuario);
+                    Cidadao cidadao = new Cidadao();
+                    cidadao.setId(Configuration.usuario.getId());
+                    denuncia.setCidadao(cidadao);
                     denuncia.setFotos(listaPaths);
-                    denuncia.setVereador(f1.getVereadorEscolhido());
+                    Vereador v = new Vereador();
+                    v.setId(f1.getVereadorEscolhido().getId());
+                    denuncia.setVereador(v);
                     denuncia.setCoordenadas(c);
 
                     List<String> listaDeFotos = new ArrayList<String>();
