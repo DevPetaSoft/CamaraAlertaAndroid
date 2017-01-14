@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -39,7 +41,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -88,8 +96,8 @@ public class MinhasDenuncias extends Fragment{
         progress.show();
 
         RequestQueue queue = Volley.newRequestQueue(getActivity());
-        String url = Configuration.base_url + "denuncia/minhasDenuncias";
-        StringRequest getRequest = new StringRequest(Request.Method.POST, url,
+        String url = Configuration.base_url + "denuncia/minhasDenunciasUsu/" + Configuration.usuario.getId();
+        StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -122,112 +130,105 @@ public class MinhasDenuncias extends Fragment{
 
 
                                 File arquivo = new File(minhasDenuncias.get(i).getFotos().get(0));
-
-                                BitmapFactory.Options options = new BitmapFactory.Options();
-                                options.inJustDecodeBounds = true;
-                                //options.inInputShareable = true;
-                                //options.inPurgeable = true;
-
-                                BitmapFactory.decodeFile(arquivo.getPath(), options);
-                                if ((options.outWidth == -1) || (options.outHeight == -1)) {
-                                    Log.d("Erro", "Foto inexistente");
-                                } else {
-
-                                    int originalSize = (options.outHeight > options.outWidth) ? options.outHeight
-                                            : options.outWidth;
-
-                                    BitmapFactory.Options opts = new BitmapFactory.Options();
-                                    opts.inSampleSize = originalSize / 275;
-
-                                    Bitmap myBitmap = BitmapFactory.decodeFile(arquivo.getPath(), opts);
-
-
-                                    image.setImageBitmap(myBitmap);
-
-
-                                    // Adds the view to the layout
-                                    card.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            Log.d("Id denuncia", ""+v.getId());
-                                            int id = v.getId();
-                                            Intent intent = new Intent(getActivity(), MostrarDenuncia.class);
-                                            intent.putExtra("Denuncia", minhasDenuncias.get(id));
-                                            startActivity(intent);
-                                        }
-                                    });
-                                    RelativeLayout relative = new RelativeLayout(getActivity().getApplicationContext());
-                                    relative.addView(image);
-
-                                    TextView textoCartao = new TextView(getActivity().getApplicationContext());
-                                    textoCartao.setText(minhasDenuncias.get(i).getTitulo());
-                                    textoCartao.setTextSize(16);
-                                    textoCartao.setId((image.getId()+35));
-                                    textoCartao.setTextColor(Color.DKGRAY);
-
-                                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-                                            RelativeLayout.LayoutParams.WRAP_CONTENT,
-                                            RelativeLayout.LayoutParams.WRAP_CONTENT);
-                                    lp.addRule(RelativeLayout.RIGHT_OF, image.getId());
-                                    lp.setMargins(20,10,0,0);
-
-                                    relative.addView(textoCartao, lp);
-
-                                    TextView status = new TextView(getActivity().getApplicationContext());
-                                    status.setText("Status: ");
-                                    status.setTextSize(12);
-                                    status.setId((textoCartao.getId()+35));
-                                    status.setTextColor(Color.DKGRAY);
-
-                                    RelativeLayout.LayoutParams lp2 = new RelativeLayout.LayoutParams(
-                                            RelativeLayout.LayoutParams.WRAP_CONTENT,
-                                            RelativeLayout.LayoutParams.WRAP_CONTENT);
-                                    lp2.addRule(RelativeLayout.RIGHT_OF, image.getId());
-                                    lp2.addRule(RelativeLayout.BELOW, textoCartao.getId());
-                                    lp2.setMargins(20,20,0,0);
-
-                                    relative.addView(status, lp2);
-
-                                    TextView textoStatus = new TextView(getActivity().getApplicationContext());
-                                    switch(minhasDenuncias.get(i).getStatus()){
-                                        case 0:
-                                            textoStatus.setText("Pendente");
-                                            textoStatus.setTextColor(Color.LTGRAY);
-                                            break;
-                                        case 1:
-                                            textoStatus.setText("PlaceHolder 1");
-                                            textoStatus.setTextColor(Color.LTGRAY);
-                                            break;
-                                        case 2:
-                                            textoStatus.setText("PlaceHolder 2");
-                                            textoStatus.setTextColor(Color.LTGRAY);
-                                            break;
-                                        case 3:
-                                            textoStatus.setText("Resolvida");
-                                            textoStatus.setTextColor(Color.GREEN);
-                                            break;
+                                if(!arquivo.exists()) {
+                                    String pathAbsoluto = arquivo.getAbsolutePath();
+                                    int pos = pathAbsoluto.lastIndexOf("/");
+                                    String pathDir = pathAbsoluto.substring(0, pos+1);
+                                    File directory = new File(pathDir);
+                                    if(!directory.exists()){
+                                        directory.mkdir();
                                     }
-                                    textoStatus.setTextSize(12);
+                                    String url = "http://191.252.0.77/public/denounce_image/"+minhasDenuncias.get(i).getId()+"_0.png";
+                                    new DownloadFilesTask().execute(url, (""+image.getId()), arquivo.getAbsolutePath());
 
-                                    RelativeLayout.LayoutParams lp3 = new RelativeLayout.LayoutParams(
-                                            RelativeLayout.LayoutParams.WRAP_CONTENT,
-                                            RelativeLayout.LayoutParams.WRAP_CONTENT);
-                                    lp3.addRule(RelativeLayout.RIGHT_OF, status.getId());
-                                    lp3.addRule(RelativeLayout.BELOW, textoCartao.getId());
-                                    lp3.setMargins(0,20,0,0);
-
-                                    relative.addView(textoStatus, lp3);
-
-                                    card.addView(relative);
-                                    card.setBackgroundColor(Color.WHITE);
-                                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                                            LinearLayout.LayoutParams.MATCH_PARENT,
-                                            LinearLayout.LayoutParams.WRAP_CONTENT);
-                                    params.setMargins(0,0,0,20);
-                                    card.setLayoutParams(params);
-                                    layout.addView(card);
+                                } else {
+                                    Bitmap myBitmapGrande = BitmapFactory.decodeFile(arquivo.getPath());
+                                    Bitmap myBitmap = Bitmap.
+                                            createScaledBitmap(myBitmapGrande, myBitmapGrande.getWidth()/6, myBitmapGrande.getHeight()/6,false);
+                                    image.setImageBitmap(myBitmap);
                                 }
 
+                                // Adds the view to the layout
+                                card.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Log.d("Id denuncia", ""+v.getId());
+                                        int id = v.getId();
+                                        Intent intent = new Intent(getActivity(), MostrarDenuncia.class);
+                                        intent.putExtra("Denuncia", minhasDenuncias.get(id));
+                                        startActivity(intent);
+                                    }
+                                });
+                                RelativeLayout relative = new RelativeLayout(getActivity().getApplicationContext());
+                                relative.addView(image);
+
+                                TextView textoCartao = new TextView(getActivity().getApplicationContext());
+                                textoCartao.setText(minhasDenuncias.get(i).getTitulo());
+                                textoCartao.setTextSize(16);
+                                textoCartao.setId((image.getId()+35));
+                                textoCartao.setTextColor(Color.DKGRAY);
+
+                                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                                        RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                        RelativeLayout.LayoutParams.WRAP_CONTENT);
+                                lp.addRule(RelativeLayout.RIGHT_OF, image.getId());
+                                lp.setMargins(20,10,0,0);
+
+                                relative.addView(textoCartao, lp);
+
+                                TextView status = new TextView(getActivity().getApplicationContext());
+                                status.setText("Status: ");
+                                status.setTextSize(12);
+                                status.setId((textoCartao.getId()+35));
+                                status.setTextColor(Color.DKGRAY);
+
+                                RelativeLayout.LayoutParams lp2 = new RelativeLayout.LayoutParams(
+                                        RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                        RelativeLayout.LayoutParams.WRAP_CONTENT);
+                                lp2.addRule(RelativeLayout.RIGHT_OF, image.getId());
+                                lp2.addRule(RelativeLayout.BELOW, textoCartao.getId());
+                                lp2.setMargins(20,20,0,0);
+
+                                relative.addView(status, lp2);
+
+                                TextView textoStatus = new TextView(getActivity().getApplicationContext());
+                                switch(minhasDenuncias.get(i).getStatus()){
+                                    case 0:
+                                        textoStatus.setText("Pendente");
+                                        textoStatus.setTextColor(Color.LTGRAY);
+                                        break;
+                                    case 1:
+                                        textoStatus.setText("PlaceHolder 1");
+                                        textoStatus.setTextColor(Color.LTGRAY);
+                                        break;
+                                    case 2:
+                                        textoStatus.setText("PlaceHolder 2");
+                                        textoStatus.setTextColor(Color.LTGRAY);
+                                        break;
+                                    case 3:
+                                        textoStatus.setText("Resolvida");
+                                        textoStatus.setTextColor(Color.GREEN);
+                                        break;
+                                }
+                                textoStatus.setTextSize(12);
+
+                                RelativeLayout.LayoutParams lp3 = new RelativeLayout.LayoutParams(
+                                        RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                        RelativeLayout.LayoutParams.WRAP_CONTENT);
+                                lp3.addRule(RelativeLayout.RIGHT_OF, status.getId());
+                                lp3.addRule(RelativeLayout.BELOW, textoCartao.getId());
+                                lp3.setMargins(0,20,0,0);
+
+                                relative.addView(textoStatus, lp3);
+
+                                card.addView(relative);
+                                card.setBackgroundColor(Color.WHITE);
+                                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                                        LinearLayout.LayoutParams.MATCH_PARENT,
+                                        LinearLayout.LayoutParams.WRAP_CONTENT);
+                                params.setMargins(0,0,0,20);
+                                card.setLayoutParams(params);
+                                layout.addView(card);
                             }
                         }
                         progress.dismiss();
@@ -255,16 +256,47 @@ public class MinhasDenuncias extends Fragment{
                         progress.dismiss();
                     }
                 }
-        ) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("idUsuario", "" + Configuration.usuario.getId());
-
-                return params;
-            }
-        };
+        );
         queue.add(getRequest);
         return myView;
+    }
+    private class DownloadFilesTask extends AsyncTask<String, Void, Bitmap> {
+        String idImage;
+        String path;
+        protected Bitmap doInBackground(String... strings) {
+            String url = strings[0];
+            idImage = strings[1];
+            path = strings[2];
+            try{
+                URL urlToGet = new URL(url);
+                Bitmap bitmap = BitmapFactory.decodeStream(urlToGet.openConnection().getInputStream());
+                return bitmap;
+            } catch (Exception e){
+                return null;
+            }
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            if(result!=null) {
+                File arquivo = new File(path);
+                FileOutputStream out;
+                try {
+                    Log.d("Imagem path", arquivo.getPath());
+                    out = new FileOutputStream(arquivo);
+                    result.compress(Bitmap.CompressFormat.JPEG, 100, out); // bmp is your Bitmap instance
+                    out.flush();
+                    out.close();
+                } catch (FileNotFoundException e) {
+                    Log.d("Imagem", "Erro File not found");
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    Log.d("Imagem", "Erro IO");
+                    e.printStackTrace();
+                }
+                int id = Integer.parseInt(idImage);
+                ImageView imageToUpdate = (ImageView) getActivity().findViewById(id);
+                imageToUpdate.setImageBitmap(Bitmap.createScaledBitmap(result, result.getWidth() / 5, result.getHeight() / 5, false));
+            }
+        }
     }
 }
