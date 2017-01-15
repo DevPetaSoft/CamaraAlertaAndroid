@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -23,6 +24,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -85,13 +87,15 @@ import model.Denuncia;
 import model.Configuration;
 import model.Vereador;
 
-public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenuncia.InterfaceFrame1, SecondFrameDenuncia.InterfaceFrame2 {
+public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenuncia.InterfaceFrame1, FirstFrameDenuncia.InterfaceFrame2 {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private ArrayList<String> listaPaths;
     private ProgressDialog progress;
     private Configuration configuration;
     private boolean flagLocalizacao = false;
+    private Button botaoVerFotos;
+    private boolean vendoFotos = false;
 
 
     //Variaveis relacionadas a localização ---------------------------------------------------------
@@ -133,6 +137,9 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /*TODO: Deletar Fotos
+        Configuration.fotosDeletadas = new ArrayList<String>();
+        */
         super.onCreate(savedInstanceState);
         f1 = new FirstFrameDenuncia();
         f2 = new SecondFrameDenuncia();
@@ -143,6 +150,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        botaoVerFotos = (Button)findViewById(R.id.botaoVerFotos);
         //inserindo fragmento inicial
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
@@ -295,7 +303,8 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
 
-
+            botaoVerFotos.setBackgroundResource(R.drawable.blue_button_background);
+            botaoVerFotos.setTextColor(Color.WHITE);
             /**
              * Fazendo travar a aplicação
              */
@@ -462,6 +471,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
 
     }
 
+    /*
     public void onCheckboxClicked(View view) {
         // Is the view now checked?
         boolean checked = ((CheckBox) view).isChecked();
@@ -477,28 +487,36 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                 break;
         }
     }
+    */
 
     public void listaDeFotos(View v) {
         if (!listaPaths.isEmpty()) {
-            String[] strings = new String[listaPaths.size()];
-            strings = listaPaths.toArray(strings);
+            if(!vendoFotos) {
+                String[] strings = new String[listaPaths.size()];
+                strings = listaPaths.toArray(strings);
 
-            Bundle b = new Bundle();
-            b.putStringArray("fotos", strings);
+                Bundle b = new Bundle();
+                b.putStringArray("fotos", strings);
 
-            /*
-            Intent i = new Intent(NovaDenuncia.this, FotosTiradasActivity.class);
-            i.putExtras(b);
-            startActivity(i);
-            */
-            FragmentManager fragmentManager = getFragmentManager();
-            ThirdFrameDenuncia f3 = new ThirdFrameDenuncia();
-            f3.setArguments(b);
-            fragmentManager.beginTransaction()
-                    .replace(R.id.denuncia_frame
-                            , f3, "FOTO_FRAGMENT")
-                    .commit();
-
+                /*
+                Intent i = new Intent(NovaDenuncia.this, FotosTiradasActivity.class);
+                i.putExtras(b);
+                startActivity(i);
+                */
+                FragmentManager fragmentManager = getFragmentManager();
+                ThirdFrameDenuncia f3 = new ThirdFrameDenuncia();
+                f3.setArguments(b);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.denuncia_frame
+                                , f3, "FOTO_FRAGMENT")
+                        .commit();
+                vendoFotos=true;
+                botaoVerFotos.setText("VOLTAR");
+            } else {
+                returnFotos();
+                vendoFotos=false;
+                botaoVerFotos.setText("VIZUALIZAR FOTOS");
+            }
         }
     }
 
@@ -542,6 +560,16 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
     public void enviarDenuncia(){
 
         Log.i("re","ee");
+
+        /*TODO: Deletar Fotos
+        for(String path : Configuration.fotosDeletadas){
+            for(int i = 0; i<listaPaths.size(); i++){
+                if(path.equals(listaPaths.get(i))){
+                    listaPaths.remove(i);
+                }
+            }
+        }
+        */
         if (titulo.equals("")){
             Toast.makeText(getApplicationContext(), "Você precisa incluir um título.", Toast.LENGTH_LONG).show();
         } else if (descricao.equals("")){
@@ -582,7 +610,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                     denuncia.setCidadao(cidadao);
                     denuncia.setFotos(listaPaths);
                     Vereador v = new Vereador();
-                    v.setId(f1.getVereadorEscolhido().getId());
+                    v.setId(f2.getVereadorEscolhido().getId());
                     denuncia.setVereador(v);
                     denuncia.setCoordenadas(c);
 
@@ -659,5 +687,6 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
 
         }
     }
+
 
 }

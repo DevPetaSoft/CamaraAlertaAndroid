@@ -18,14 +18,22 @@
             android:layout_width="match_parent"
             android:layout_height="230dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/avatardefault"
-            android:onClick="listaDeFotos"/>
+            android:src="@drawable/avatardefault" />
 
         <ImageView
             android:id="@+id/fotosDenuncia"
             android:layout_width="match_parent"
             android:layout_height="230dp"
             android:scaleType="centerCrop"/>
+
+        <Button
+            android:id="@+id/botaoVerFotos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="VIZUALIZAR FOTOS"
+            android:layout_margin="10dp"
+            android:onClick="listaDeFotos"/>
     </RelativeLayout>
 
     <FrameLayout

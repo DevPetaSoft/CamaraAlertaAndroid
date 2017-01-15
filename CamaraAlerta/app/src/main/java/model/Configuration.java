@@ -3,6 +3,8 @@ package model;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.ArrayList;
+
 /**
  * Created by Gustavo on 14/10/2016.
  */
@@ -14,6 +16,7 @@ public class Configuration {
     //Ip do servidor de testes
     public static String base_url = "http://191.252.0.77/";
     public static Cidadao usuario;
+    public static ArrayList<String> fotosDeletadas;
     public static boolean loginNormal = false;
     public static boolean loginFacebook = false;
     public static boolean loginGoogle = false;

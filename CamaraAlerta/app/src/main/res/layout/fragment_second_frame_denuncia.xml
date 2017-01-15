@@ -13,22 +13,7 @@
             android:layout_height="5dp"
             android:layout_margin="16dp"
             android:src="@drawable/page_2"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/dark_green"
-            android:layout_marginLeft="16dp"
-            android:text="Descrição" />
-
-        <EditText
-            android:id="@+id/descricao"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="4"
-            android:textColor="@color/grey"
-            android:backgroundTint="@color/grey"
-            android:layout_margin="10dp"/>
-
+        <!--
         <CheckBox android:id="@+id/checkbox_denuncia_anonima"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,6 +22,20 @@
             android:text="Enviar Denúncia Anônima"
             android:textColor="@color/grey"
             android:onClick="onCheckboxClicked"/>
+            -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vereador"
+            android:layout_marginLeft="16dp"
+            android:textColor="@color/dark_green"/>
+
+        <Spinner
+            android:id="@+id/vereadores_spinner"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

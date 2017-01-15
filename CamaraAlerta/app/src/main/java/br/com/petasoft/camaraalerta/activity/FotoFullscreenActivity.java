@@ -1,7 +1,8 @@
 package br.com.petasoft.camaraalerta.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -17,11 +19,17 @@ import android.widget.Toast;
 import java.io.File;
 
 import br.com.petasoft.camaraalerta.R;
+import model.Configuration;
 
 import static android.widget.ImageView.ScaleType.CENTER_CROP;
 import static android.widget.ImageView.ScaleType.FIT_XY;
 
 public class FotoFullscreenActivity extends AppCompatActivity {
+
+    private boolean clicado = false;
+    private ImageView imagemDelete;
+    private String path;
+    private String source;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,14 +37,16 @@ public class FotoFullscreenActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_foto_fullscreen);
-
-        String path;
+        imagemDelete = (ImageView) findViewById(R.id.botaoDelete);
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras == null) {
                 path = null;
             } else {
                 path = extras.getString("pathFoto");
+                /*TODO: Deletar Fotos
+                source = extras.getString("source");
+                */
             }
         } else {
             path = (String) savedInstanceState.getSerializable("pathFoto");
@@ -72,6 +82,43 @@ public class FotoFullscreenActivity extends AppCompatActivity {
 
 
             imagem.setImageBitmap(myBitmap);
+            /*TODO: Deletar Fotos
+            if(source.equals("N")) {
+                imagem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (clicado) {
+                            imagemDelete.setImageResource(android.R.color.transparent);
+                            clicado = false;
+                        } else {
+                            imagemDelete.setImageResource(R.drawable.botao_delete);
+                            clicado = true;
+                            imagemDelete.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    new AlertDialog.Builder(FotoFullscreenActivity.this)
+                                            .setTitle("Deletar")
+                                            .setMessage("Deseja deletar a foto?")
+                                            .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    File arquivo = new File(path);
+                                                    Configuration.fotosDeletadas.add(path);
+                                                    arquivo.delete();
+                                                    finish();
+                                                }
+
+                                            })
+                                            .setNegativeButton("Não", null)
+                                            .show();
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+            */
         }
     }
+
 }

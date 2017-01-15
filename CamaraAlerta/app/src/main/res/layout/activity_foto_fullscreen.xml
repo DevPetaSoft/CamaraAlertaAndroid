@@ -14,4 +14,11 @@
         android:adjustViewBounds="true"
         android:layout_centerInParent="true"
         />
+    <ImageView
+        android:id="@+id/botaoDelete"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"/>
 </RelativeLayout>

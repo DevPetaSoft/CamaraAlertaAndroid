@@ -81,6 +81,9 @@ public class ThirdFrameDenuncia extends Fragment {
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), FotoFullscreenActivity.class);
                     intent.putExtra("pathFoto", currentPath);
+                    /*TODO: Deletar Fotos
+                    intent.putExtra("source", "N");
+                    */
                     startActivity(intent);
                 }
             });
@@ -90,13 +93,6 @@ public class ThirdFrameDenuncia extends Fragment {
             layoutFotos.addView(image);
 
         }
-
-        Button returnButton = (Button) myView.findViewById(R.id.buttonReturn);
-        returnButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v) {
-                ((NovaDenuncia)getActivity()).returnFotos();
-            }
-        });
 
         return myView;
     }

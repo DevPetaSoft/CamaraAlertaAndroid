@@ -105,7 +105,7 @@
             android:label="@string/title_activity_maps" />
         <activity
             android:name=".activity.FotosTiradasActivity"
-            android:label="Nova Solicitação - Fotos"
+            android:label="Fotos da Solicitação"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity

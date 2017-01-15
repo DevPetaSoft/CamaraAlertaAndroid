@@ -1,10 +1,12 @@
 package br.com.petasoft.camaraalerta.activity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -19,48 +21,52 @@ import static android.widget.ImageView.ScaleType.FIT_XY;
  */
 
 public class FotosTiradasActivity extends AppCompatActivity {
-    private ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fotos_tiradas_layout);
         final Bundle b = this.getIntent().getExtras();
-        progress=new ProgressDialog(this);
-        progress.setMessage("Carregando fotos");
-        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progress.setIndeterminate(true);
-        progress.setProgress(0);
-        progress.show();
+        String[] paths = b.getStringArray("fotos");
 
-        final Thread t = new Thread() {
-            @Override
-            public void run() {
-                String[] paths = b.getStringArray("fotos");
+        LinearLayout layout = (LinearLayout)findViewById(R.id.layoutFotos);
+        for (int i = 0; i < paths.length; i++) {
+            ImageView image = new ImageView(getApplicationContext());
+            image.setLayoutParams(new android.view.ViewGroup.LayoutParams(360, 360));
 
-                LinearLayout layout = (LinearLayout)findViewById(R.id.layoutFotos);
-                for (int i = 0; i < paths.length; i++) {
-                    ImageView image = new ImageView(getApplicationContext());
-                    image.setLayoutParams(new android.view.ViewGroup.LayoutParams(360, 360));
+            image.setScaleType(CENTER_CROP);
 
-                    image.setScaleType(CENTER_CROP);
+            //redimensaionar o bitmap
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            int originalSize = (options.outHeight > options.outWidth) ? options.outHeight
+                    : options.outWidth;
 
+            BitmapFactory.Options opts = new BitmapFactory.Options();
+            opts.inSampleSize = originalSize / 1080;
 
-                    Bitmap myBitmap = BitmapFactory.decodeFile(paths[i]);
+            Bitmap myBitmap = BitmapFactory.decodeFile(paths[i], opts);
 
-                    //redimensaionar o bitmap
-                    myBitmap = Bitmap.createScaledBitmap(myBitmap, myBitmap.getScaledWidth(50), myBitmap.getScaledHeight(50), false);
+            image.setImageBitmap(myBitmap);
 
-                    image.setImageBitmap(myBitmap);
+            final String currentPath = paths[i];
 
-
-                    // Adds the view to the layout
-                    layout.addView(image);
-
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(FotosTiradasActivity.this, FotoFullscreenActivity.class);
+                    intent.putExtra("pathFoto", currentPath);
+                    /*TODO: Deletar Fotos
+                    intent.putExtra("source", "F");
+                    */
+                    startActivity(intent);
                 }
-            }
-        };
-        t.start();
+            });
+
+            // Adds the view to the layout
+            layout.addView(image);
+
+        }
     }
 
 }

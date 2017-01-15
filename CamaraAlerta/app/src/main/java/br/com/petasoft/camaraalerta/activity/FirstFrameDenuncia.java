@@ -36,16 +36,17 @@ public class FirstFrameDenuncia extends Fragment {
     View myView;
     private Bundle savedState = null;
     private InterfaceFrame1 listener = null;
-    private ProgressDialog progress;
-    private List<Vereador> listaVereadores;
+
+    private InterfaceFrame2 listener2 = null;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.fragment_first_frame_denuncia,container,false);
-        this.carregarVereadores();
 
         listener = (InterfaceFrame1) getActivity();
+
+        listener2 = (InterfaceFrame2) getActivity();
 
         Button next = (Button) myView.findViewById(R.id.buttonNextDenuncia);
         next.setOnClickListener(new View.OnClickListener(){
@@ -53,79 +54,22 @@ public class FirstFrameDenuncia extends Fragment {
                EditText editText = (EditText) myView.findViewById(R.id.editTitulo);
                String str = editText.getText().toString();
                listener.onFragment1EditTextChanged(str);
+               EditText editText2 = (EditText) myView.findViewById(R.id.descricao);
+               String str2 = editText.getText().toString();
+               listener2.onFragment2EditTextChanged(str);
                ((NovaDenuncia)getActivity()).proximoFrame();
            }
         });
         return myView;
     }
 
-    private void atualizarSpinner(){
-        if(listaVereadores.size()>0) {
-            Spinner dropdown = (Spinner) myView.findViewById(R.id.vereadores_spinner);
-            String[] items = new String[listaVereadores.size()];
-            for (int i = 0; i < listaVereadores.size(); i++) {
-                items[i] = listaVereadores.get(i).getNome();
-            }
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            dropdown.setAdapter(adapter);
-        } else {
-            Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Essa região não possui vereador cadastrado!", Toast.LENGTH_LONG);
-            toast.show();
-            getActivity().finish();
-        }
-    }
-
-    public Vereador getVereadorEscolhido(){
-        Spinner spinnerVereadores = (Spinner)myView.findViewById(R.id.vereadores_spinner);
-        String text = spinnerVereadores.getSelectedItem().toString();
-        Vereador vReturn = null;
-        for(Vereador v : listaVereadores){
-            if(v.getNome().equals(text))
-                vReturn = v;
-        }
-        return vReturn;
-    }
-
-    private void carregarVereadores(){
-        progress=new ProgressDialog(this.getActivity());
-        progress.setMessage("Buscando vereadores");
-        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progress.setIndeterminate(true);
-        progress.setProgress(0);
-        progress.show();
-
-        RequestQueue queue = Volley.newRequestQueue(this.getActivity());
-        String url = Configuration.base_url + "vereador/listPorCidade";
-        StringRequest getRequest = new StringRequest(Request.Method.GET,url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.i("Response",response.substring(0,30));
-                        Type listType = new TypeToken<ArrayList<Vereador>>(){}.getType();
-
-                        List<Vereador> vereadorList = new Gson().fromJson(response, listType);
-
-                        Log.i("Numero de vereadores", String.valueOf(vereadorList.size()));
-                        listaVereadores = vereadorList;
-                        atualizarSpinner();
-                        progress.dismiss();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i("Response","error");
-                        progress.dismiss();
-                    }
-                }
-        );
-        queue.add(getRequest);
-    }
-
 
     public interface InterfaceFrame1 {
         public void onFragment1EditTextChanged(String string);
+    }
+
+    public interface InterfaceFrame2 {
+        public void onFragment2EditTextChanged(String string);
     }
 
     public void adicionarItensSpinner(){

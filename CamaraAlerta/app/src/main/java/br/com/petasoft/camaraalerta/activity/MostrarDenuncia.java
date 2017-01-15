@@ -148,12 +148,22 @@ public class MostrarDenuncia extends AppCompatActivity {
                     : options.outWidth;
 
             BitmapFactory.Options opts = new BitmapFactory.Options();
-            opts.inSampleSize = originalSize / 275;
+            opts.inSampleSize = originalSize / 1080;
 
             Bitmap myBitmap = BitmapFactory.decodeFile(arquivo.getPath(), opts);
 
 
             imagem.setImageBitmap(myBitmap);
+
+            final String[] paths = denuncia.getFotos().toArray(new String[0]);
+            imagem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(MostrarDenuncia.this, FotosTiradasActivity.class);
+                    intent.putExtra("fotos", paths);
+                    startActivity(intent);
+                }
+            });
         }
 
         titulo.setText(denuncia.getTitulo());

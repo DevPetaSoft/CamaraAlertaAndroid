@@ -37,20 +37,22 @@
             android:backgroundTint="@color/grey"
             android:textCursorDrawable="@null"
             android:textSize="20dp"/>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Vereador"
+            android:textColor="@color/dark_green"
             android:layout_marginLeft="16dp"
-            android:textColor="@color/dark_green"/>
+            android:text="Descrição" />
 
-        <Spinner
-            android:id="@+id/vereadores_spinner"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/descricao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="4"
+            android:textColor="@color/grey"
+            android:backgroundTint="@color/grey"
+            android:layout_margin="10dp"/>
+
     </LinearLayout>
 
     <LinearLayout
