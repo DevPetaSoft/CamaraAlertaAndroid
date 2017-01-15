@@ -61,6 +61,7 @@ import model.Configuration;
 import model.Denuncia;
 
 import static android.widget.ImageView.ScaleType.CENTER_CROP;
+import static android.widget.ImageView.ScaleType.FIT_XY;
 
 public class MinhasDenuncias extends Fragment{
     View myView;
@@ -128,7 +129,7 @@ public class MinhasDenuncias extends Fragment{
                                     image.setId(i + 42);
                                     image.setLayoutParams(new android.view.ViewGroup.LayoutParams(260, 260));
 
-                                    image.setScaleType(CENTER_CROP);
+                                    image.setScaleType(FIT_XY);
 
 
                                     File arquivo = new File(minhasDenuncias.get(i).getFotos().get(0));

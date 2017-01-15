@@ -388,6 +388,22 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
             listaPaths.add(mCurrentPhotoPath);
 
             fotoDenuncia.setImageBitmap(myBitmap);
+            ThirdFrameDenuncia myFragment = (ThirdFrameDenuncia)getFragmentManager().findFragmentByTag("FOTO_FRAGMENT");
+            if(myFragment != null && myFragment.isVisible()){
+                String[] strings = new String[listaPaths.size()];
+                strings = listaPaths.toArray(strings);
+
+                Bundle b = new Bundle();
+                b.putStringArray("fotos", strings);
+
+                FragmentManager fragmentManager = getFragmentManager();
+                ThirdFrameDenuncia f3 = new ThirdFrameDenuncia();
+                f3.setArguments(b);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.denuncia_frame
+                                , f3, "FOTO_FRAGMENT")
+                        .commit();
+            }
             //Pegando localização-----------------------------------------------------------
             if(flagLocalizacao == false) {
                 // create class object
@@ -480,7 +496,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
             f3.setArguments(b);
             fragmentManager.beginTransaction()
                     .replace(R.id.denuncia_frame
-                            , f3)
+                            , f3, "FOTO_FRAGMENT")
                     .commit();
 
         }
@@ -535,6 +551,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
         } else {
             progress=new ProgressDialog(this);
             progress.setMessage("Enviando Solicitação");
+            progress.setCancelable(false);
             progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progress.setIndeterminate(true);
             progress.setProgress(0);

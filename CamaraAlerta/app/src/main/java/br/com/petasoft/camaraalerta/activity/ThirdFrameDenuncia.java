@@ -1,11 +1,13 @@
 package br.com.petasoft.camaraalerta.activity;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,8 @@ import static android.widget.ImageView.ScaleType.CENTER_CROP;
 public class ThirdFrameDenuncia extends Fragment {
     View myView;
     LinearLayout layout;
+    private String[] paths;
+    private int i;
 
     @Nullable
     @Override
@@ -32,10 +36,10 @@ public class ThirdFrameDenuncia extends Fragment {
         myView = inflater.inflate(R.layout.fragment_third_frame_denuncia, container, false);
 
         Bundle b = this.getArguments();
-        String[] paths = b.getStringArray("fotos");
+        paths = b.getStringArray("fotos");
 
         LinearLayout layoutFotos = (LinearLayout)myView.findViewById(R.id.layoutFotos);
-        for(int i=0;i<paths.length;i++){
+        for(i=0;i<paths.length;i++){
             ImageView image = new ImageView(getActivity());
             image.setLayoutParams(new android.view.ViewGroup.LayoutParams(360,360));
             image.setScaleType(CENTER_CROP);
@@ -50,6 +54,7 @@ public class ThirdFrameDenuncia extends Fragment {
 
             //Nova função de reescalar bitmap
             File arquivo = new File(paths[i]);
+            final String currentPath = paths[i];
 
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
@@ -70,6 +75,15 @@ public class ThirdFrameDenuncia extends Fragment {
 
 
             image.setImageBitmap(myBitmap);
+
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), FotoFullscreenActivity.class);
+                    intent.putExtra("pathFoto", currentPath);
+                    startActivity(intent);
+                }
+            });
 
 
             // Adds the view to the layout
