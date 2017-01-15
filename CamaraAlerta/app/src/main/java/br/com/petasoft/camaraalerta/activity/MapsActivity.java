@@ -67,23 +67,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         progress.show();
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Configuration.base_url + "denuncia/minhasDenuncias";
-        StringRequest getRequest = new StringRequest(Request.Method.POST, url,
+        String url = Configuration.base_url + "denuncia/minhasDenunciasUsu/"+Configuration.usuario.getId();
+        StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         Log.d("Solicitacoes", response);
-                        //Type collectionType = new TypeToken<Collection<Denuncia>>(){}.getType();
-                        //Collection<Denuncia> denuncias = configuration.gson.fromJson(response, collectionType);
-                        MinhasDenunciasDTO denuncias = Configuration.gson.fromJson(response, MinhasDenunciasDTO.class);
-                        ArrayList<Denuncia> minhasDenuncias = denuncias.getMinhasDenuncias();
-                        if(minhasDenuncias == null){
-                            Log.i("Error", "Usuário nao possui denuncias!");
-                            Toast toast = Toast.makeText(getApplicationContext(), "Usuário nao possui denuncias!", Toast.LENGTH_LONG);
+                        try {
+                            //Type collectionType = new TypeToken<Collection<Denuncia>>(){}.getType();
+                            //Collection<Denuncia> denuncias = configuration.gson.fromJson(response, collectionType);
+                            MinhasDenunciasDTO denuncias = Configuration.gson.fromJson(response, MinhasDenunciasDTO.class);
+                            ArrayList<Denuncia> minhasDenuncias = denuncias.getMinhasDenuncias();
+                            if (minhasDenuncias == null) {
+                                Log.i("Error", "Usuário nao possui denuncias!");
+                                Toast toast = Toast.makeText(getApplicationContext(), "Usuário nao possui denuncias!", Toast.LENGTH_LONG);
+                                toast.show();
+                            } else {
+                                denunciasDTO = denuncias;
+                                chamarMapa();
+                            }
+                        } catch (Exception e){
+                            Toast toast = Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG);
                             toast.show();
-                        } else {
-                            denunciasDTO = denuncias;
-                            chamarMapa();
                         }
                         progress.dismiss();
                     }
@@ -110,15 +115,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         progress.dismiss();
                     }
                 }
-        ) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("idUsuario", "" + Configuration.usuario.getId());
-
-                return params;
-            }
-        };
+        );
         queue.add(getRequest);
     }
 

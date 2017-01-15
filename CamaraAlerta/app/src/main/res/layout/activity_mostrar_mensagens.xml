@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context="br.com.petasoft.camaraalerta.activity.MostrarMensagens">
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/barLayoutMensagens"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
@@ -44,18 +45,24 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#A5CA6F"/>
     </LinearLayout>
-    <ScrollView
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/layoutNovaMensagem"
-        android:layout_alignParentTop="true">
-        <LinearLayout
-            android:id="@+id/layoutMensagens"
-            android:layout_width="match_parent"
+        android:layout_below="@id/barLayoutMensagens"
+        android:layout_above="@id/layoutNovaMensagem">
+        <ScrollView
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_alignParentTop="true">
+            <LinearLayout
+                android:id="@+id/layoutMensagens"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        </LinearLayout>
-    </ScrollView>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
 
 </RelativeLayout>

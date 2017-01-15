@@ -63,7 +63,7 @@ import model.Configuration;
  * Created by Lucas on 9/18/2016.
  */
 
-public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener/*, View.OnClickListener*/ {
     private static Configuration configuration;
     private LoginButton loginButton;
     private EditText editLogin, editPass;
@@ -160,7 +160,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 Log.v("LoginActivity", exception.getCause().toString());
             }
         });
-
+        /**
+         * Google+
         findViewById(R.id.sign_in_button).setOnClickListener(this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -168,12 +169,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .requestProfile()
                 .build();
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .enableAutoManage(this , this )
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
         SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setScopes(gso.getScopeArray());
+         */
+
 
         updateWithToken(AccessToken.getCurrentAccessToken());
         normalLoginAlreadyLogged();
@@ -386,7 +389,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         }
 
     }
-
+    /*
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -395,6 +398,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 break;
         }
     }
+    */
 
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -163,16 +164,16 @@ public class MostrarDenuncia extends AppCompatActivity {
                 statusTexto.setTextColor(Color.LTGRAY);
                 break;
             case 1:
-                statusTexto.setText(" PlaceHolder 1");
-                statusTexto.setTextColor(Color.LTGRAY);
+                statusTexto.setText(" Em andamento");
+                statusTexto.setTextColor(ContextCompat.getColor(this, R.color.blue));
                 break;
             case 2:
-                statusTexto.setText(" PlaceHolder 2");
-                statusTexto.setTextColor(Color.LTGRAY);
+                statusTexto.setText(" Finalizado com sucesso");
+                statusTexto.setTextColor(ContextCompat.getColor(this, R.color.light_green));
                 break;
             case 3:
-                statusTexto.setText(" Resolvida");
-                statusTexto.setTextColor(Color.GREEN);
+                statusTexto.setText(" Recusado");
+                statusTexto.setTextColor(Color.RED);
                 break;
         }
     }

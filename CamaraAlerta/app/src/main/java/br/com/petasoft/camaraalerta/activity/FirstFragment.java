@@ -19,6 +19,7 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,30 +35,46 @@ public class FirstFragment extends Fragment {
     View myView;
     private Configuration configuration;
     private TextView numeroDenuncias;
+    private TextView numeroDenunciasResolvidas;
+    private TextView textoSolicitacoes;
+    private TextView textoResolvidas;
 
     public void atualizarDenuncias(int numero){
         numeroDenuncias.setText(""+numero);
+        if(numero == 1){
+            textoSolicitacoes.setText("Solicitação");
+        }
+    }
+    public void atualizarDenunciasResolvidas(int numero) {
+        numeroDenunciasResolvidas.setText(""+numero);
+        if(numero == 1){
+            textoResolvidas.setText("Resolvida");
+        }
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.first_layout,container,false);
-        atualizarNumeroDenuncias();;
+        atualizarNumeroDenuncias();
         return myView;
     }
 
     public void atualizarNumeroDenuncias(){
         numeroDenuncias = (TextView) myView.findViewById(R.id.numeroDenuncias);
+        numeroDenunciasResolvidas = (TextView) myView.findViewById(R.id.numeroDenunciasResolvidas);
+        textoSolicitacoes = (TextView) myView.findViewById(R.id.textoSolicitacoes);
+        textoResolvidas = (TextView) myView.findViewById(R.id.textoResolvidas);
         RequestQueue queue = Volley.newRequestQueue(getActivity());
-        String url = configuration.base_url + "user/numeroDenuncias";
-        StringRequest getRequest = new StringRequest(Request.Method.POST, url,
+        String url = configuration.base_url + "user/numeroDenuncias/"+Configuration.usuario.getId();
+        StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         Log.d("Solicitacoes", response);
-                        long numeroDenuncias = Long.parseLong(response);
-                        atualizarDenuncias((int)numeroDenuncias);
+                        int[] numeroDenuncias = Configuration.gson.fromJson(response, int[].class);
+                        atualizarDenuncias(numeroDenuncias[0]);
+                        atualizarDenunciasResolvidas(numeroDenuncias[1]);
                     }
                 },
                 new Response.ErrorListener() {
@@ -81,15 +98,7 @@ public class FirstFragment extends Fragment {
                         }
                     }
                 }
-        ) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("idUsuario", "" + configuration.usuario.getId());
-
-                return params;
-            }
-        };
+        );
         queue.add(getRequest);
     }
 }

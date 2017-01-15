@@ -36,6 +36,7 @@ public class Registrar extends AppCompatActivity {
     private EditText editTextEmail;
     private EditText editTextPassword;
     private EditText editTextConfirmPassword;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,7 @@ public class Registrar extends AppCompatActivity {
     public void novoRegistro(View v){
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = configuration.base_url+"user/novoCidadao";
+        intent = new Intent(this, MainActivity.class);
         StringRequest getRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
@@ -76,6 +78,28 @@ public class Registrar extends AppCompatActivity {
 
                         Toast toast = Toast.makeText(getApplicationContext(), "Conta criada com sucesso!", Toast.LENGTH_LONG);
                         toast.show();
+                        try {
+                            //Realiza o parser do JSON vindo do WebService
+                            //JSONObject json = new JSONObject(response);
+                            //JsonParser parser = new JsonParser();
+                            //JsonElement mJson = parser.parse(json.getString("data"));
+                            /* Transforma o JSON em um objeto Cidadao
+                             * Grava o cidadao no objeto estático de configurações para ser acessado
+                             * por qualquer arquivo.*/
+                            configuration.usuario = configuration.gson.fromJson(response, Cidadao.class);
+                            if (configuration.usuario == null) {
+                                Log.i("Error", "não foi possível realizar o login");
+                            } else {
+                                Log.i("Nome", configuration.usuario.getNome());
+                                //Redireciona a aplicação para a tela principal
+
+                                Configuration.loginNormal = true;
+                                startActivity(intent);
+                                finish();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
 
                     }
                 },
