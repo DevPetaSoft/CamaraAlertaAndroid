@@ -96,15 +96,21 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
     private boolean flagLocalizacao = false;
     private Button botaoVerFotos;
     private boolean vendoFotos = false;
+    private boolean solicitacaoSent = false;
 
 
     //Variaveis relacionadas a localização ---------------------------------------------------------
     String gpsPermission = Manifest.permission.ACCESS_FINE_LOCATION;
+    String gpsPermission2 = Manifest.permission.ACCESS_COARSE_LOCATION;
     private Context context;
     // GPSTracker class
     GPSTracker gps;
-    private double latitude = 0;
-    private double longitude = 0;
+    private Double latitude = null;
+    private Double longitude = null;
+
+
+
+    private ProviderLocationTracker locationTracker;
     //----------------------------------------------------------------------------------------------
 
     String write_external_storagePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -171,12 +177,13 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
             }
         });
         try {
-            if (ActivityCompat.checkSelfPermission(this, gpsPermission) != PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
+            if (ActivityCompat.checkSelfPermission(this, gpsPermission) != PackageManager.PERMISSION_GRANTED ||
+                    ActivityCompat.checkSelfPermission(this, gpsPermission2) != PackageManager.PERMISSION_GRANTED ||
+                    ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+                    ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
                     ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-                ActivityCompat.requestPermissions(this, new String[]{gpsPermission, write_external_storagePermission, cameraPermission, read_external_storagePermission},
+                ActivityCompat.requestPermissions(this, new String[]{gpsPermission, gpsPermission2, write_external_storagePermission, cameraPermission, read_external_storagePermission},
                         MULTIPLE_REQUEST_PERMISSION);
 
                 // If any permission above not allowed by user, this condition will
@@ -186,6 +193,10 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
             e.printStackTrace();
         }
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        locationTracker = new ProviderLocationTracker(NovaDenuncia.this, ProviderLocationTracker.ProviderType.GPS);
+        locationTracker.start();
+        Log.d("Inicio", "novo");
     }
 
     @Override
@@ -415,7 +426,12 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
             }
             //Pegando localização-----------------------------------------------------------
             if(flagLocalizacao == false) {
-                // create class object
+                if(locationTracker.hasLocation()){
+                    Location location = locationTracker.getLocation();
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+                }
+                /*
                 gps = new GPSTracker(NovaDenuncia.this);
 
                 // check if GPS enabled
@@ -432,7 +448,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                     // Ask user to enable GPS/network in settings
                     gps.showSettingsAlert();
                 }
-
+                */
 
                 flagLocalizacao = true;
             }
@@ -443,6 +459,11 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
 
     public void proximoFrame() {
         FragmentManager fragmentManager = getFragmentManager();
+        if(locationTracker.hasLocation()){
+            Location location = locationTracker.getLocation();
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+        }
 
         fragmentManager.beginTransaction()
                 .replace(R.id.denuncia_frame
@@ -557,9 +578,29 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
         }
     }
 
-    public void enviarDenuncia(){
+    public void enviarDenuncia() {
+        boolean stuckLoading = false;
 
-        Log.i("re","ee");
+        progress = new ProgressDialog(this);
+        progress.setMessage("Enviando Solicitação");
+        progress.setCancelable(false);
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.setProgress(0);
+        progress.show();
+        if (locationTracker.hasLocation()) {
+            Location location = locationTracker.getLocation();
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+        }
+
+
+        String lat = "" + latitude;
+        Log.d("Loc Lat", lat);
+        String lon = "" + longitude;
+        Log.d("Loc Lon", lon);
+
+        Log.i("re", "ee");
 
         /*TODO: Deletar Fotos
         for(String path : Configuration.fotosDeletadas){
@@ -570,21 +611,37 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
             }
         }
         */
-        if (titulo.equals("")){
-            Toast.makeText(getApplicationContext(), "Você precisa incluir um título.", Toast.LENGTH_LONG).show();
-        } else if (descricao.equals("")){
-            Toast.makeText(getApplicationContext(), "Você precisa incluir uma descrição.", Toast.LENGTH_LONG).show();
-        } else if(listaPaths.isEmpty()){
-            Toast.makeText(getApplicationContext(), "Você precisa incluir pelo menos uma foto.", Toast.LENGTH_LONG).show();
-        } else {
-            progress=new ProgressDialog(this);
-            progress.setMessage("Enviando Solicitação");
-            progress.setCancelable(false);
-            progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progress.setIndeterminate(true);
-            progress.setProgress(0);
-            progress.show();
+        if (longitude == null || latitude == null) {
+            Toast.makeText(getApplicationContext(), "A sua localização não pode ser definida, clique Enviar para tentar outra vez", Toast.LENGTH_LONG).show();
+            stuckLoading = true;
+            /*
+            gps = new GPSTracker(NovaDenuncia.this);
+                // check if GPS enabled
+                if (gps.canGetLocation()) {
 
+                    latitude = gps.getLatitude();
+                    longitude = gps.getLongitude();
+
+                    // Mostrar localização no log
+                    Log.d("Your Location is - ", "Lat: " + latitude + "\nLong: " + longitude);
+                } else {
+                    // can't get location
+                    // GPS or Network is not enabled
+                    // Ask user to enable GPS/network in settings
+                    gps.showSettingsAlert();
+                }
+                */
+        } else if (titulo.equals("")) {
+            Toast.makeText(getApplicationContext(), "Você precisa incluir um título.", Toast.LENGTH_LONG).show();
+            stuckLoading = true;
+        } else if (descricao.equals("")) {
+            Toast.makeText(getApplicationContext(), "Você precisa incluir uma descrição.", Toast.LENGTH_LONG).show();
+            stuckLoading = true;
+        } else if (listaPaths.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Você precisa incluir pelo menos uma foto.", Toast.LENGTH_LONG).show();
+            stuckLoading = true;
+        } else {
+            locationTracker.stop();
             final Thread t = new Thread() {
                 @Override
                 public void run() {
@@ -597,12 +654,11 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                     denuncia.setTitulo(titulo);
                     denuncia.setDescricao(descricao);
 
-                  //  denuncia.setData(null);
-                    if(denuncia.getData() != null) {
+                    //  denuncia.setData(null);
+                    if (denuncia.getData() != null) {
                         Log.i("DATA", denuncia.getData().toString());
-                    }
-                    else {
-                        Log.i("Data","error");
+                    } else {
+                        Log.i("Data", "error");
                     }
                     denuncia.setAnonima(anonima);
                     Cidadao cidadao = new Cidadao();
@@ -615,7 +671,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                     denuncia.setCoordenadas(c);
 
                     List<String> listaDeFotos = new ArrayList<String>();
-                    for(String s : listaPaths){
+                    for (String s : listaPaths) {
                         try {
                             ByteArrayOutputStream baos = new ByteArrayOutputStream(3000);
                             Bitmap src = BitmapFactory.decodeFile(s);
@@ -627,7 +683,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                             listaDeFotos.add(Base64.encodeToString(bytes, Base64.NO_WRAP));
 
                             //RequesString
-                            fotosJuntas+= Base64.encodeToString(bytes, Base64.NO_WRAP) + ",";
+                            fotosJuntas += Base64.encodeToString(bytes, Base64.NO_WRAP) + ",";
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -645,33 +701,27 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
 
 
                     final StringRequest strRequest = new StringRequest(Request.Method.POST, url,
-                            new Response.Listener<String>()
-                            {
+                            new Response.Listener<String>() {
                                 @Override
-                                public void onResponse(String response)
-                                {
+                                public void onResponse(String response) {
                                     Toast.makeText(getApplicationContext(), "Nova Solicitação criada com sucesso!", Toast.LENGTH_LONG).show();
                                     progress.dismiss();
-                                    /*Atualizar numero de denuncias apos fim da denuncia
-                                    Intent returnIntent = new Intent();
-                                    setResult(RESULT_OK, returnIntent);
-                                    */
+                                        /*Atualizar numero de denuncias apos fim da denuncia
+                                        Intent returnIntent = new Intent();
+                                        setResult(RESULT_OK, returnIntent);
+                                        */
                                     finish();
                                 }
                             },
-                            new Response.ErrorListener()
-                            {
+                            new Response.ErrorListener() {
                                 @Override
-                                public void onErrorResponse(VolleyError error)
-                                {
+                                public void onErrorResponse(VolleyError error) {
                                     Toast.makeText(getApplicationContext(), "Erro na criaçao de nova Solicitação", Toast.LENGTH_LONG).show();
                                     progress.dismiss();
                                 }
-                            })
-                    {
+                            }) {
                         @Override
-                        protected Map<String, String> getParams()
-                        {
+                        protected Map<String, String> getParams() {
                             Map<String, String> params = new HashMap<String, String>();
                             params.put("dDTOString", myJSONString);
                             return params;
@@ -679,13 +729,15 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                     };
                     queue.add(strRequest);
 
+
+                    //VolleySingleton.getInstance(this).addToRequestQueue(strRequest);
+
                 }
             };
             t.start();
-
-            //VolleySingleton.getInstance(this).addToRequestQueue(strRequest);
-
         }
+        if (stuckLoading == true)
+            progress.dismiss();
     }
 
 

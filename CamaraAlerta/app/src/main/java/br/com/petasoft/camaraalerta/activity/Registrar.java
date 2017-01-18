@@ -37,6 +37,9 @@ public class Registrar extends AppCompatActivity {
     private EditText editTextPassword;
     private EditText editTextConfirmPassword;
     private Intent intent;
+    private String email;
+    private String pass;
+    private String nome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,87 +70,90 @@ public class Registrar extends AppCompatActivity {
 
     public void novoRegistro(View v){
         RequestQueue queue = Volley.newRequestQueue(this);
+        nome = editTextNome.getText().toString();
+        email = editTextEmail.getText().toString();
+        pass = editTextPassword.getText().toString();
         String url = configuration.base_url+"user/novoCidadao";
         intent = new Intent(this, MainActivity.class);
-        StringRequest getRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("Response", response);
+        if(!nome.equals("") && !email.equals("") && !pass.equals("")){
+            StringRequest getRequest = new StringRequest(Request.Method.POST, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Log.d("Response", response);
 
-                        Toast toast = Toast.makeText(getApplicationContext(), "Conta criada com sucesso!", Toast.LENGTH_LONG);
-                        toast.show();
-                        try {
-                            //Realiza o parser do JSON vindo do WebService
-                            //JSONObject json = new JSONObject(response);
-                            //JsonParser parser = new JsonParser();
-                            //JsonElement mJson = parser.parse(json.getString("data"));
-                            /* Transforma o JSON em um objeto Cidadao
-                             * Grava o cidadao no objeto estático de configurações para ser acessado
-                             * por qualquer arquivo.*/
-                            configuration.usuario = configuration.gson.fromJson(response, Cidadao.class);
-                            if (configuration.usuario == null) {
-                                Log.i("Error", "não foi possível realizar o login");
-                            } else {
-                                Log.i("Nome", configuration.usuario.getNome());
-                                //Redireciona a aplicação para a tela principal
-
-                                Configuration.loginNormal = true;
-                                startActivity(intent);
-                                finish();
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        if(error.networkResponse != null && error.networkResponse.data != null) {
-                            String result = new String(error.networkResponse.data);
+                            Toast toast = Toast.makeText(getApplicationContext(), "Conta criada com sucesso!", Toast.LENGTH_LONG);
+                            toast.show();
                             try {
-                                // Caso a requisição não possua sucesso, ela envia uma mensagem com o retorno do WS
-                                JSONObject json = new JSONObject(result);
+                                //Realiza o parser do JSON vindo do WebService
+                                //JSONObject json = new JSONObject(response);
+                                //JsonParser parser = new JsonParser();
+                                //JsonElement mJson = parser.parse(json.getString("data"));
+                                /* Transforma o JSON em um objeto Cidadao
+                                 * Grava o cidadao no objeto estático de configurações para ser acessado
+                                 * por qualquer arquivo.*/
+                                configuration.usuario = configuration.gson.fromJson(response, Cidadao.class);
+                                if (configuration.usuario == null) {
+                                    Log.i("Error", "não foi possível realizar o login");
+                                } else {
+                                    Log.i("Nome", configuration.usuario.getNome());
+                                    //Redireciona a aplicação para a tela principal
 
-                                Toast toast = Toast.makeText(getApplicationContext(), json.getString("message"), Toast.LENGTH_LONG);
-                                toast.show();
-                            } catch (JSONException e) {
+                                    Configuration.loginNormal = true;
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                        }else{
-                            Toast toast = Toast.makeText(getApplicationContext(), "Não foi possível se conectar com o servidor", Toast.LENGTH_LONG);
-                            toast.show();
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            if (error.networkResponse != null && error.networkResponse.data != null) {
+                                String result = new String(error.networkResponse.data);
+                                try {
+                                    // Caso a requisição não possua sucesso, ela envia uma mensagem com o retorno do WS
+                                    JSONObject json = new JSONObject(result);
+
+                                    Toast toast = Toast.makeText(getApplicationContext(), json.getString("message"), Toast.LENGTH_LONG);
+                                    toast.show();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                Toast toast = Toast.makeText(getApplicationContext(), "Não foi possível se conectar com o servidor", Toast.LENGTH_LONG);
+                                toast.show();
+                            }
                         }
                     }
+            ) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("nome", editTextNome.getText().toString());
+                    //params.put("login", editTextLogin.getText().toString());
+                    params.put("email", editTextEmail.getText().toString());
+                    params.put("senha", editTextPassword.getText().toString());
+
+
+                    return params;
                 }
-        ) {
-            @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  params = new HashMap<String, String>();
-                params.put("nome",  editTextNome.getText().toString());
-                //params.put("login", editTextLogin.getText().toString());
-                params.put("email", editTextEmail.getText().toString());
-                params.put("senha", editTextPassword.getText().toString());
+            };
 
-
-                return params;
+            //Verifica se as senhas digitadas são iguais, e aciona o request para o servidor
+            if (editTextPassword.getText().toString().equals(editTextConfirmPassword.getText().toString())) {
+                queue.add(getRequest);
+            } else {
+                Toast toast = Toast.makeText(getApplicationContext(), "As senhas digitadas não são iguais.", Toast.LENGTH_LONG);
+                toast.show();
             }
-        };
-
-        //Verifica se as senhas digitadas são iguais, e aciona o request para o servidor
-        if(editTextPassword.getText().toString().equals(editTextConfirmPassword.getText().toString())){
-            queue.add(getRequest);
-        }else{
-            Toast toast = Toast.makeText(getApplicationContext(), "As senhas digitadas não são iguais.", Toast.LENGTH_LONG);
+        } else {
+            Toast toast = Toast.makeText(getApplicationContext(), "Preencha todos os campos", Toast.LENGTH_LONG);
             toast.show();
         }
-
-
     }
 
     public void termosCondicoes(View v){
