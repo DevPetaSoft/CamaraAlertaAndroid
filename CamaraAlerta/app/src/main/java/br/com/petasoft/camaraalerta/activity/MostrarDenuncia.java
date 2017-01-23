@@ -182,7 +182,7 @@ public class MostrarDenuncia extends AppCompatActivity {
                 statusTexto.setTextColor(ContextCompat.getColor(this, R.color.light_green));
                 break;
             case 3:
-                statusTexto.setText(" Recusado");
+                statusTexto.setText(" Não resolvida(ou recusada)");
                 statusTexto.setTextColor(Color.RED);
                 break;
         }

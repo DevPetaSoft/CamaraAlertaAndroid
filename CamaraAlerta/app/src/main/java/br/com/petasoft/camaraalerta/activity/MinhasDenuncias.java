@@ -209,7 +209,7 @@ public class MinhasDenuncias extends Fragment{
                                             textoStatus.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.light_green));
                                             break;
                                         case 3:
-                                            textoStatus.setText("Recusado");
+                                            textoStatus.setText("Não resolvida(ou recusada)");
                                             textoStatus.setTextColor(Color.RED);
                                             break;
                                     }
