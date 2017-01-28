@@ -54,8 +54,8 @@ public class MostrarMensagens extends AppCompatActivity{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMensagens);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        Intent intent = getIntent();
+
+        Intent intent = getIntent();getSupportActionBar().setHomeButtonEnabled(true);
         mensagensDTO = (MensagensDTO)intent.getSerializableExtra("MensagensDTO");
         List<MensagemChat> mensagens = mensagensDTO.getList();
 
@@ -174,6 +174,7 @@ public class MostrarMensagens extends AppCompatActivity{
         } else {
             texto.setBackgroundDrawable(drawable);
         }
+        editTextMensagem.setText("");
         RelativeLayout layoutRight = new RelativeLayout(layoutMensagens.getContext());
         RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
