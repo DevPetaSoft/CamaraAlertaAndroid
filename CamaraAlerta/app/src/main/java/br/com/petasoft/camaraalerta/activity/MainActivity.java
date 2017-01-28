@@ -368,4 +368,9 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    public void mudarNavegacao(int numero){
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.getMenu().getItem(numero).setChecked(true);
+    }
+
 }

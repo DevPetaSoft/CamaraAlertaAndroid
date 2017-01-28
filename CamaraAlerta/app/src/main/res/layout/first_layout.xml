@@ -48,7 +48,7 @@
             android:orientation="horizontal">
             <TextView
                 android:id="@+id/numeroDenuncias"
-                android:layout_width="170dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal"
                 android:layout_marginTop="10dp"
@@ -57,7 +57,7 @@
                 android:textSize="65dp"/>
             <TextView
                 android:id="@+id/numeroDenunciasResolvidas"
-                android:layout_width="170dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:textColor="@android:color/holo_green_light"
@@ -72,16 +72,16 @@
             android:layout_marginTop="80dp">
             <TextView
                 android:id="@+id/textoSolicitacoes"
-                android:layout_width="180dp"
-                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:layout_weight="1"
                 android:text="Solicitações"
                 android:textSize="24dp"/>
             <TextView
                 android:id="@+id/textoResolvidas"
-                android:layout_width="180dp"
-                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="@android:color/holo_green_light"
                 android:gravity="center_horizontal"

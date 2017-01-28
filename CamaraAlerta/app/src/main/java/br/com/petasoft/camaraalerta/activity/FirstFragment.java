@@ -1,8 +1,10 @@
 package br.com.petasoft.camaraalerta.activity;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +33,7 @@ import model.Configuration;
 /**
  * Created by Gustavo on 07/09/16.
  */
-public class FirstFragment extends Fragment {
+public class FirstFragment extends Fragment implements View.OnClickListener{
     View myView;
     private Configuration configuration;
     private TextView numeroDenuncias;
@@ -52,19 +54,58 @@ public class FirstFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onClick(View v){
+        FragmentManager fragmentManager = getFragmentManager();
+        switch(v.getId()){
+            case R.id.numeroDenuncias:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.content_frame
+                                , new MinhasDenuncias())
+                        .commit();
+                break;
+            case R.id.numeroDenunciasResolvidas:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.content_frame
+                                , new MinhasDenuncias())
+                        .commit();
+                break;
+            case R.id.textoSolicitacoes:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.content_frame
+                                , new MinhasDenuncias())
+                        .commit();
+                break;
+            case R.id.textoResolvidas:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.content_frame
+                                , new MinhasDenuncias())
+                        .commit();
+                break;
+        }
+        ((MainActivity)getActivity()).mudarNavegacao(3);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.first_layout,container,false);
+        numeroDenuncias = (TextView) myView.findViewById(R.id.numeroDenuncias);
+        numeroDenunciasResolvidas = (TextView) myView.findViewById(R.id.numeroDenunciasResolvidas);
+        textoSolicitacoes = (TextView) myView.findViewById(R.id.textoSolicitacoes);
+        textoResolvidas = (TextView) myView.findViewById(R.id.textoResolvidas);
+
+
+        numeroDenuncias.setOnClickListener(this);
+        numeroDenunciasResolvidas.setOnClickListener(this);
+        textoSolicitacoes.setOnClickListener(this);
+        textoResolvidas.setOnClickListener(this);
+
         atualizarNumeroDenuncias();
         return myView;
     }
 
     public void atualizarNumeroDenuncias(){
-        numeroDenuncias = (TextView) myView.findViewById(R.id.numeroDenuncias);
-        numeroDenunciasResolvidas = (TextView) myView.findViewById(R.id.numeroDenunciasResolvidas);
-        textoSolicitacoes = (TextView) myView.findViewById(R.id.textoSolicitacoes);
-        textoResolvidas = (TextView) myView.findViewById(R.id.textoResolvidas);
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         String url = configuration.base_url + "user/numeroDenuncias/"+Configuration.usuario.getId();
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
