@@ -194,8 +194,6 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
         }
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        locationTracker = new ProviderLocationTracker(NovaDenuncia.this, ProviderLocationTracker.ProviderType.GPS);
-        locationTracker.start();
         Log.d("Inicio", "novo");
     }
 
@@ -424,6 +422,8 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                                 , f3, "FOTO_FRAGMENT")
                         .commit();
             }
+            locationTracker = new ProviderLocationTracker(NovaDenuncia.this, ProviderLocationTracker.ProviderType.GPS);
+            locationTracker.start();
             //Pegando localização-----------------------------------------------------------
             if(flagLocalizacao == false) {
                 if(locationTracker.hasLocation()){
@@ -459,10 +459,12 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
 
     public void proximoFrame() {
         FragmentManager fragmentManager = getFragmentManager();
-        if(locationTracker.hasLocation()){
-            Location location = locationTracker.getLocation();
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
+        if (titulo.equals("")) {
+            Toast.makeText(getApplicationContext(), "Você precisa incluir um título.", Toast.LENGTH_LONG).show();
+            return;
+        } else if (descricao.equals("")) {
+            Toast.makeText(getApplicationContext(), "Você precisa incluir uma descrição.", Toast.LENGTH_LONG).show();
+            return;
         }
 
         fragmentManager.beginTransaction()
@@ -631,12 +633,6 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                     gps.showSettingsAlert();
                 }
                 */
-        } else if (titulo.equals("")) {
-            Toast.makeText(getApplicationContext(), "Você precisa incluir um título.", Toast.LENGTH_LONG).show();
-            stuckLoading = true;
-        } else if (descricao.equals("")) {
-            Toast.makeText(getApplicationContext(), "Você precisa incluir uma descrição.", Toast.LENGTH_LONG).show();
-            stuckLoading = true;
         } else if (listaPaths.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Você precisa incluir pelo menos uma foto.", Toast.LENGTH_LONG).show();
             stuckLoading = true;

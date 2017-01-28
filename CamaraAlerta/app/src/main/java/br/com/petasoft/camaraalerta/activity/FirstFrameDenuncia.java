@@ -55,8 +55,8 @@ public class FirstFrameDenuncia extends Fragment {
                String str = editText.getText().toString();
                listener.onFragment1EditTextChanged(str);
                EditText editText2 = (EditText) myView.findViewById(R.id.descricao);
-               String str2 = editText.getText().toString();
-               listener2.onFragment2EditTextChanged(str);
+               String str2 = editText2.getText().toString();
+               listener2.onFragment2EditTextChanged(str2);
                ((NovaDenuncia)getActivity()).proximoFrame();
            }
         });

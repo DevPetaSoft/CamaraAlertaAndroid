@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.content_frame
-                        , new FirstFragment())
+                        , new FirstFragment(), "FRAME_INICIAL")
                 .commit();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -188,6 +188,22 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        FirstFragment myFragment = (FirstFragment) getFragmentManager().findFragmentByTag("FRAME_INICIAL");
+        if(myFragment != null && myFragment.isVisible()) {
+            Log.d("Carregando", "de novo");
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_frame
+                            , new FirstFragment(), "FRAME_INICIAL")
+                    .commit();
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.getMenu().getItem(0).setChecked(true);
+        }
+    }
+
     /* Menu de opções retirado
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -220,7 +236,7 @@ public class MainActivity extends AppCompatActivity
                 public void run(){
                     fragmentManager.beginTransaction()
                             .replace(R.id.content_frame
-                                    , new FirstFragment())
+                                    , new FirstFragment(), "FRAME_INICIAL")
                             .commit();
                 }
             });

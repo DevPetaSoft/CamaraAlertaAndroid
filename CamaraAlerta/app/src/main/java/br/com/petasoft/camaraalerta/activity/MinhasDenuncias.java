@@ -66,6 +66,7 @@ import static android.widget.ImageView.ScaleType.FIT_XY;
 public class MinhasDenuncias extends Fragment{
     View myView;
     private ProgressDialog progress;
+    private ProgressDialog progress2;
 
     @Nullable
     @Override
@@ -93,9 +94,11 @@ public class MinhasDenuncias extends Fragment{
         progress=new ProgressDialog(getActivity());
         progress.setMessage("Recebendo Solicitações");
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setCancelable(false);
         progress.setIndeterminate(true);
         progress.setProgress(0);
         progress.show();
+
 
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         String url = Configuration.base_url + "denuncia/minhasDenunciasUsu/" + Configuration.usuario.getId();
@@ -116,7 +119,8 @@ public class MinhasDenuncias extends Fragment{
                             } else {
                                 //ArrayList<Denuncia> minhasDenuncias = denuncias.getMinhasDenuncias();
                                 LinearLayout layout = (LinearLayout) getActivity().findViewById(R.id.layoutMinhasDenuncias);
-                                for (int i = 0; i < minhasDenuncias.size(); i++) {
+                                for(int i = 0; i<minhasDenuncias.size();i++)
+                                {
                                     CardView card = new CardView(getActivity().getApplicationContext());
                                     card.setId(i);
                                     CardView.LayoutParams layoutParams = new CardView.LayoutParams(CardView.LayoutParams.MATCH_PARENT,
@@ -234,12 +238,12 @@ public class MinhasDenuncias extends Fragment{
                                     layout.addView(card);
                                 }
                             }
-                        } catch(Exception e){
+                            progress.dismiss();
+                        } catch (Exception e) {
                             e.printStackTrace();
                             Toast toast = Toast.makeText(getActivity(), response, Toast.LENGTH_LONG);
                             toast.show();
                         }
-                        progress.dismiss();
                     }
                 },
                 new Response.ErrorListener() {
