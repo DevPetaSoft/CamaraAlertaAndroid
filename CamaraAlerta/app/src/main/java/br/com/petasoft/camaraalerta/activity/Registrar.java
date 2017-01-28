@@ -40,6 +40,7 @@ public class Registrar extends AppCompatActivity {
     private String email;
     private String pass;
     private String nome;
+    private boolean termosAceitos = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +61,9 @@ public class Registrar extends AppCompatActivity {
         switch(view.getId()) {
             case R.id.checkbox_termos:
                 if (checked) {
-
+                    termosAceitos = true;
                 }else {
-
+                    termosAceitos = false;
                 }
                 break;
         }
@@ -145,7 +146,12 @@ public class Registrar extends AppCompatActivity {
 
             //Verifica se as senhas digitadas são iguais, e aciona o request para o servidor
             if (editTextPassword.getText().toString().equals(editTextConfirmPassword.getText().toString())) {
-                queue.add(getRequest);
+                if(termosAceitos) {
+                    queue.add(getRequest);
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Você precisa aceitar os Termos e Condições", Toast.LENGTH_LONG);
+                    toast.show();
+                }
             } else {
                 Toast toast = Toast.makeText(getApplicationContext(), "As senhas digitadas não são iguais.", Toast.LENGTH_LONG);
                 toast.show();
