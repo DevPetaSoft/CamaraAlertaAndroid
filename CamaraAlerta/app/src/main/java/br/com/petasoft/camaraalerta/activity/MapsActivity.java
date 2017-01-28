@@ -59,7 +59,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         /**
          * Recebendo solicitações para colocar no mapa
          */
-        progress=new ProgressDialog(this);
+        progress = new ProgressDialog(this);
         progress.setMessage("Recebendo Solicitações");
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progress.setIndeterminate(true);
@@ -67,7 +67,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         progress.show();
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Configuration.base_url + "denuncia/minhasDenunciasUsu/"+Configuration.usuario.getId();
+        String url = Configuration.base_url + "denuncia/minhasDenunciasUsu/" + Configuration.usuario.getId();
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -86,7 +86,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 denunciasDTO = denuncias;
                                 chamarMapa();
                             }
-                        } catch (Exception e){
+                        } catch (Exception e) {
                             Toast toast = Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG);
                             toast.show();
                         }
@@ -119,7 +119,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         queue.add(getRequest);
     }
 
-    private void chamarMapa(){
+    private void chamarMapa() {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -139,7 +139,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        if(denunciasDTO.getNumeroDeDenuncias()>0){
+        if (denunciasDTO.getNumeroDeDenuncias() > 0) {
             final ArrayList<Denuncia> minhasDenuncias = denunciasDTO.getMinhasDenuncias();
             Log.d("DenunciasMapa", "" + minhasDenuncias.size());
             for (int i = 0; i < minhasDenuncias.size(); i++) {
@@ -190,8 +190,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    public void closeMaps(View view){
+    public void closeMaps(View view) {
         finish();
     }
-
 }
