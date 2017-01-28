@@ -460,7 +460,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
     public void proximoFrame() {
         FragmentManager fragmentManager = getFragmentManager();
         if (titulo.equals("")) {
-            Toast.makeText(getApplicationContext(), "Você precisa incluir um título.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Você precisa incluir um assunto.", Toast.LENGTH_LONG).show();
             return;
         } else if (descricao.equals("")) {
             Toast.makeText(getApplicationContext(), "Você precisa incluir uma descrição.", Toast.LENGTH_LONG).show();

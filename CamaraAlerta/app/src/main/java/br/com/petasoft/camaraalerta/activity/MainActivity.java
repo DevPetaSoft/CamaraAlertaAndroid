@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         final FragmentManager fragmentManager = getFragmentManager();
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         //drawer.closeDrawer(GravityCompat.START);
 
         if (id == R.id.nav_first_layout) {
@@ -286,8 +286,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_seventh_layout){
             if(Configuration.loginNormal) {
                 new AlertDialog.Builder(this)
-                        .setTitle("Fechar a aplicação e fazer Logout")
-                        .setMessage("Tem certeza que deseja fechar o CamaraAlerta e fazer Logout?")
+                        .setTitle("Fazer Logout")
+                        .setMessage("Tem certeza que deseja fazer Logout?")
                         .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -301,16 +301,25 @@ public class MainActivity extends AppCompatActivity
                                 } else {
                                     Log.d("Normal", "nao deu commit");
                                 }
+                                Intent intent = new Intent(MainActivity.this , LoginActivity.class);
+                                startActivity(intent);
                                 finish();
                             }
 
                         })
-                        .setNegativeButton("Não", null)
+                        .setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                drawer.closeDrawers();
+                                NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                                navigationView.getMenu().getItem(0).setChecked(true);
+                            }
+                        })
                         .show();
             } else if(Configuration.loginFacebook){
                 new AlertDialog.Builder(this)
-                        .setTitle("Fechar a aplicação e fazer Logout")
-                        .setMessage("Tem certeza que deseja fechar o CamaraAlerta e fazer Logout?")
+                        .setTitle("Fazer Logout")
+                        .setMessage("Tem certeza que deseja fazer Logout?")
                         .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -324,11 +333,20 @@ public class MainActivity extends AppCompatActivity
                                 } else {
                                     Log.d("Facebook", "nao deu  logout");
                                 }
+                                Intent intent = new Intent(MainActivity.this , LoginActivity.class);
+                                startActivity(intent);
                                 finish();
                             }
 
                         })
-                        .setNegativeButton("Não", null)
+                        .setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                drawer.closeDrawers();
+                                NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                                navigationView.getMenu().getItem(0).setChecked(true);
+                            }
+                        })
                         .show();
             }
         }

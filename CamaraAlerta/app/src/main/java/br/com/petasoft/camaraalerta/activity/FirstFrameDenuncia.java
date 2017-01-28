@@ -60,6 +60,13 @@ public class FirstFrameDenuncia extends Fragment {
                ((NovaDenuncia)getActivity()).proximoFrame();
            }
         });
+
+        Button cancelar = (Button) myView.findViewById(R.id.buttonCancelarDenuncia);
+        cancelar.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+            });
         return myView;
     }
 

@@ -61,17 +61,13 @@
         android:layout_marginTop="24dp"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
-        <!--
         <Button
+            android:id="@+id/buttonCancelarDenuncia"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:backgroundTint="@android:color/white"
-            android:layout_weight="1"/>
-        -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"></RelativeLayout>
+            android:layout_weight="1"
+            android:text="CANCELAR"/>
         <Button
             android:id="@+id/buttonNextDenuncia"
             android:layout_width="match_parent"
