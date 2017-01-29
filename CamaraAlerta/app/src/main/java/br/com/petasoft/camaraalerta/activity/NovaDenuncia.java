@@ -110,7 +110,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
 
 
 
-    private ProviderLocationTracker locationTracker;
+    private ProviderLocationTracker locationTracker = null;
     //----------------------------------------------------------------------------------------------
 
     String write_external_storagePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -422,15 +422,18 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                                 , f3, "FOTO_FRAGMENT")
                         .commit();
             }
-            locationTracker = new ProviderLocationTracker(NovaDenuncia.this, ProviderLocationTracker.ProviderType.GPS);
-            locationTracker.start();
+            if (locationTracker==null) {
+                locationTracker = new ProviderLocationTracker(NovaDenuncia.this, ProviderLocationTracker.ProviderType.GPS);
+                locationTracker.start();
+            }
             //Pegando localização-----------------------------------------------------------
-            if(flagLocalizacao == false) {
+            //if(flagLocalizacao == false) {
                 if(locationTracker.hasLocation()){
                     Location location = locationTracker.getLocation();
                     latitude = location.getLatitude();
                     longitude = location.getLongitude();
                 }
+
                 /*
                 gps = new GPSTracker(NovaDenuncia.this);
 
@@ -450,8 +453,8 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                 }
                 */
 
-                flagLocalizacao = true;
-            }
+                //flagLocalizacao = true;
+            //}
             //------------------------------------------------------------------------------
 
         }
