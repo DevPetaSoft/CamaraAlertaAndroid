@@ -133,7 +133,7 @@ public class MinhasDenuncias extends Fragment{
                                     image.setId(i + 42);
                                     image.setLayoutParams(new android.view.ViewGroup.LayoutParams(260, 260));
 
-                                    image.setScaleType(FIT_XY);
+                                    image.setScaleType(CENTER_CROP);
 
 
                                     File arquivo = new File(minhasDenuncias.get(i).getFotos().get(0));

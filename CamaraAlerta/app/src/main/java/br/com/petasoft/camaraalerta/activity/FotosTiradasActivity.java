@@ -37,16 +37,9 @@ public class FotosTiradasActivity extends AppCompatActivity {
             image.setScaleType(CENTER_CROP);
 
             //redimensaionar o bitmap
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            int originalSize = (options.outHeight > options.outWidth) ? options.outHeight
-                    : options.outWidth;
-
-            BitmapFactory.Options opts = new BitmapFactory.Options();
-            opts.inSampleSize = originalSize / 1080;
-
-            Bitmap myBitmap = BitmapFactory.decodeFile(paths[i], opts);
-
+            Bitmap myBitmapGrande = BitmapFactory.decodeFile(paths[i]);
+            Bitmap myBitmap = Bitmap.
+                    createScaledBitmap(myBitmapGrande, myBitmapGrande.getWidth() / 6, myBitmapGrande.getHeight() / 6, false);
             image.setImageBitmap(myBitmap);
 
             final String currentPath = paths[i];
