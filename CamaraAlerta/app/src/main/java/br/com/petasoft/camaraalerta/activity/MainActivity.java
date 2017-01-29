@@ -265,7 +265,7 @@ public class MainActivity extends AppCompatActivity
                 public void run(){
                     fragmentManager.beginTransaction()
                             .replace(R.id.content_frame
-                                    , new MinhasDenuncias())
+                                    , new MinhasDenuncias(), "FRAME_MINHAS")
                             .commit();
                 }
             });
@@ -276,7 +276,7 @@ public class MainActivity extends AppCompatActivity
                 public void run(){
                     fragmentManager.beginTransaction()
                             .replace(R.id.content_frame
-                                    , new MyPreferenceFragment())
+                                    , new MyPreferenceFragment(), "FRAME_PREFE")
                             .commit();
                 }
             });
@@ -311,8 +311,7 @@ public class MainActivity extends AppCompatActivity
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 drawer.closeDrawers();
-                                NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-                                navigationView.getMenu().getItem(0).setChecked(true);
+                                marcarMenuCerto();
                             }
                         })
                         .show();
@@ -343,8 +342,7 @@ public class MainActivity extends AppCompatActivity
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 drawer.closeDrawers();
-                                NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-                                navigationView.getMenu().getItem(0).setChecked(true);
+                                marcarMenuCerto();
                             }
                         })
                         .show();
@@ -371,6 +369,21 @@ public class MainActivity extends AppCompatActivity
     public void mudarNavegacao(int numero){
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(numero).setChecked(true);
+    }
+
+    public void marcarMenuCerto(){
+        FirstFragment myFragment = (FirstFragment) getFragmentManager().findFragmentByTag("FRAME_INICIAL");
+        MinhasDenuncias minhasFrame = (MinhasDenuncias) getFragmentManager().findFragmentByTag("FRAME_MINHAS");
+        MyPreferenceFragment prefeFrame = (MyPreferenceFragment) getFragmentManager().findFragmentByTag("FRAME_PREFE");
+        int qual = 0;
+        if(myFragment != null && myFragment.isVisible()) {
+            qual = 0;
+        } else if(minhasFrame != null && minhasFrame.isVisible()) {
+            qual = 3;
+        } else if(prefeFrame != null && prefeFrame.isVisible()) {
+            qual = 4;
+        }
+        mudarNavegacao(qual);
     }
 
 }
