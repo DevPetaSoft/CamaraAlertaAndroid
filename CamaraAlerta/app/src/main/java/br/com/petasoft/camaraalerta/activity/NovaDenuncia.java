@@ -422,39 +422,38 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                                 , f3, "FOTO_FRAGMENT")
                         .commit();
             }
-            Log.i("Teste","teste");
             if (locationTracker==null) {
                 locationTracker = new ProviderLocationTracker(NovaDenuncia.this, ProviderLocationTracker.ProviderType.GPS);
                 locationTracker.start();
             }
             //Pegando localização-----------------------------------------------------------
             //if(flagLocalizacao == false) {
-                if(locationTracker.hasLocation()){
-                    Location location = locationTracker.getLocation();
-                    latitude = location.getLatitude();
-                    longitude = location.getLongitude();
-                }else {
+            if(locationTracker.hasLocation()){
+                Location location = locationTracker.getLocation();
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+            }
 
+                /*
+                gps = new GPSTracker(NovaDenuncia.this);
 
-                    gps = new GPSTracker(NovaDenuncia.this);
+                // check if GPS enabled
+                if (gps.canGetLocation()) {
 
-                    // check if GPS enabled
-                    if (gps.canGetLocation()) {
+                    latitude = gps.getLatitude();
+                    longitude = gps.getLongitude();
 
-                        latitude = gps.getLatitude();
-                        longitude = gps.getLongitude();
-
-                        // Mostrar localização no log
-                        Log.d("Your Location is - ", "Lat: " + latitude + "\nLong: " + longitude);
-                    } else {
-                        // can't get location
-                        // GPS or Network is not enabled
-                        // Ask user to enable GPS/network in settings
-                        gps.showSettingsAlert();
-                    }
+                    // Mostrar localização no log
+                    Log.d("Your Location is - ", "Lat: " + latitude + "\nLong: " + longitude);
+                } else {
+                    // can't get location
+                    // GPS or Network is not enabled
+                    // Ask user to enable GPS/network in settings
+                    gps.showSettingsAlert();
                 }
+                */
 
-                //flagLocalizacao = true;
+            //flagLocalizacao = true;
             //}
             //------------------------------------------------------------------------------
 
@@ -620,7 +619,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
         if (longitude == null || latitude == null) {
             Toast.makeText(getApplicationContext(), "A sua localização não pode ser definida, clique Enviar para tentar outra vez", Toast.LENGTH_LONG).show();
             stuckLoading = true;
-
+            /*
             gps = new GPSTracker(NovaDenuncia.this);
                 // check if GPS enabled
                 if (gps.canGetLocation()) {
@@ -636,7 +635,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                     // Ask user to enable GPS/network in settings
                     gps.showSettingsAlert();
                 }
-
+                */
         } else if (listaPaths.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Você precisa incluir pelo menos uma foto.", Toast.LENGTH_LONG).show();
             stuckLoading = true;
