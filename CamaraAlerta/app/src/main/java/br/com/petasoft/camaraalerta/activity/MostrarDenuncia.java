@@ -51,6 +51,7 @@ public class MostrarDenuncia extends AppCompatActivity {
     private TextView titulo;
     private TextView descricao;
     private TextView statusTexto;
+    private TextView relatorio;
     private Button botao;
     private ProgressDialog progress;
     private MensagensDTO mensagensDTO;
@@ -63,6 +64,7 @@ public class MostrarDenuncia extends AppCompatActivity {
         titulo = (TextView)findViewById(R.id.tituloDenuncia);
         descricao = (TextView)findViewById(R.id.descricaoDenuncia);
         statusTexto = (TextView)findViewById(R.id.statusTexto);
+        relatorio = (TextView)findViewById(R.id.relatorioDenuncia);
         botao = (Button)findViewById(R.id.buttonMensagens);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarDenuncia);
         setSupportActionBar(toolbar);
@@ -168,6 +170,7 @@ public class MostrarDenuncia extends AppCompatActivity {
 
         titulo.setText(denuncia.getTitulo());
         descricao.setText(denuncia.getDescricao());
+        relatorio.setText(denuncia.getRelatorio());
         switch(denuncia.getStatus()){
             case 0:
                 statusTexto.setText(" Pendente");

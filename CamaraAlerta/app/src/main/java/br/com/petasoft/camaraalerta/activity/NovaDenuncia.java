@@ -616,7 +616,11 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
             }
         }
         */
-        if (longitude == null || latitude == null) {
+        Vereador vereadorChecar = f2.getVereadorEscolhido();
+        if(vereadorChecar==null){
+            Toast.makeText(getApplicationContext(), "Você precisa selecionar um vereador.", Toast.LENGTH_LONG).show();
+            stuckLoading = true;
+        } else if (longitude == null || latitude == null) {
             Toast.makeText(getApplicationContext(), "A sua localização não pode ser definida, clique Enviar para tentar outra vez", Toast.LENGTH_LONG).show();
             stuckLoading = true;
             /*

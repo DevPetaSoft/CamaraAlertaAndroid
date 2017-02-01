@@ -34,13 +34,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/fotoDenuncia"
-                android:layout_margin="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:textSize="32dp"
                 />
             <TextView
                 android:id="@+id/statusDenuncia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
                 android:layout_below="@id/tituloDenuncia"
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
@@ -53,11 +56,39 @@
                 android:layout_toRightOf="@id/statusDenuncia"
                 android:layout_below="@id/tituloDenuncia"
                 android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/descricaoTexto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/statusTexto"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:text="Descrição:"/>
+
             <TextView
                 android:id="@+id/descricaoDenuncia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/statusDenuncia"
+                android:layout_below="@id/descricaoTexto"
+                android:layout_margin="16dp"/>
+
+            <TextView
+                android:id="@+id/relatorioTexto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/descricaoDenuncia"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:text="Relatório:"/>
+
+            <TextView
+                android:id="@+id/relatorioDenuncia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/relatorioTexto"
                 android:layout_margin="16dp"/>
 
             <Button
@@ -66,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:enabled="false"
                 android:text="MENSAGENS (0)"
-                android:layout_below="@id/descricaoDenuncia"
+                android:layout_below="@id/relatorioDenuncia"
                 android:layout_centerHorizontal="true"/>
         </RelativeLayout>
     </ScrollView>
