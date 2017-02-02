@@ -63,9 +63,10 @@ public class SecondFrameDenuncia extends Fragment {
     private void atualizarSpinner(){
         if(listaVereadores.size()>0) {
             Spinner dropdown = (Spinner) myView.findViewById(R.id.vereadores_spinner);
-            String[] items = new String[listaVereadores.size()];
+            String[] items = new String[listaVereadores.size()+1];
+            items[0] = "";
             for (int i = 0; i < listaVereadores.size(); i++) {
-                items[i] = listaVereadores.get(i).getNome();
+                items[i+1] = listaVereadores.get(i).getNome();
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
