@@ -8,16 +8,16 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@drawable/bg">
     <ImageView
-        android:id="@+id/logoRegistrar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:adjustViewBounds="true"
-        android:maxWidth="120dp"
-        android:scaleType="fitCenter"
-        android:layout_marginBottom="20dp"
-        android:layout_gravity="center"
-        android:src="@drawable/logosmall"/>
+    android:id="@+id/logoRegistrar"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:adjustViewBounds="true"
+    android:maxWidth="120dp"
+    android:scaleType="fitCenter"
+    android:layout_marginBottom="20dp"
+    android:layout_gravity="center"
+    android:src="@drawable/logosmall"/>
 
     <TextView
         android:id="@+id/nomeRegistrar"
@@ -59,7 +59,31 @@
         android:id="@+id/registerEmail"
         android:layout_below="@+id/emailRegistrar"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="10dp"
+        android:layout_width="305dp"
+        android:inputType="text"
+        android:maxLines="1"
+        android:scrollHorizontally="true"
+        android:textCursorDrawable="@null"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/white"/>
+
+    <TextView
+        android:id="@+id/telefoneRegistrar"
+        android:layout_below="@+id/registerEmail"
+        android:layout_marginLeft="25dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="Telefone"
+        />
+
+    <EditText
+        android:id="@+id/registerTelefone"
+        android:layout_below="@+id/telefoneRegistrar"
+        android:layout_centerHorizontal="true"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="10dp"
         android:layout_width="305dp"
@@ -73,7 +97,7 @@
 
     <TextView
         android:id="@+id/senhaRegistrar"
-        android:layout_below="@+id/registerEmail"
+        android:layout_below="@+id/registerTelefone"
         android:layout_marginLeft="25dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -85,7 +109,6 @@
         android:id="@+id/registerPassword"
         android:layout_below="@+id/senhaRegistrar"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dp"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="10dp"
         android:layout_width="305dp"
@@ -109,7 +132,6 @@
         android:layout_below="@id/confirmaSenha"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginBottom="5dp"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="10dp"
         android:layout_width="305dp"

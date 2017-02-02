@@ -36,7 +36,9 @@ public class Registrar extends AppCompatActivity {
     private EditText editTextEmail;
     private EditText editTextPassword;
     private EditText editTextConfirmPassword;
+    private EditText editTextTelefone;
     private Intent intent;
+    private String telefone;
     private String email;
     private String pass;
     private String nome;
@@ -47,7 +49,7 @@ public class Registrar extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrar);
         editTextNome = (EditText) findViewById(R.id.registerName);
-       //editTextLogin = (EditText) findViewById(R.id.registerLogin);
+        editTextTelefone = (EditText) findViewById(R.id.registerTelefone);
         editTextEmail = (EditText) findViewById(R.id.registerEmail);
         editTextPassword = (EditText) findViewById(R.id.registerPassword);
         editTextConfirmPassword = (EditText) findViewById(R.id.registerConfirmPassword);
@@ -74,9 +76,10 @@ public class Registrar extends AppCompatActivity {
         nome = editTextNome.getText().toString();
         email = editTextEmail.getText().toString();
         pass = editTextPassword.getText().toString();
+        telefone = editTextTelefone.getText().toString();
         String url = configuration.base_url+"user/novoCidadao";
         intent = new Intent(this, MainActivity.class);
-        if(!nome.equals("") && !email.equals("") && !pass.equals("")){
+        if(!nome.equals("") && !email.equals("") && !pass.equals("") && !telefone.equals("")){
             StringRequest getRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
@@ -135,7 +138,7 @@ public class Registrar extends AppCompatActivity {
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("nome", editTextNome.getText().toString());
-                    //params.put("login", editTextLogin.getText().toString());
+                    params.put("telefone", telefone);
                     params.put("email", editTextEmail.getText().toString());
                     params.put("senha", editTextPassword.getText().toString());
 

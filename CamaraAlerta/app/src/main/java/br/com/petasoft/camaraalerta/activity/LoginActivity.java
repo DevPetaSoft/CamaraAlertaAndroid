@@ -56,6 +56,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import br.com.petasoft.camaraalerta.R;
+import dto.FacebookDTO;
 import model.Cidadao;
 import model.Configuration;
 
@@ -75,6 +76,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
 
     private Intent intent;
+    private Intent completarRegistro;
 
     private SignInButton signInButton;
     private GoogleApiClient mGoogleApiClient;
@@ -222,9 +224,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                                 try {
                                     //Realiza o parser do JSON vindo do WebService
-                                    //JSONObject json = new JSONObject(response);
-                                    //JsonParser parser = new JsonParser();
-                                    //JsonElement mJson = parser.parse(json.getString("data"));
                             /* Transforma o JSON em um objeto Cidadao
                              * Grava o cidadao no objeto estático de configurações para ser acessado
                              * por qualquer arquivo.*/
@@ -519,6 +518,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         //Realiza conexão com o webservice para realizar o login
         Log.i("Facebook Login", "Chamada da funcao");
         intent = new Intent(LoginActivity.this, MainActivity.class);
+        completarRegistro = new Intent(LoginActivity.this, CompletarRegistro.class);
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = configuration.base_url + "user/facebookLogin";
         StringRequest getRequest = new StringRequest(Request.Method.POST, url,
@@ -528,13 +528,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         try {
                             Log.i("Response", response.substring(0,30));
                             //Realiza o parser do JSON vindo do WebService
-                            /*JSONObject json = new JSONObject(response);
-                            JsonParser parser = new JsonParser();
-                            JsonElement mJson = parser.parse(json.getString("data"));
                             /* Transforma o JSON em um objeto Cidadao
                              * Grava o cidadao no objeto estático de configurações para ser acessado
                              * por qualquer arquivo.*/
-                            configuration.usuario = configuration.gson.fromJson(response, Cidadao.class);
+                            FacebookDTO dto = configuration.gson.fromJson(response,FacebookDTO.class);
+                            configuration.usuario = dto.getCidadao();
                             Log.i("Facebook Login", "Envio do rest");
                             if (configuration.usuario == null) {
                                 Log.i("Error", "não foi possível realizar o login");
@@ -542,9 +540,15 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 Log.i("Name", configuration.usuario.getNome());
                                 Toast toast = Toast.makeText(getApplicationContext(), "Login com Facebook efetuado com sucesso", Toast.LENGTH_LONG);
                                 toast.show();
-                                //Redireciona a aplicação para a tela principal
-                                Configuration.loginFacebook = true;
-                                startActivity(intent);
+                                if(dto.getNovo() || dto.getCidadao().getTelefone() == null || dto.getCidadao().getTelefone().isEmpty()){
+                                    Configuration.loginFacebook = true;
+                                    startActivity(completarRegistro);
+                                }else{
+
+                                    //Redireciona a aplicação para a tela principal
+                                    Configuration.loginFacebook = true;
+                                    startActivity(intent);
+                                }
 
                                 progressDialog.dismiss();
                                 finish();
