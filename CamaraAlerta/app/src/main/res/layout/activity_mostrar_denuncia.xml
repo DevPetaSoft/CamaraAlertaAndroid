@@ -25,15 +25,14 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
-            <ImageView
+            <!--<ImageView
                 android:id="@+id/fotoDenuncia"
                 android:layout_width="match_parent"
-                android:layout_height="230dp" />
+                android:layout_height="230dp" />-->
             <TextView
                 android:id="@+id/tituloDenuncia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/fotoDenuncia"
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
@@ -98,6 +97,18 @@
                 android:enabled="false"
                 android:text="MENSAGENS (0)"
                 android:layout_below="@id/relatorioDenuncia"
+                android:layout_centerHorizontal="true"/>
+
+            <Button
+                android:id="@+id/buttonImagens"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:enabled="true"
+                android:textColor="@color/white"
+                android:background="#A5CA6F"
+                android:text="Visualizar imagens"
+                android:onClick="abrirImagens"
+                android:layout_below="@id/buttonMensagens"
                 android:layout_centerHorizontal="true"/>
         </RelativeLayout>
     </ScrollView>

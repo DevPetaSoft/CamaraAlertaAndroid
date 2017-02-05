@@ -55,12 +55,13 @@ public class MostrarDenuncia extends AppCompatActivity {
     private Button botao;
     private ProgressDialog progress;
     private MensagensDTO mensagensDTO;
+    private String[] paths;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mostrar_denuncia);
-        imagem = (ImageView)findViewById(R.id.fotoDenuncia);
+      //  imagem = (ImageView)findViewById(R.id.fotoDenuncia);
         titulo = (TextView)findViewById(R.id.tituloDenuncia);
         descricao = (TextView)findViewById(R.id.descricaoDenuncia);
         statusTexto = (TextView)findViewById(R.id.statusTexto);
@@ -131,7 +132,7 @@ public class MostrarDenuncia extends AppCompatActivity {
             queue.add(getRequest);
         }
 
-        imagem.setScaleType(CENTER_CROP);
+     //   imagem.setScaleType(CENTER_CROP);
 
 
         File arquivo = new File(denuncia.getFotos().get(0));
@@ -155,17 +156,15 @@ public class MostrarDenuncia extends AppCompatActivity {
             Bitmap myBitmap = BitmapFactory.decodeFile(arquivo.getPath(), opts);
 
 
-            imagem.setImageBitmap(myBitmap);
+//            imagem.setImageBitmap(myBitmap);
 
-            final String[] paths = denuncia.getFotos().toArray(new String[0]);
-            imagem.setOnClickListener(new View.OnClickListener() {
+            paths = denuncia.getFotos().toArray(new String[0]);
+        /*    imagem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(MostrarDenuncia.this, FotosTiradasActivity.class);
-                    intent.putExtra("fotos", paths);
-                    startActivity(intent);
+
                 }
-            });
+            });*/
         }
 
         titulo.setText(denuncia.getTitulo());
@@ -215,5 +214,11 @@ public class MostrarDenuncia extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    public void abrirImagens(View view){
+        Intent intent = new Intent(MostrarDenuncia.this, FotosTiradasActivity.class);
+        intent.putExtra("fotos", paths);
+        startActivity(intent);
     }
 }
