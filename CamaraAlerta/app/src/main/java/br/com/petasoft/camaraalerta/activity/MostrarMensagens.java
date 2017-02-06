@@ -92,6 +92,8 @@ public class MostrarMensagens extends AppCompatActivity{
                 layoutMensagens.addView(layoutRight);
             }
         }
+        //Envia uma requisição para alterar o estado das mensagens para lida
+        this.enviarRequisicaoDeLeituraMensagens();
         botaoEnviar.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -182,5 +184,32 @@ public class MostrarMensagens extends AppCompatActivity{
         rlp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         layoutRight.addView(texto, rlp);
         layoutMensagens.addView(layoutRight);
+    }
+
+    public void enviarRequisicaoDeLeituraMensagens(){
+        RequestQueue queue = Volley.newRequestQueue(MostrarMensagens.this);
+        String url = Configuration.base_url + "canalComunicacao/leituraMensagensCidadao/"+mensagensDTO.getCanal().getId();
+        StringRequest getRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Resposta", "Mensagens lidas com sucesso");
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Error", "Erro na leitura das mensagens");
+
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                return params;
+            }
+        };
+        queue.add(getRequest);
     }
 }

@@ -100,7 +100,7 @@ public class MostrarDenuncia extends AppCompatActivity {
                                 Toast toast = Toast.makeText(MostrarDenuncia.this, "Usuário nao possui mensagens!", Toast.LENGTH_LONG);
                                 toast.show();
                             } else {
-                                int numeroMensagens = mensagens.size();
+                                Integer numeroMensagens = mensagensDTO.getNumeroMensagensNaoLidasVereador();
                                 mudarBotao(numeroMensagens);
                             }
                             progress.dismiss();
@@ -201,8 +201,8 @@ public class MostrarDenuncia extends AppCompatActivity {
         }
     }
 
-    public void mudarBotao(int numeroMensagens){
-        botao.setText("MENSAGENS (" + numeroMensagens + ")");
+    public void mudarBotao(Integer numeroMensagens){
+        botao.setText("MENSAGENS (" + numeroMensagens.toString() + ")");
         botao.setBackgroundColor(Color.parseColor("#A5CA6F"));
         botao.setTextColor(Color.WHITE);
         botao.setEnabled(true);
