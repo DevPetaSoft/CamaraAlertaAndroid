@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_mostrar_denuncia"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context="br.com.petasoft.camaraalerta.activity.MostrarDenuncia">
     <android.support.design.widget.AppBarLayout
@@ -113,4 +114,4 @@
                 android:layout_centerHorizontal="true"/>
         </RelativeLayout>
     </ScrollView>
-</RelativeLayout>
+</LinearLayout>

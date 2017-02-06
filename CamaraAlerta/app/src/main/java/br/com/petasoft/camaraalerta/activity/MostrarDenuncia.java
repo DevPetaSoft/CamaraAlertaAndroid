@@ -56,6 +56,7 @@ public class MostrarDenuncia extends AppCompatActivity {
     private ProgressDialog progress;
     private MensagensDTO mensagensDTO;
     private String[] paths;
+    private Denuncia denuncia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,7 @@ public class MostrarDenuncia extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
         Intent intent = getIntent();
-        Denuncia denuncia = (Denuncia)intent.getSerializableExtra("Denuncia");
+        denuncia = (Denuncia)intent.getSerializableExtra("Denuncia");
         if(denuncia.isComunicacaoPermitida()==true){
 
             /**
@@ -219,6 +220,7 @@ public class MostrarDenuncia extends AppCompatActivity {
     public void abrirImagens(View view){
         Intent intent = new Intent(MostrarDenuncia.this, FotosTiradasActivity.class);
         intent.putExtra("fotos", paths);
+        intent.putExtra("id", denuncia.getId());
         startActivity(intent);
     }
 }

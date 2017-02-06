@@ -27,6 +27,9 @@ public class Denuncia implements Serializable{
     private Vereador vereador;
     private boolean deleted;
     private boolean novo;
+    private int numeroFotos;
+    private int numeroFotosAtual;
+    private boolean valida;
 
     public int getId() {
         return id;
@@ -151,5 +154,17 @@ public class Denuncia implements Serializable{
     public void setNovo(boolean novo) {
         this.novo = novo;
     }
+
+    public int getNumeroFotos() { return numeroFotos; }
+
+    public void setNumeroFotos(int numeroFotos) { this.numeroFotos = numeroFotos; }
+
+    public int getNumeroFotosAtual() { return numeroFotosAtual; }
+
+    public void setNumeroFotosAtual(int numeroFotosAtual) { this.numeroFotosAtual = numeroFotosAtual; }
+
+    public boolean getValida() { return valida; }
+
+    public void setValida(boolean valida) { this.valida = valida; }
 
 }

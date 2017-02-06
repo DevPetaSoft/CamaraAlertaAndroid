@@ -97,6 +97,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
     private Button botaoVerFotos;
     private boolean vendoFotos = false;
     private boolean solicitacaoSent = false;
+    private List<String> listaDeFotos;
 
 
     //Variaveis relacionadas a localização ---------------------------------------------------------
@@ -673,7 +674,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                     denuncia.setVereador(v);
                     denuncia.setCoordenadas(c);
 
-                    List<String> listaDeFotos = new ArrayList<String>();
+                    listaDeFotos = new ArrayList<String>();
                     for (String s : listaPaths) {
                         try {
                             ByteArrayOutputStream baos = new ByteArrayOutputStream(3000);
@@ -691,47 +692,12 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                             e.printStackTrace();
                         }
                     }
-                    DenunciaDTO dDTO = new DenunciaDTO(denuncia, listaDeFotos);
+                    denuncia.setNumeroFotos(listaDeFotos.size());
+                    denuncia.setNumeroFotosAtual(0);
+                    denuncia.setValida(false);
+                    //DenunciaDTO dDTO = new DenunciaDTO(denuncia, listaDeFotos);
 
-
-                    Gson gson = new Gson();
-                    final String myJSONString = gson.toJson(dDTO);
-
-                    //Log.d("Gson ", myJSONString);
-
-                    final RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-                    String url = Configuration.base_url + "denuncia/novaDenuncia";
-
-
-                    final StringRequest strRequest = new StringRequest(Request.Method.POST, url,
-                            new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    Toast.makeText(getApplicationContext(), "Nova Solicitação criada com sucesso!", Toast.LENGTH_LONG).show();
-                                    progress.dismiss();
-                                        /*Atualizar numero de denuncias apos fim da denuncia
-                                        Intent returnIntent = new Intent();
-                                        setResult(RESULT_OK, returnIntent);
-                                        */
-                                    finish();
-                                }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getApplicationContext(), "Erro na criaçao de nova Solicitação", Toast.LENGTH_LONG).show();
-                                    progress.dismiss();
-                                }
-                            }) {
-                        @Override
-                        protected Map<String, String> getParams() {
-                            Map<String, String> params = new HashMap<String, String>();
-                            params.put("dDTOString", myJSONString);
-                            return params;
-                        }
-                    };
-                    queue.add(strRequest);
-
+                    primeiroEnvio(denuncia);
 
                     //VolleySingleton.getInstance(this).addToRequestQueue(strRequest);
 
@@ -743,5 +709,84 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
             progress.dismiss();
     }
 
+    private void envioFotos(int id, int index){
 
+        final RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        String url = Configuration.base_url + "denuncia/envioFoto";
+
+        final int i = index;
+        final int idFinal = id;
+        final String idString = "" + id;
+        final StringRequest strRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(i + 1 == listaDeFotos.size()){
+                            Toast.makeText(getApplicationContext(), "Nova Solicitação criada com sucesso!", Toast.LENGTH_LONG).show();
+                            progress.dismiss();
+                            finish();
+                        } else {
+                            progress.setMessage("Enviando foto " + (i+2));
+                            envioFotos(idFinal, i+1);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Erro no envio da foto " + (i+1), Toast.LENGTH_LONG).show();
+                        progress.dismiss();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("foto", listaDeFotos.get(i));
+                params.put("idSolicitacao", idString);
+                return params;
+            }
+        };
+        queue.add(strRequest);
+    }
+
+    private void primeiroEnvio(Denuncia denuncia){
+
+        Gson gson = new Gson();
+        final String myJSONString = gson.toJson(denuncia);
+
+        //Log.d("Gson ", myJSONString);
+
+        final RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        String url = Configuration.base_url + "denuncia/novaDenuncia";
+
+
+        final StringRequest strRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progress.setMessage("Enviando foto 1");
+                        Gson gson2 = new Gson();
+                        int id = gson2.fromJson(response, int.class);
+                        envioFotos(id, 0);
+                        //progress.dismiss();
+
+                        //finish();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Erro no envio da Solicitação", Toast.LENGTH_LONG).show();
+                        progress.dismiss();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("denunciaString", myJSONString);
+                return params;
+            }
+        };
+        queue.add(strRequest);
+    }
 }
