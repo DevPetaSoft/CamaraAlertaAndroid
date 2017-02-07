@@ -31,7 +31,10 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +55,7 @@ public class MostrarDenuncia extends AppCompatActivity {
     private TextView descricao;
     private TextView statusTexto;
     private TextView relatorio;
+    private TextView data;
     private Button botao;
     private ProgressDialog progress;
     private MensagensDTO mensagensDTO;
@@ -67,6 +71,7 @@ public class MostrarDenuncia extends AppCompatActivity {
         descricao = (TextView)findViewById(R.id.descricaoDenuncia);
         statusTexto = (TextView)findViewById(R.id.statusTexto);
         relatorio = (TextView)findViewById(R.id.relatorioDenuncia);
+        data = (TextView)findViewById(R.id.dataTexto);
         botao = (Button)findViewById(R.id.buttonMensagens);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarDenuncia);
         setSupportActionBar(toolbar);
@@ -167,10 +172,16 @@ public class MostrarDenuncia extends AppCompatActivity {
                 }
             });*/
         }
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+        Date dataDen = denuncia.getData();
+
+        String dataString = df.format(dataDen);
 
         titulo.setText(denuncia.getTitulo());
         descricao.setText(denuncia.getDescricao());
         relatorio.setText(denuncia.getRelatorio());
+        data.setText(dataString);
         switch(denuncia.getStatus()){
             case 0:
                 statusTexto.setText(" Pendente");

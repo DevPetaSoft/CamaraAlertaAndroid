@@ -58,10 +58,28 @@
                 android:layout_marginTop="16dp" />
 
             <TextView
+                android:id="@+id/dataDenuncia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:layout_below="@id/statusTexto"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="Data:"/>
+            <TextView
+                android:id="@+id/dataTexto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/statusDenuncia"
+                android:layout_below="@id/statusTexto"
+                android:layout_marginTop="16dp" />
+
+            <TextView
                 android:id="@+id/descricaoTexto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/statusTexto"
+                android:layout_below="@id/dataTexto"
                 android:textColor="@android:color/black"
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"

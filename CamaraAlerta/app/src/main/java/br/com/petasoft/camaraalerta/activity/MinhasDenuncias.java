@@ -49,8 +49,11 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -227,6 +230,44 @@ public class MinhasDenuncias extends Fragment{
                                     lp3.setMargins(0, 20, 0, 0);
 
                                     relative.addView(textoStatus, lp3);
+
+                                    DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
+                                    Date data = minhasDenuncias.get(i).getData();
+
+                                    String dataString = df.format(data);
+
+                                    TextView dataMostrar = new TextView(getActivity().getApplicationContext());
+                                    dataMostrar.setText(dataString);
+                                    dataMostrar.setTextSize(10);
+                                    dataMostrar.setId((status.getId() + 35));
+                                    dataMostrar.setTextColor(Color.DKGRAY);
+
+                                    RelativeLayout.LayoutParams lpData = new RelativeLayout.LayoutParams(
+                                            RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                            RelativeLayout.LayoutParams.WRAP_CONTENT);
+                                    lpData.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                                    lpData.setMargins(0,20,20,0);
+
+                                    relative.addView(dataMostrar, lpData);
+
+                                    DateFormat dfHora = new SimpleDateFormat("HH:mm");
+
+                                    String horaString = dfHora.format(data);
+
+                                    TextView horaMostrar = new TextView(getActivity().getApplicationContext());
+                                    horaMostrar.setText(horaString);
+                                    horaMostrar.setTextSize(10);
+                                    horaMostrar.setTextColor(Color.DKGRAY);
+
+                                    RelativeLayout.LayoutParams lpHora = new RelativeLayout.LayoutParams(
+                                            RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                            RelativeLayout.LayoutParams.WRAP_CONTENT);
+                                    lpHora.addRule(RelativeLayout.BELOW, dataMostrar.getId());
+                                    lpHora.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                                    lpHora.setMargins(0, 0, 20, 0);
+
+                                    relative.addView(horaMostrar, lpHora);
 
                                     card.addView(relative);
                                     card.setBackgroundColor(Color.WHITE);
