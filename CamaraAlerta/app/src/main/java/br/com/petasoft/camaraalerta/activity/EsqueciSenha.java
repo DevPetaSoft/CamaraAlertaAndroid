@@ -1,6 +1,7 @@
 package br.com.petasoft.camaraalerta.activity;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,6 +31,8 @@ public class EsqueciSenha extends AppCompatActivity {
     private static Configuration configuration;
     private EditText emailRecuperar;
 
+    private ProgressDialog progress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,8 +41,17 @@ public class EsqueciSenha extends AppCompatActivity {
     }
 
     public void recuperarSenha(View v){
+
+        boolean stuckLoading = false;
+        progress = new ProgressDialog(this);
+        progress.setMessage("Enviando e-mail");
+        progress.setCancelable(false);
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.setProgress(0);
+        progress.show();
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = configuration.base_url+"user/recuperarSenha";
+        String url = configuration.base_url+"cidadao/gerarToken";
         StringRequest getRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
@@ -47,6 +59,7 @@ public class EsqueciSenha extends AppCompatActivity {
                     public void onResponse(String response) {
                         Log.d("Response", response);
 
+                        progress.dismiss();
                         Toast toast = Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG);
                         toast.show();
 
@@ -59,6 +72,8 @@ public class EsqueciSenha extends AppCompatActivity {
                         if(error.networkResponse != null && error.networkResponse.data != null) {
                             String result = new String(error.networkResponse.data);
                             try {
+
+                                progress.dismiss();
                                 // Caso a requisição não possua sucesso, ela envia uma mensagem com o retorno do WS
                                 JSONObject json = new JSONObject(result);
 
@@ -68,6 +83,8 @@ public class EsqueciSenha extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }else{
+
+                            progress.dismiss();
                             Toast toast = Toast.makeText(getApplicationContext(), "Não foi possível se conectar com o servidor", Toast.LENGTH_LONG);
                             toast.show();
                         }
@@ -84,6 +101,8 @@ public class EsqueciSenha extends AppCompatActivity {
         };
         queue.add(getRequest);
 
+        if (stuckLoading == true)
+            progress.dismiss();
         /* Dialogo para envio de recuperação
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Enviaremos um email com instruções para recuperar sua senha!")
