@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -41,8 +42,6 @@ public class EsqueciSenha extends AppCompatActivity {
     }
 
     public void recuperarSenha(View v){
-
-        boolean stuckLoading = false;
         progress = new ProgressDialog(this);
         progress.setMessage("Enviando e-mail");
         progress.setCancelable(false);
@@ -99,10 +98,12 @@ public class EsqueciSenha extends AppCompatActivity {
                 return params;
             }
         };
+        getRequest.setRetryPolicy(new DefaultRetryPolicy(
+                0,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(getRequest);
 
-        if (stuckLoading == true)
-            progress.dismiss();
         /* Dialogo para envio de recuperação
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Enviaremos um email com instruções para recuperar sua senha!")

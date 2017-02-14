@@ -86,8 +86,6 @@ public class Registrar extends AppCompatActivity {
                         public void onResponse(String response) {
                             Log.d("Response", response);
 
-                            Toast toast = Toast.makeText(getApplicationContext(), "Conta criada com sucesso!", Toast.LENGTH_LONG);
-                            toast.show();
                             try {
                                 //Realiza o parser do JSON vindo do WebService
                                 //JSONObject json = new JSONObject(response);
@@ -97,17 +95,20 @@ public class Registrar extends AppCompatActivity {
                                  * Grava o cidadao no objeto estático de configurações para ser acessado
                                  * por qualquer arquivo.*/
                                 configuration.usuario = configuration.gson.fromJson(response, Cidadao.class);
+                                Toast toast = Toast.makeText(getApplicationContext(), "Conta criada com sucesso!", Toast.LENGTH_LONG);
+                                toast.show();
                                 if (configuration.usuario == null) {
                                     Log.i("Error", "não foi possível realizar o login");
                                 } else {
                                     Log.i("Nome", configuration.usuario.getNome());
                                     //Redireciona a aplicação para a tela principal
-
                                     Configuration.loginNormal = true;
                                     startActivity(intent);
                                     finish();
                                 }
                             } catch (Exception e) {
+                                Toast toast = Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG);
+                                toast.show();
                                 e.printStackTrace();
                             }
 
