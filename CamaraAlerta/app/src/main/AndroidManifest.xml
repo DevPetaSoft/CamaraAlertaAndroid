@@ -130,7 +130,8 @@
         <activity
             android:name=".activity.TermoCompromisso"
             android:label="Termos e Condições"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activity.MostrarDenuncia"
             android:label="Solicitação"
