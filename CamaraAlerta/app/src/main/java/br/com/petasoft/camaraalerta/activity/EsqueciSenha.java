@@ -3,6 +3,7 @@ package br.com.petasoft.camaraalerta.activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +24,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import br.com.petasoft.camaraalerta.R;
 import model.Configuration;
@@ -61,6 +63,7 @@ public class EsqueciSenha extends AppCompatActivity {
                         progress.dismiss();
                         Toast toast = Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG);
                         toast.show();
+                        onBackPressed();
 
                     }
                 },
@@ -99,7 +102,7 @@ public class EsqueciSenha extends AppCompatActivity {
             }
         };
         getRequest.setRetryPolicy(new DefaultRetryPolicy(
-                0,
+                (int) TimeUnit.SECONDS.toMillis(15),
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(getRequest);
