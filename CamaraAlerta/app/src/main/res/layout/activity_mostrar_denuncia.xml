@@ -125,7 +125,7 @@
                 android:layout_marginTop="10dp"
                 android:enabled="true"
                 android:textColor="@color/white"
-                android:background="#A5CA6F"
+                android:background="@drawable/green_button_background"
                 android:text="Visualizar imagens"
                 android:onClick="abrirImagens"
                 android:layout_below="@id/buttonMensagens"

@@ -7,7 +7,9 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,6 +36,10 @@ public class FotosTiradasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fotos_tiradas_layout);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarFotos);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
         final Bundle b = this.getIntent().getExtras();
         String[] paths = b.getStringArray("fotos");
         id = b.getInt("id");
@@ -90,6 +96,17 @@ public class FotosTiradasActivity extends AppCompatActivity {
             // Adds the view to the layout
             layout.addView(image);
 
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

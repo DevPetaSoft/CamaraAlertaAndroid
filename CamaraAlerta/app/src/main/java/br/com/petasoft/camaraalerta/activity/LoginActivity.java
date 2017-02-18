@@ -356,6 +356,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             } else {
                                 Toast toast = Toast.makeText(getApplicationContext(), "Não foi possível se conectar com o servidor", Toast.LENGTH_LONG);
                                 toast.show();
+                                LoginManager.getInstance().logOut();
+                                SharedPreferences.Editor editor = getApplication().getApplicationContext().getSharedPreferences(LoginActivity.MY_PREFS_NAME, MODE_PRIVATE).edit();
+                                editor.putString("fbName", "");
+                                editor.putString("fbEmail", "");
+                                boolean voltou = editor.commit();
+                                if(voltou){
+                                    Log.d("Facebook", "deu commit logout");
+                                } else {
+                                    Log.d("Facebook", "nao deu  logout");
+                                }
                             }
                         }
                     }
