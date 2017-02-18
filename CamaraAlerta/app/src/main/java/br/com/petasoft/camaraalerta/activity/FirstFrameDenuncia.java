@@ -39,6 +39,10 @@ public class FirstFrameDenuncia extends Fragment {
 
     private InterfaceFrame2 listener2 = null;
 
+    private EditText editText;
+    private  EditText editText2;
+    private Button botaoAvancar;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,18 +51,33 @@ public class FirstFrameDenuncia extends Fragment {
         listener = (InterfaceFrame1) getActivity();
 
         listener2 = (InterfaceFrame2) getActivity();
+        editText = (EditText) myView.findViewById(R.id.editTitulo);
+        editText2 = (EditText) myView.findViewById(R.id.descricao);
+        botaoAvancar = (Button) myView.findViewById(R.id.botaoAvancar);
+
+        editText2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    botaoAvancar.setVisibility(View.VISIBLE);
+                } else {
+                    botaoAvancar.setVisibility(View.GONE);
+                }
+            }
+        });
 
         Button next = (Button) myView.findViewById(R.id.buttonNextDenuncia);
         next.setOnClickListener(new View.OnClickListener(){
            public void onClick(View v) {
-               EditText editText = (EditText) myView.findViewById(R.id.editTitulo);
-               String str = editText.getText().toString();
-               listener.onFragment1EditTextChanged(str);
-               EditText editText2 = (EditText) myView.findViewById(R.id.descricao);
-               String str2 = editText2.getText().toString();
-               listener2.onFragment2EditTextChanged(str2);
-               ((NovaDenuncia)getActivity()).proximoFrame();
+               sendInformation();
            }
+        });
+
+        botaoAvancar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendInformation();
+            }
         });
 
         Button cancelar = (Button) myView.findViewById(R.id.buttonCancelarDenuncia);
@@ -68,6 +87,14 @@ public class FirstFrameDenuncia extends Fragment {
             }
             });
         return myView;
+    }
+
+    private void sendInformation(){
+        String str = editText.getText().toString();
+        listener.onFragment1EditTextChanged(str);
+        String str2 = editText2.getText().toString();
+        listener2.onFragment2EditTextChanged(str2);
+        ((NovaDenuncia)getActivity()).proximoFrame();
     }
 
 

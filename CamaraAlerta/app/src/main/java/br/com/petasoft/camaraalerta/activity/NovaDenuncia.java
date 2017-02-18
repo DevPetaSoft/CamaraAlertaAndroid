@@ -164,7 +164,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                 .replace(R.id.denuncia_frame
                         , f1)
                 .commit();
-
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -587,126 +587,118 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
     public void enviarDenuncia() {
         boolean stuckLoading = false;
 
-        progress = new ProgressDialog(this);
-        progress.setMessage("Enviando Solicitação");
-        progress.setCancelable(false);
-        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progress.setIndeterminate(true);
-        progress.setProgress(0);
-        progress.show();
-        if (locationTracker.hasLocation()) {
-            Location location = locationTracker.getLocation();
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
-        }
-
-
-        String lat = "" + latitude;
-        Log.d("Loc Lat", lat);
-        String lon = "" + longitude;
-        Log.d("Loc Lon", lon);
-
-        Log.i("re", "ee");
-
-        /*TODO: Deletar Fotos
-        for(String path : Configuration.fotosDeletadas){
-            for(int i = 0; i<listaPaths.size(); i++){
-                if(path.equals(listaPaths.get(i))){
-                    listaPaths.remove(i);
-                }
-            }
-        }
-        */
         Vereador vereadorChecar = f2.getVereadorEscolhido();
         if(vereadorChecar==null){
             Toast.makeText(getApplicationContext(), "Você precisa selecionar um vereador.", Toast.LENGTH_LONG).show();
-            stuckLoading = true;
-        } else if (longitude == null || latitude == null) {
-            Toast.makeText(getApplicationContext(), "A sua localização não pode ser definida, clique Enviar para tentar outra vez", Toast.LENGTH_LONG).show();
-            stuckLoading = true;
-            /*
-            gps = new GPSTracker(NovaDenuncia.this);
-                // check if GPS enabled
-                if (gps.canGetLocation()) {
-
-                    latitude = gps.getLatitude();
-                    longitude = gps.getLongitude();
-
-                    // Mostrar localização no log
-                    Log.d("Your Location is - ", "Lat: " + latitude + "\nLong: " + longitude);
-                } else {
-                    // can't get location
-                    // GPS or Network is not enabled
-                    // Ask user to enable GPS/network in settings
-                    gps.showSettingsAlert();
-                }
-                */
-        } else if (listaPaths.isEmpty()) {
+        }  else if (listaPaths.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Você precisa incluir pelo menos uma foto.", Toast.LENGTH_LONG).show();
-            stuckLoading = true;
         } else {
-            locationTracker.stop();
-            final Thread t = new Thread() {
-                @Override
-                public void run() {
-                    Coordenadas c = new Coordenadas();
-                    c.setLatitude(latitude);
-                    c.setLongitude(longitude);
 
-                    Denuncia denuncia = new Denuncia();
-                    denuncia.setNovo(true);
-                    denuncia.setTitulo(titulo);
-                    denuncia.setDescricao(descricao);
+            progress = new ProgressDialog(this);
+            progress.setMessage("Enviando Solicitação");
+            progress.setCancelable(false);
+            progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progress.setIndeterminate(true);
+            progress.setProgress(0);
 
-                    //  denuncia.setData(null);
-                    if (denuncia.getData() != null) {
-                        Log.i("DATA", denuncia.getData().toString());
-                    } else {
-                        Log.i("Data", "error");
+
+            /*TODO: Deletar Fotos
+            for(String path : Configuration.fotosDeletadas){
+                for(int i = 0; i<listaPaths.size(); i++){
+                    if(path.equals(listaPaths.get(i))){
+                        listaPaths.remove(i);
                     }
-                    denuncia.setAnonima(anonima);
-                    Cidadao cidadao = new Cidadao();
-                    cidadao.setId(Configuration.usuario.getId());
-                    denuncia.setCidadao(cidadao);
-                    denuncia.setFotos(listaPaths);
-                    Vereador v = new Vereador();
-                    v.setId(f2.getVereadorEscolhido().getId());
-                    denuncia.setVereador(v);
-                    denuncia.setCoordenadas(c);
-
-                    listaDeFotos = new ArrayList<String>();
-                    for (String s : listaPaths) {
-                        try {
-                            ByteArrayOutputStream baos = new ByteArrayOutputStream(3000);
-                            Bitmap src = BitmapFactory.decodeFile(s);
-                            src = Bitmap.createScaledBitmap(src, src.getScaledWidth(100), src.getScaledHeight(100), false);
-                            src.compress(Bitmap.CompressFormat.PNG, 0, baos);
-                            baos.flush();
-                            byte[] bytes = baos.toByteArray();
-                            baos.close();
-                            listaDeFotos.add(Base64.encodeToString(bytes, Base64.NO_WRAP));
-
-                            //RequesString
-                            fotosJuntas += Base64.encodeToString(bytes, Base64.NO_WRAP) + ",";
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    denuncia.setNumeroFotos(listaDeFotos.size());
-                    denuncia.setNumeroFotosAtual(0);
-                    denuncia.setValida(false);
-                    //DenunciaDTO dDTO = new DenunciaDTO(denuncia, listaDeFotos);
-
-                    primeiroEnvio(denuncia);
-
-                    //VolleySingleton.getInstance(this).addToRequestQueue(strRequest);
-
                 }
-            };
-            t.start();
+            }
+            */
+            if (locationTracker.hasLocation()) {
+                Location location = locationTracker.getLocation();
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+            }
+            if (longitude == null || latitude == null) {
+                Toast.makeText(getApplicationContext(), "A sua localização não pode ser definida, clique Enviar para tentar outra vez", Toast.LENGTH_LONG).show();
+                /*
+                gps = new GPSTracker(NovaDenuncia.this);
+                    // check if GPS enabled
+                    if (gps.canGetLocation()) {
+
+                        latitude = gps.getLatitude();
+                        longitude = gps.getLongitude();
+
+                        // Mostrar localização no log
+                        Log.d("Your Location is - ", "Lat: " + latitude + "\nLong: " + longitude);
+                    } else {
+                        // can't get location
+                        // GPS or Network is not enabled
+                        // Ask user to enable GPS/network in settings
+                        gps.showSettingsAlert();
+                    }
+                    */
+            } else {
+                locationTracker.stop();
+                progress.show();
+                final Thread t = new Thread() {
+                    @Override
+                    public void run() {
+                        Coordenadas c = new Coordenadas();
+                        c.setLatitude(latitude);
+                        c.setLongitude(longitude);
+
+                        Denuncia denuncia = new Denuncia();
+                        denuncia.setNovo(true);
+                        denuncia.setTitulo(titulo);
+                        denuncia.setDescricao(descricao);
+
+                        //  denuncia.setData(null);
+                        if (denuncia.getData() != null) {
+                            Log.i("DATA", denuncia.getData().toString());
+                        } else {
+                            Log.i("Data", "error");
+                        }
+                        denuncia.setAnonima(anonima);
+                        Cidadao cidadao = new Cidadao();
+                        cidadao.setId(Configuration.usuario.getId());
+                        denuncia.setCidadao(cidadao);
+                        denuncia.setFotos(listaPaths);
+                        Vereador v = new Vereador();
+                        v.setId(f2.getVereadorEscolhido().getId());
+                        denuncia.setVereador(v);
+                        denuncia.setCoordenadas(c);
+
+                        listaDeFotos = new ArrayList<String>();
+                        for (String s : listaPaths) {
+                            try {
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream(3000);
+                                Bitmap src = BitmapFactory.decodeFile(s);
+                                src = Bitmap.createScaledBitmap(src, src.getScaledWidth(100), src.getScaledHeight(100), false);
+                                src.compress(Bitmap.CompressFormat.PNG, 0, baos);
+                                baos.flush();
+                                byte[] bytes = baos.toByteArray();
+                                baos.close();
+                                listaDeFotos.add(Base64.encodeToString(bytes, Base64.NO_WRAP));
+
+                                //RequesString
+                                fotosJuntas += Base64.encodeToString(bytes, Base64.NO_WRAP) + ",";
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        denuncia.setNumeroFotos(listaDeFotos.size());
+                        denuncia.setNumeroFotosAtual(0);
+                        denuncia.setValida(false);
+                        //DenunciaDTO dDTO = new DenunciaDTO(denuncia, listaDeFotos);
+
+                        primeiroEnvio(denuncia);
+
+                        //VolleySingleton.getInstance(this).addToRequestQueue(strRequest);
+
+                    }
+                };
+                t.start();
+            }
         }
-        if (stuckLoading == true)
-            progress.dismiss();
+
     }
 
     private void envioFotos(int id, int index){

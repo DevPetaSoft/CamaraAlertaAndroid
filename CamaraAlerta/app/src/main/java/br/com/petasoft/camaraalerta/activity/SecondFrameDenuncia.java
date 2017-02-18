@@ -64,7 +64,7 @@ public class SecondFrameDenuncia extends Fragment {
         if(listaVereadores.size()>0) {
             Spinner dropdown = (Spinner) myView.findViewById(R.id.vereadores_spinner);
             String[] items = new String[listaVereadores.size()+1];
-            items[0] = "";
+            items[0] = "Selecione o vereador";
             for (int i = 0; i < listaVereadores.size(); i++) {
                 items[i+1] = listaVereadores.get(i).getNome();
             }
