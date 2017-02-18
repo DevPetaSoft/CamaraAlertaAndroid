@@ -1,5 +1,6 @@
 package br.com.petasoft.camaraalerta.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,9 +23,12 @@ import com.google.gson.JsonParser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
+import Utils.HashUtils;
 import br.com.petasoft.camaraalerta.R;
 import model.Cidadao;
 import model.Configuration;
@@ -43,6 +47,8 @@ public class Registrar extends AppCompatActivity {
     private String pass;
     private String nome;
     private boolean termosAceitos = false;
+
+    private ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +79,16 @@ public class Registrar extends AppCompatActivity {
 
     public void novoRegistro(View v){
         RequestQueue queue = Volley.newRequestQueue(this);
+
+        // Criando janela de progresso
+        progress = new ProgressDialog(this);
+        progress.setMessage("Enviando novo cadastro");
+        progress.setCancelable(false);
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.setProgress(0);
+        progress.show();
+
         nome = editTextNome.getText().toString();
         email = editTextEmail.getText().toString();
         pass = editTextPassword.getText().toString();
@@ -88,12 +104,10 @@ public class Registrar extends AppCompatActivity {
 
                             try {
                                 //Realiza o parser do JSON vindo do WebService
-                                //JSONObject json = new JSONObject(response);
-                                //JsonParser parser = new JsonParser();
-                                //JsonElement mJson = parser.parse(json.getString("data"));
                                 /* Transforma o JSON em um objeto Cidadao
                                  * Grava o cidadao no objeto estático de configurações para ser acessado
                                  * por qualquer arquivo.*/
+                                progress.dismiss();
                                 configuration.usuario = configuration.gson.fromJson(response, Cidadao.class);
                                 Toast toast = Toast.makeText(getApplicationContext(), "Conta criada com sucesso!", Toast.LENGTH_LONG);
                                 toast.show();
@@ -107,6 +121,7 @@ public class Registrar extends AppCompatActivity {
                                     finish();
                                 }
                             } catch (Exception e) {
+                                progress.dismiss();
                                 Toast toast = Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG);
                                 toast.show();
                                 e.printStackTrace();
@@ -117,6 +132,7 @@ public class Registrar extends AppCompatActivity {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            progress.dismiss();
                             if (error.networkResponse != null && error.networkResponse.data != null) {
                                 String result = new String(error.networkResponse.data);
                                 try {
@@ -137,11 +153,13 @@ public class Registrar extends AppCompatActivity {
             ) {
                 @Override
                 protected Map<String, String> getParams() {
+                    String senha = editTextPassword.getText().toString();
+                    senha = HashUtils.criptografiaDeSenha(senha);
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("nome", editTextNome.getText().toString());
                     params.put("telefone", telefone);
                     params.put("email", editTextEmail.getText().toString());
-                    params.put("senha", editTextPassword.getText().toString());
+                    params.put("senha",senha);
 
 
                     return params;
@@ -170,4 +188,6 @@ public class Registrar extends AppCompatActivity {
         Intent intent = new Intent(this, TermoCompromisso.class);
         startActivity(intent);
     }
+
+
 }

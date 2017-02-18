@@ -55,6 +55,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import Utils.HashUtils;
 import br.com.petasoft.camaraalerta.R;
 import dto.FacebookDTO;
 import model.Cidadao;
@@ -95,6 +96,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         callbackManager = CallbackManager.Factory.create();
         //SharedPreferences sharedPref = this.getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE);
         progressDialog = new ProgressDialog(this);
+
+
         // Buscando os componentes da tela
         loginButton = (LoginButton) findViewById(R.id.login_button);
         editLogin = (EditText) findViewById(R.id.editLogin);
@@ -422,48 +425,38 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     // Função para realizar login com e-mail/login e senha
     public void normalLogin(View view) {
         intent = new Intent(this, MainActivity.class);
+
         //Realiza conexão com o webservice para realizar o login
         RequestQueue queue = Volley.newRequestQueue(this);
-        Log.d("Configuracaobase ", configuration.base_url);
         String url = configuration.base_url + "user/login";
-        Log.i("URL", configuration.base_url + "user/login");
+
         StringRequest getRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // response
-                        Log.d("Response", response);
-                        //Toast.makeText()
 
                         try {
-                            //Realiza o parser do JSON vindo do WebService
-                            //JSONObject json = new JSONObject(response);
-                            //JsonParser parser = new JsonParser();
-                            //JsonElement mJson = parser.parse(json.getString("data"));
+
                             /* Transforma o JSON em um objeto Cidadao
                              * Grava o cidadao no objeto estático de configurações para ser acessado
                              * por qualquer arquivo.*/
                             configuration.usuario = configuration.gson.fromJson(response, Cidadao.class);
                             if (configuration.usuario == null) {
-                                Log.i("Error", "não foi possível realizar o login");
                                 Toast toast = Toast.makeText(getApplicationContext(), "Não foi possível realizar o login", Toast.LENGTH_LONG);
                                 toast.show();
                             } else {
                                 Toast toast = Toast.makeText(getApplicationContext(), "Login efetuado com sucesso", Toast.LENGTH_LONG);
                                 toast.show();
-                                Log.i("Nome", configuration.usuario.getNome());
+
                                 //Redireciona a aplicação para a tela principal
+
+                                String senha = HashUtils.criptografiaDeSenha(editPass.getText().toString());
 
                                 SharedPreferences.Editor editor = getApplication().getApplicationContext().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
                                 editor.putString("nlEmail", editLogin.getText().toString());
-                                editor.putString("nlPass", editPass.getText().toString());
+                                editor.putString("nlPass", senha);
                                 editor.putInt("nlFeito", 1); //1- login feito e nao teve logout , 0 - logout
                                 boolean voltou = editor.commit();
-                                if(voltou){
-                                    Log.d("Normal", "deu commit");
-                                } else {
-                                    Log.d("Normal", "nao deu commit");
-                                }
 
                                 Configuration.loginNormal = true;
                                 startActivity(intent);
@@ -488,6 +481,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                                 JSONObject json = new JSONObject(result);
 
+
+
                                 Toast toast = Toast.makeText(getApplicationContext(), json.getString("message"), Toast.LENGTH_LONG);
                                 toast.show();
                             } catch (JSONException e) {
@@ -502,9 +497,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         ) {
             @Override
             protected Map<String, String> getParams() {
+                String senha = HashUtils.criptografiaDeSenha(editPass.getText().toString());
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("login", editLogin.getText().toString());
-                params.put("senha", editPass.getText().toString());
+                Log.i("Hash", senha);
+                params.put("senha", senha);
 
                 return params;
             }
