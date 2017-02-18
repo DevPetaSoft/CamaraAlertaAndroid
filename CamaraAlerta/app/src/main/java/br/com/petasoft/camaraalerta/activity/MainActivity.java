@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -20,28 +19,11 @@ import android.view.MenuItem;
 
 import android.app.FragmentManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.facebook.login.LoginManager;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import br.com.petasoft.camaraalerta.R;
-import model.Cidadao;
 import model.Configuration;
-
-import static android.R.attr.filter;
-import static android.R.attr.start;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -204,10 +186,14 @@ public class MainActivity extends AppCompatActivity
         }
         MinhasDenuncias fragmentMinhas = (MinhasDenuncias) getFragmentManager().findFragmentByTag("FRAME_MINHAS");
         if(fragmentMinhas != null && fragmentMinhas.isVisible()){
+            Bundle bundle = new Bundle();
+            bundle.putInt("statusFiltro", 4);
+            MinhasDenuncias fragMinhasDenuncias = new MinhasDenuncias();
+            fragMinhasDenuncias.setArguments(bundle);
             FragmentManager fragmentManager2 = getFragmentManager();
             fragmentManager2.beginTransaction()
                     .replace(R.id.content_frame
-                            , new MinhasDenuncias(), "FRAME_MINHAS")
+                            , fragMinhasDenuncias, "FRAME_MINHAS")
                     .commit();
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.getMenu().getItem(3).setChecked(true);
@@ -273,9 +259,13 @@ public class MainActivity extends AppCompatActivity
             mDrawerToggle.runWhenIdle(new Runnable(){
                 @Override
                 public void run(){
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("statusFiltro", 4);
+                    MinhasDenuncias fragMinhasDenuncias = new MinhasDenuncias();
+                    fragMinhasDenuncias.setArguments(bundle);
                     fragmentManager.beginTransaction()
                             .replace(R.id.content_frame
-                                    , new MinhasDenuncias(), "FRAME_MINHAS")
+                                    , fragMinhasDenuncias, "FRAME_MINHAS")
                             .commit();
                 }
             });

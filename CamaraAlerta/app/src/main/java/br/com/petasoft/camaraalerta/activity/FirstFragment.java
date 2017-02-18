@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,11 +20,6 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
 
 import br.com.petasoft.camaraalerta.R;
 import model.Configuration;
@@ -59,27 +53,43 @@ public class FirstFragment extends Fragment implements View.OnClickListener{
         FragmentManager fragmentManager = getFragmentManager();
         switch(v.getId()){
             case R.id.numeroDenuncias:
+                Bundle bundle = new Bundle();
+                bundle.putInt("statusFiltro", 4);
+                MinhasDenuncias fragMinhasDenuncias = new MinhasDenuncias();
+                fragMinhasDenuncias.setArguments(bundle);
                 fragmentManager.beginTransaction()
                         .replace(R.id.content_frame
-                                , new MinhasDenuncias())
+                                , fragMinhasDenuncias)
                         .commit();
                 break;
             case R.id.numeroDenunciasResolvidas:
+                Bundle bundle2 = new Bundle();
+                bundle2.putInt("statusFiltro", 2);
+                MinhasDenuncias fragMinhasDenuncias2 = new MinhasDenuncias();
+                fragMinhasDenuncias2.setArguments(bundle2);
                 fragmentManager.beginTransaction()
                         .replace(R.id.content_frame
-                                , new MinhasDenuncias())
+                                , fragMinhasDenuncias2)
                         .commit();
                 break;
             case R.id.textoSolicitacoes:
+                Bundle bundle3 = new Bundle();
+                bundle3.putInt("statusFiltro", 4);
+                MinhasDenuncias fragMinhasDenuncias3 = new MinhasDenuncias();
+                fragMinhasDenuncias3.setArguments(bundle3);
                 fragmentManager.beginTransaction()
                         .replace(R.id.content_frame
-                                , new MinhasDenuncias())
+                                , fragMinhasDenuncias3)
                         .commit();
                 break;
             case R.id.textoResolvidas:
+                Bundle bundle4 = new Bundle();
+                bundle4.putInt("statusFiltro", 2);
+                MinhasDenuncias fragMinhasDenuncias4 = new MinhasDenuncias();
+                fragMinhasDenuncias4.setArguments(bundle4);
                 fragmentManager.beginTransaction()
                         .replace(R.id.content_frame
-                                , new MinhasDenuncias())
+                                , fragMinhasDenuncias4)
                         .commit();
                 break;
         }
