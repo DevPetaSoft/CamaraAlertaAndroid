@@ -15,6 +15,17 @@
         android:padding="5dp"
         android:orientation="vertical"
         android:id="@+id/layoutMinhasDenuncias">
+
+        <TextView
+            android:id="@+id/textNaoPossui"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Você não possui nenhuma solicitação"
+            android:textSize="18dp"
+            android:textColor="@color/grey"
+            android:visibility="gone"/>
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

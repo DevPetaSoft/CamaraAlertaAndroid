@@ -202,6 +202,16 @@ public class MainActivity extends AppCompatActivity
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.getMenu().getItem(0).setChecked(true);
         }
+        MinhasDenuncias fragmentMinhas = (MinhasDenuncias) getFragmentManager().findFragmentByTag("FRAME_MINHAS");
+        if(fragmentMinhas != null && fragmentMinhas.isVisible()){
+            FragmentManager fragmentManager2 = getFragmentManager();
+            fragmentManager2.beginTransaction()
+                    .replace(R.id.content_frame
+                            , new MinhasDenuncias(), "FRAME_MINHAS")
+                    .commit();
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.getMenu().getItem(3).setChecked(true);
+        }
     }
 
     /* Menu de opções retirado

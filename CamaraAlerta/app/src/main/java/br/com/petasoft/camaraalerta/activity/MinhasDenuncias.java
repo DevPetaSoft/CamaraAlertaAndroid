@@ -40,6 +40,7 @@ import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -115,10 +116,10 @@ public class MinhasDenuncias extends Fragment{
                             //Collection<Denuncia> denuncias = configuration.gson.fromJson(response, collectionType);
                             MinhasDenunciasDTO denuncias = Configuration.gson.fromJson(response, MinhasDenunciasDTO.class);
                             final ArrayList<Denuncia> minhasDenuncias = denuncias.getMinhasDenuncias();
-                            if (minhasDenuncias == null) {
+                            if (minhasDenuncias.size()<1) {
+                                TextView naoPossui = (TextView)myView.findViewById(R.id.textNaoPossui);
+                                naoPossui.setVisibility(View.VISIBLE);
                                 Log.i("Error", "Usuário nao possui denuncias!");
-                                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Usuário nao possui denuncias!", Toast.LENGTH_LONG);
-                                toast.show();
                             } else {
                                 //ArrayList<Denuncia> minhasDenuncias = denuncias.getMinhasDenuncias();
                                 LinearLayout layout = (LinearLayout) getActivity().findViewById(R.id.layoutMinhasDenuncias);
