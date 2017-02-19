@@ -92,7 +92,7 @@ public class MinhasDenuncias extends Fragment{
         progress.show();
 
         filtro = (Spinner)myView.findViewById(R.id.spinnerFiltro);
-        String[] nomeFiltros = {"Pendente", "Em andamento", "Finalizado com sucesso", "Não resolvida(ou recusada)", "Todas"};
+        String[] nomeFiltros = {"Pendente", "Em andamento", "Finalizada com sucesso", "Não resolvida(ou recusada)", "Todas"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, nomeFiltros);
         adapter.setDropDownViewResource(R.layout.spinner_item);
         filtro.setAdapter(adapter);
@@ -374,7 +374,19 @@ public class MinhasDenuncias extends Fragment{
                     layout.addView(card);
                 }
             }
+            //0 - Pendentes, 1 - Em Andamento, 2 - Finalizado com sucesso, 3 - Não resolvida(ou recusada), 4 - Todas
             if(flagMostrou == false){
+                if(statusSpinner == 0) {
+                    naoPossui.setText("Você não possui nenhuma solicitação pendente");
+                } else if(statusSpinner == 1){
+                    naoPossui.setText("Você não possui nenhuma solicitação em andamento");
+                } else if(statusSpinner == 2){
+                    naoPossui.setText("Você não possui nenhuma solicitação finalizada com sucesso");
+                } else if(statusSpinner == 3){
+                    naoPossui.setText("Você não possui nenhuma solicitação não resolvida(ou recusada)");
+                } else if(statusSpinner == 4){
+                    naoPossui.setText("Você não possui nenhuma solicitação");
+                }
                 naoPossui.setVisibility(View.VISIBLE);
             }
         }
