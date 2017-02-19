@@ -12,6 +12,7 @@ import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,7 +69,9 @@ import model.Configuration;
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener/*, View.OnClickListener*/ {
     private static Configuration configuration;
     private LoginButton loginButton;
+    private CheckBox lembrar;
     private EditText editLogin, editPass;
+    private String senhaSalva;
     private CallbackManager callbackManager;
     private Profile profile;
     private LoginResult loginResul;
@@ -102,6 +105,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         loginButton = (LoginButton) findViewById(R.id.login_button);
         editLogin = (EditText) findViewById(R.id.editLogin);
         editPass = (EditText) findViewById(R.id.editPassword);
+        lembrar = (CheckBox) findViewById(R.id.checkboxLembrar);
         accessTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken newAccessToken) {
@@ -182,9 +186,15 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         signInButton.setScopes(gso.getScopeArray());
          */
 
-
-        updateWithToken(AccessToken.getCurrentAccessToken());
-        normalLoginAlreadyLogged();
+        if(getIntent().getStringExtra("email")!=null){
+            String emailDeRegistro = getIntent().getStringExtra("email");
+            String passDeRegistro = getIntent().getStringExtra("senha");
+            editLogin.setText(emailDeRegistro);
+            editPass.setText(passDeRegistro);
+        } else {
+            updateWithToken(AccessToken.getCurrentAccessToken());
+            normalLoginAlreadyLogged();
+        }
     }
 
     private void saveNameAndEmail(String name, String email){
@@ -205,11 +215,20 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         SharedPreferences prefs = getApplication().getApplicationContext().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         int alreadyLogged = prefs.getInt("nlFeito", -1);
         if(alreadyLogged!=1){
-            //Não faz nada, não está logado
+            int lembrarLogPass = prefs.getInt("nlLembrar", -1);
+            if(lembrarLogPass==1){
+                String emailLembrado = prefs.getString("nlEmailLembrar", "");
+                String passLembrado = prefs.getString("nlPassLembrar", "");
+                senhaSalva = HashUtils.criptografiaDeSenha(passLembrado);
+                editLogin.setText(emailLembrado);
+                editPass.setText(passLembrado);
+                lembrar.setChecked(true);
+            }
         } else {
             Log.d("alreadyLogged", "logando");
             final String email = prefs.getString("nlEmail", "No email found");
             final String pass = prefs.getString("nlPass", "No pass found");
+            senhaSalva = HashUtils.criptografiaDeSenha(pass);
             if(!email.equals("No email found")){
                 editLogin.setText(email);
                 editPass.setText(pass);
@@ -276,7 +295,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     protected Map<String, String> getParams() {
                         Map<String, String> params = new HashMap<String, String>();
                         params.put("login", email);
-                        params.put("senha", pass);
+                        params.put("senha", senhaSalva);
 
                         return params;
                     }
@@ -460,11 +479,18 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                                 //Redireciona a aplicação para a tela principal
 
-                                String senha = HashUtils.criptografiaDeSenha(editPass.getText().toString());
-
                                 SharedPreferences.Editor editor = getApplication().getApplicationContext().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
                                 editor.putString("nlEmail", editLogin.getText().toString());
-                                editor.putString("nlPass", senha);
+                                editor.putString("nlPass", editPass.getText().toString());
+                                if(lembrar.isChecked()){
+                                    editor.putString("nlEmailLembrar", editLogin.getText().toString());
+                                    editor.putString("nlPassLembrar", editPass.getText().toString());
+                                    editor.putInt("nlLembrar", 1);
+                                } else {
+                                    editor.putString("nlEmailLembrar", "");
+                                    editor.putString("nlPassLembrar", "");
+                                    editor.putInt("nlLembrar", -1);
+                                }
                                 editor.putInt("nlFeito", 1); //1- login feito e nao teve logout , 0 - logout
                                 boolean voltou = editor.commit();
 

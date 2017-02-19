@@ -70,10 +70,20 @@
         android:textColor="@color/white"
         android:backgroundTint="@color/white"/>
 
+    <CheckBox
+        android:id="@+id/checkboxLembrar"
+        android:layout_below="@id/editPassword"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content"
+        android:text="Lembrar Email e Senha"
+        android:textColor="@android:color/white"
+        android:buttonTint="@android:color/white"/>
+
     <Button
         android:id="@+id/loginButton"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/editPassword"
+        android:layout_below="@id/checkboxLembrar"
         android:layout_margin="10dp"
         android:layout_width="460dp"
         android:layout_height="wrap_content"
@@ -125,7 +135,7 @@
         android:layout_below="@+id/loginButton"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
-        android:layout_margin="15dp"
+        android:layout_margin="10dp"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:text="OU"
@@ -138,10 +148,13 @@
         android:layout_marginTop="3dp"
         android:layout_marginBottom="3dp"
         android:layout_marginLeft="13dp"
-        android:layout_width="145dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ouText"
         android:layout_centerHorizontal="true"
+        xmlns:facebook="http://schemas.android.com/apk/res-auto"
+        facebook:com_facebook_login_text="Entrar com Facebook"
+        facebook:com_facebook_logout_text="Sair"
     />
     <!--
     android:layout_alignParentLeft="true"

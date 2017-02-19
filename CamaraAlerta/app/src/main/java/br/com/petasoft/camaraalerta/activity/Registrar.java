@@ -41,7 +41,7 @@ public class Registrar extends AppCompatActivity {
     private EditText editTextPassword;
     private EditText editTextConfirmPassword;
     private EditText editTextTelefone;
-    private Intent intent;
+    //private Intent intent;
     private String telefone;
     private String email;
     private String pass;
@@ -87,14 +87,13 @@ public class Registrar extends AppCompatActivity {
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progress.setIndeterminate(true);
         progress.setProgress(0);
-        progress.show();
 
         nome = editTextNome.getText().toString();
         email = editTextEmail.getText().toString();
         pass = editTextPassword.getText().toString();
         telefone = editTextTelefone.getText().toString();
         String url = configuration.base_url+"user/novoCidadao";
-        intent = new Intent(this, MainActivity.class);
+        //intent = new Intent(this, MainActivity.class);
         if(!nome.equals("") && !email.equals("") && !pass.equals("") && !telefone.equals("")){
             StringRequest getRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
@@ -117,8 +116,13 @@ public class Registrar extends AppCompatActivity {
                                     Log.i("Nome", configuration.usuario.getNome());
                                     //Redireciona a aplicação para a tela principal
                                     Configuration.loginNormal = true;
+                                    Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+                                    intent.putExtra("email", editTextEmail.getText().toString());
+                                    intent.putExtra("senha", editTextPassword.getText().toString());
                                     startActivity(intent);
                                     finish();
+                                    //startActivity(intent);
+                                    //finish();
                                 }
                             } catch (Exception e) {
                                 progress.dismiss();
@@ -169,6 +173,7 @@ public class Registrar extends AppCompatActivity {
             //Verifica se as senhas digitadas são iguais, e aciona o request para o servidor
             if (editTextPassword.getText().toString().equals(editTextConfirmPassword.getText().toString())) {
                 if(termosAceitos) {
+                    progress.show();
                     queue.add(getRequest);
                 } else {
                     Toast toast = Toast.makeText(getApplicationContext(), "Você precisa aceitar os Termos e Condições", Toast.LENGTH_LONG);
