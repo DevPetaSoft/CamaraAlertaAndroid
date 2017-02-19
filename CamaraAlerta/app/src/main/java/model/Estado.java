@@ -3,14 +3,14 @@ package model;
 import java.io.Serializable;
 
 /**
- * Created by gudominguete on 23/10/16.
+ * Created by gudominguete on 19/02/17.
  */
 
-public class Cidade implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class Estado implements Serializable {
+
     private int id;
+
     private String nome;
-    private Estado estado;
 
     public int getId() {
         return id;
@@ -26,13 +26,5 @@ public class Cidade implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public Estado getEstado() {
-        return estado;
-    }
-
-    public void setEstado(Estado estado) {
-        this.estado = estado;
     }
 }
