@@ -657,6 +657,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
                             Log.i("Data", "error");
                         }
                         denuncia.setAnonima(anonima);
+                        denuncia.setStatus(0);
                         Cidadao cidadao = new Cidadao();
                         cidadao.setId(Configuration.usuario.getId());
                         denuncia.setCidadao(cidadao);

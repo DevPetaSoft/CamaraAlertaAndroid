@@ -7,6 +7,7 @@ package model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Denuncia implements Serializable{
 
@@ -22,7 +23,7 @@ public class Denuncia implements Serializable{
     private Coordenadas coordenadas;
     private int status;
     private boolean comunicacaoPermitida;
-    private String relatorio;
+    private List<HistoricoRelatorio> relatorio;
     private Cidadao cidadao;
     private Vereador vereador;
     private boolean deleted;
@@ -115,11 +116,11 @@ public class Denuncia implements Serializable{
         this.comunicacaoPermitida = comunicacaoPermitida;
     }
 
-    public String getRelatorio() {
+    public List<HistoricoRelatorio> getRelatorio() {
         return relatorio;
     }
 
-    public void setRelatorio(String relatorio) {
+    public void setRelatorio(List<HistoricoRelatorio> relatorio) {
         this.relatorio = relatorio;
     }
 

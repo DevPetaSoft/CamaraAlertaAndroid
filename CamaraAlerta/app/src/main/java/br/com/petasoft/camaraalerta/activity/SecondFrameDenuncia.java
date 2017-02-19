@@ -105,12 +105,19 @@ public class SecondFrameDenuncia extends Fragment {
                     public void onResponse(String response) {
                         Log.i("Response",response.substring(0,30));
                         Type listType = new TypeToken<ArrayList<Vereador>>(){}.getType();
+                        try {
+                            List<Vereador> vereadorList = new Gson().fromJson(response, listType);
 
-                        List<Vereador> vereadorList = new Gson().fromJson(response, listType);
+                            Log.i("Numero de vereadores", String.valueOf(vereadorList.size()));
 
-                        Log.i("Numero de vereadores", String.valueOf(vereadorList.size()));
-                        listaVereadores = vereadorList;
-                        atualizarSpinner();
+                            listaVereadores = vereadorList;
+                            atualizarSpinner();
+                        } catch (Exception e) {
+                            Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Essa região não possui vereador cadastrado!", Toast.LENGTH_LONG);
+                            toast.show();
+                            getActivity().finish();
+                            e.printStackTrace();
+                        }
                         progress.dismiss();
                     }
                 },

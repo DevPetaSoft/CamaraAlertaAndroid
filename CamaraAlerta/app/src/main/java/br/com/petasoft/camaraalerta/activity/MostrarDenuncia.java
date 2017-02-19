@@ -180,7 +180,10 @@ public class MostrarDenuncia extends AppCompatActivity {
 
         titulo.setText(denuncia.getTitulo());
         descricao.setText(denuncia.getDescricao());
-        relatorio.setText(denuncia.getRelatorio());
+        /**
+         * TODO: Mostrar relatorio da solicitação
+         */
+        //relatorio.setText(denuncia.getRelatorio());
         data.setText(dataString);
         switch(denuncia.getStatus()){
             case 0:
