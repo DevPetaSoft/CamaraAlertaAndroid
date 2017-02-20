@@ -173,7 +173,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             int padding = (int) (width * 0.10); // offset das bordas do mapa
 
             CameraUpdate camUpd = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
-            mMap.setMaxZoomPreference(18f);
+            mMap.setMaxZoomPreference(19f);
             mMap.animateCamera(camUpd);
 
         }

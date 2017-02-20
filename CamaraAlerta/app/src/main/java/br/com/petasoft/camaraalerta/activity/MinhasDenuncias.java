@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -268,6 +269,8 @@ public class MinhasDenuncias extends Fragment{
                     relative.addView(image);
 
                     TextView textoCartao = new TextView(getActivity().getApplicationContext());
+                    textoCartao.setSingleLine();
+                    textoCartao.setEllipsize(TextUtils.TruncateAt.END);
                     textoCartao.setText(minhasDenuncias.get(i).getTitulo());
                     textoCartao.setTextSize(16);
                     textoCartao.setId((image.getId() + 35));
@@ -332,6 +335,8 @@ public class MinhasDenuncias extends Fragment{
 
                     String dataString = df.format(data);
 
+                    RelativeLayout wrapperData = new RelativeLayout(getActivity().getApplicationContext());
+
                     TextView dataMostrar = new TextView(getActivity().getApplicationContext());
                     dataMostrar.setText(dataString);
                     dataMostrar.setTextSize(10);
@@ -344,7 +349,7 @@ public class MinhasDenuncias extends Fragment{
                     lpData.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                     lpData.setMargins(0, 20, 20, 0);
 
-                    relative.addView(dataMostrar, lpData);
+                    wrapperData.addView(dataMostrar, lpData);
 
                     DateFormat dfHora = new SimpleDateFormat("HH:mm");
 
@@ -362,7 +367,15 @@ public class MinhasDenuncias extends Fragment{
                     lpHora.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                     lpHora.setMargins(0, 0, 20, 0);
 
-                    relative.addView(horaMostrar, lpHora);
+                    wrapperData.addView(horaMostrar, lpHora);
+
+                    RelativeLayout.LayoutParams lpWrapper = new RelativeLayout.LayoutParams(
+                            RelativeLayout.LayoutParams.WRAP_CONTENT,
+                            RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    lpWrapper.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                    lpWrapper.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+                    relative.addView(wrapperData, lpWrapper);
 
                     card.addView(relative);
                     card.setBackgroundColor(Color.WHITE);

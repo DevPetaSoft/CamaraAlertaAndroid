@@ -40,7 +40,8 @@
             android:textColor="@color/grey"
             android:backgroundTint="@color/grey"
             android:textCursorDrawable="@null"
-            android:textSize="20dp"/>
+            android:textSize="20dp"
+            android:maxLength="40"/>
         <TextView
             android:id="@+id/textDescricao"
             android:layout_below="@id/editTitulo"

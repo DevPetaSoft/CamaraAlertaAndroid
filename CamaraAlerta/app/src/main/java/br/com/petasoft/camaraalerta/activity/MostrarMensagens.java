@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +44,7 @@ public class MostrarMensagens extends AppCompatActivity{
     ImageView botaoEnviar;
     MensagensDTO mensagensDTO;
     LinearLayout layoutMensagens;
+    ScrollView scrollMensagens;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,18 +53,19 @@ public class MostrarMensagens extends AppCompatActivity{
         editTextMensagem = (EditText)findViewById(R.id.editTextMensagem);
         botaoEnviar = (ImageView)findViewById(R.id.buttonEnviarMensagem);
         layoutMensagens = (LinearLayout)findViewById(R.id.layoutMensagens);
+        scrollMensagens = (ScrollView)findViewById(R.id.scrollMensagens);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMensagens);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Intent intent = getIntent();getSupportActionBar().setHomeButtonEnabled(true);
+        Intent intent = getIntent();
+        getSupportActionBar().setHomeButtonEnabled(true);
         mensagensDTO = (MensagensDTO)intent.getSerializableExtra("MensagensDTO");
         List<MensagemChat> mensagens = mensagensDTO.getList();
-
-        for(MensagemChat mensagem : mensagens){
+        for(int i = 0 ; i<mensagens.size() ; i++){
             TextView texto = new TextView(this);
-            texto.setText(mensagem.getMensagem());
-            if(mensagem.getEnviadoPor()==0){
+            texto.setText(mensagens.get(i).getMensagem());
+            if(mensagens.get(i).getEnviadoPor()==0){
                 Drawable drawable = ContextCompat.getDrawable(this, R.drawable.bubbleleft);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     texto.setBackground(drawable);
@@ -90,6 +93,11 @@ public class MostrarMensagens extends AppCompatActivity{
                 rlp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                 layoutRight.addView(texto, rlp);
                 layoutMensagens.addView(layoutRight);
+            }
+            if(i+1 == mensagens.size()){
+                texto.setFocusable(true);
+                texto.setFocusableInTouchMode(true);
+                texto.requestFocus();
             }
         }
         //Envia uma requisição para alterar o estado das mensagens para lida
