@@ -1,5 +1,6 @@
 package br.com.petasoft.camaraalerta.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -8,9 +9,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -45,11 +50,13 @@ public class MostrarMensagens extends AppCompatActivity{
     MensagensDTO mensagensDTO;
     LinearLayout layoutMensagens;
     ScrollView scrollMensagens;
+    private TextView lastText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mostrar_mensagens);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         editTextMensagem = (EditText)findViewById(R.id.editTextMensagem);
         botaoEnviar = (ImageView)findViewById(R.id.buttonEnviarMensagem);
         layoutMensagens = (LinearLayout)findViewById(R.id.layoutMensagens);
@@ -97,9 +104,11 @@ public class MostrarMensagens extends AppCompatActivity{
             if(i+1 == mensagens.size()){
                 texto.setFocusable(true);
                 texto.setFocusableInTouchMode(true);
+                lastText = texto;
                 texto.requestFocus();
             }
         }
+
         //Envia uma requisição para alterar o estado das mensagens para lida
         this.enviarRequisicaoDeLeituraMensagens();
         botaoEnviar.setOnClickListener(new View.OnClickListener(){
@@ -162,6 +171,24 @@ public class MostrarMensagens extends AppCompatActivity{
                 }
             }
         });
+        final View activityRootView = findViewById(R.id.activity_mostrar_mensagens);
+        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int heightDiff = activityRootView.getRootView().getHeight() - activityRootView.getHeight();
+                if (heightDiff > dpToPx(getBaseContext(), 200)) { // if more than 200 dp, it's probably a keyboard...
+                    lastText.setFocusable(true);
+                    lastText.setFocusableInTouchMode(true);
+                    lastText.requestFocus();
+                    editTextMensagem.requestFocus();
+                }
+            }
+        });
+    }
+
+    public static float dpToPx(Context context, float valueInDp) {
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valueInDp, metrics);
     }
 
     @Override
@@ -192,6 +219,10 @@ public class MostrarMensagens extends AppCompatActivity{
         rlp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         layoutRight.addView(texto, rlp);
         layoutMensagens.addView(layoutRight);
+        lastText = texto;
+        lastText.setFocusable(true);
+        lastText.setFocusableInTouchMode(true);
+        lastText.requestFocus();
     }
 
     public void enviarRequisicaoDeLeituraMensagens(){
