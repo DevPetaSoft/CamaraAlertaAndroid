@@ -6,6 +6,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -43,7 +46,7 @@ import model.Configuration;
 
 import static android.widget.ImageView.ScaleType.CENTER_CROP;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private ProgressDialog progress;
@@ -54,12 +57,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMapa);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
         /**
          * Recebendo solicitações para colocar no mapa
          */
-        progress = new ProgressDialog(this);
+        progress=new ProgressDialog(this);
         progress.setMessage("Recebendo Solicitações");
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progress.setIndeterminate(true);
@@ -67,7 +72,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         progress.show();
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Configuration.base_url + "denuncia/minhasDenunciasUsu/" + Configuration.usuario.getId();
+        String url = Configuration.base_url + "denuncia/minhasDenunciasUsu/"+Configuration.usuario.getId();
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -86,7 +91,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 denunciasDTO = denuncias;
                                 chamarMapa();
                             }
-                        } catch (Exception e) {
+                        } catch (Exception e){
                             Toast toast = Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG);
                             toast.show();
                         }
@@ -119,7 +124,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         queue.add(getRequest);
     }
 
-    private void chamarMapa() {
+    private void chamarMapa(){
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -139,7 +144,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        if (denunciasDTO.getNumeroDeDenuncias() > 0) {
+        if(denunciasDTO.getNumeroDeDenuncias()>0){
             final ArrayList<Denuncia> minhasDenuncias = denunciasDTO.getMinhasDenuncias();
             Log.d("DenunciasMapa", "" + minhasDenuncias.size());
             for (int i = 0; i < minhasDenuncias.size(); i++) {
@@ -167,10 +172,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             int height = getResources().getDisplayMetrics().heightPixels;
             int padding = (int) (width * 0.10); // offset das bordas do mapa
 
-
             CameraUpdate camUpd = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
-
+            mMap.setMaxZoomPreference(18f);
             mMap.animateCamera(camUpd);
+
         }
         // Add a marker in Sydney and move the camera
         /*
@@ -184,13 +189,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.d("AdicionandoMarker", title);
         markers.add(mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(latitude, longitude))
-                .anchor(0.5f, 0.5f)
                 .title(title)
                 .snippet(snippet)));
 
     }
 
-    public void closeMaps(View view) {
-        finish();
-    }
 }

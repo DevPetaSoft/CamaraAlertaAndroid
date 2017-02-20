@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/editLogin"
         android:textColor="@color/white"
-        android:text="Email"
+        android:text="E-mail"
         />
 
     <TextView
@@ -76,7 +76,7 @@
         android:layout_width="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_height="wrap_content"
-        android:text="Lembrar Email e Senha"
+        android:text="Lembrar e-mail e senha"
         android:textColor="@android:color/white"
         android:buttonTint="@android:color/white"/>
 
