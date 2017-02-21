@@ -29,6 +29,69 @@
 
     Autem choro appetere vel ut, wisi nulla urbanitas eu eos. Sea quidam nominati ad. Vis duis regione labitur no, veri probatus per ea. Eu elitr facete honestatis vel, alii fastidii ut pri, et aperiri epicuri democritum sit.</string>
 
+    <string name="termoIntro">Utilizando o CAMARA ALERTA, o usuário aceita os termos aqui dispostos e concorda em se submeter integralmente às condições mencionadas a seguir.</string>
+
+    <string name="termo1">O CAMARA ALERTA é uma plataforma (App + Nuvem +  Web)  voltada á  gestão do relacionamento entre os cidadãos e vereadores. Busca-se formalizar, organizar e otimizar a interação com foco na  resolução de solicitações-problema dos cidadãos.\n\n
+    A PLATAFORMA CAMARA ALERTA compõe-se, portanto, de Aplicativo App (Smartphones dos cidadãos), Computação em nuvem (Ambiente Administrativo e de Armazenamento da Plataforma) e Aplicação Web (software no computador dos vereadores). Com isto, os vereadores podem se relacionar diretamente e gerenciar as demandas dos cidadãos de forma ágil, prática e inteligente.\n\n</string>
+
+    <string name="termo2">A PLATAFORMA CAMARA ALERTA disponibiliza os seguintes serviços:\n\n
+    a) Aplicativo App (smartphones) para que cidadãos possam enviar aos vereadores  suas solicitações-problema;\n\n
+    b) Ambiente em Nuvem onde os dados e informações de usuários e solicitações-problema serão armazenados, tratados e gerenciados;\n\n
+    c) Aplicação Web (software) de uso e acesso exclusivo dos vereadores visando respostas às solicitações-problema, interação com o cidadão e gestão analítica e inteligente de dados e informações;\n\n
+    d) Entrega de alertas através de email e/ou “push notifications” em smartphones.\n\n</string>
+
+    <string name="termo3">O acesso ao CAMARA ALERTA APP é gratuito e permite aos usuários (cidadãos)  devidamente cadastrados:\n\n
+    a) Registrar solicitações-problema direcionadas a um determinado  vereador;\n\n
+    b) Acompanhar o andamento de suas solicitações-problema;\n\n
+    c) Interagir com o vereador, por meio de canal especialmente criado para que informações complementares possam ser inseridas, com o objetivo de se obter uma resolução efetiva e eficaz da demanda apresentada;\n\n
+    d) Participar de enquetes e consultas iniciadas pelo CAMARA ALERTA.\n\n</string>
+
+    <string name="termo4">As condições legais de utilização do CAMARA ALERTA se fundamentam nos seguintes itens:\n\n
+    a) Todos usuários cadastrados no CAMARA ALERTA deverão ser pessoas físicas, identificadas nos termos da lei.\n\n
+    \t\t\t\ta.1) Perfis falsos serão excluídos.\n\n
+    b)	Todas as publicações na plataforma devem, exclusivamente, visar a melhoria da qualidade de vida dos cidadãos e a qualidade dos serviços prestados pelos municípios.\n\n
+	\t\t\t\tb.1) Publicações serão excluídas caso não sigam as condições abaixo:\n\n
+		\t\t\t\t\t\t\t\tb.1.1) As imagens das solicitações-problema devem  fotos tiradas pelo usuário (cidadão);\n\n
+	\t\t\t\t\t\t\t\tb.1.2) As imagens das solicitações-problema devem estar relacionadas aos problemas efetivamente identificados, pelo usuário (cidadão);\n\n
+	\t\t\t\t\t\t\t\tb.1.3) Os textos das solicitações-problema devem estar relacionados ao contexto proposto, a partir do provimento de informações relevantes sobre o assunto;\n\n
+        \t\t\t\t\t\t\t\tb.1.4) A localização e descrição das solicitações-problema devem ser verídicas;\n\n
+	\t\t\t\tb.2)	A equipe do CAMARA ALERTA ou os vereadores podem assinalar as solicitações-problema como recusadas, em se tratando de conteúdo 	inadequado;\n\n
+		\t\t\t\t\t\t\t\tb.2.1) São considerados inadequadas aquelas solicitações-problema que ferirem os termos de uso, bem como aquelas que possuam linguagem inapropriada, desrespeitosa, de cunho racista, preconceituoso, ilegal e imoral;\n\n
+    c) O usuário do CAMARA ALERTA não poderá:\n\n
+	\t\t\t\tc.1) Inserir informações falsas e/ou errôneas; usar endereços de computadores, de rede ou de correio eletrônico falsos; empregar informações parcialmente ou 	inteiramente falsas, ou ainda informações cuja procedência não possa ser verificada;\n\n
+	\t\t\t\tc.2) Utilizar os serviços do CAMARA ALERTA para fins diversos das finalidades do site;\n\n
+	\t\t\t\tc.3) Utilizar, no campo destinado aos anexos, arquivo com vírus de computador, com conteúdo invasivo, destrutivo ou que cause dano temporário ou permanente nos equipamentos do destinatário e/ou do CAMARA ALERTA, ou 	ainda materiais protegidos por propriedade intelectual ou sigilo comercial, excetuando-se os casos em que o realizador do carregamento seja o próprio detentor destes direitos;\n\n
+	\t\t\t\tc.4) Nos campos destinados ao preenchimento de textos, utilizar-se de termos ou materiais ilegais, agressivos, caluniosos, abusivos, difamatórios, obscenos, invasivos à privacidade de terceiros, que atentem contra os bons costumes, a moral ou ainda que contrariem a ordem pública;\n\n
+	\t\t\t\tc.5) Realizar cadastro utilizando dados ou identificando-se como terceiro sem a autorização deste último;\n\n
+	\t\t\t\tc.6) Alterar, excluir e/ou corromper dados e informações do site com o simples intuito de dificultar ou obstruir o registro e/ou solução de solicitações-problema;\n\n
+	\t\t\t\tc.7) Difamar, assediar, perseguir, ameaçar ou violar quaisquer direitos individuais dos vereadores;\n\n
+	\t\t\t\tc.8) Promover, oferecer e/ou disseminar publicidade, oferta de produtos ou serviços de qualquer natureza;\n\n
+    d) São obrigações do usuário:\n\n
+	\t\t\t\td.1) Providenciar seu próprio acesso a um endereço para envio de mensagens eletrônicas via Internet e pagar todas as taxas de Serviço eventualmente cobradas por terceiros com relação a tal acesso;\n\n
+	\t\t\t\td.3) Providenciar todo o equipamento necessário para efetuar a conexão à Internet, incluindo, mas não se limitando, a smarthphone, comutador e provedor de acesso;\n\n
+	\t\t\t\td.4) Efetuar seu próprio cadastro no CAMARA ALERTA APP, responsabilizando-se pela correção e veracidade dos dados informados, assim como pela guarda de sua senha de acesso;\n\n
+	\t\t\t\td.5) A prática de alguma das condutas indevidas, acima listadas, pode implicar no cancelamento do cadastro do usuário.\n\n
+</string>
+
+    <string name="termo5">O usuário assume toda e qualquer responsabilidade, de caráter civil e/ou criminal, pela utilização indevida das informações, textos, gráficos, marcas, obras, enfim todo e qualquer direito de propriedade intelectual ou industrial deste aplicativo.\n\n</string>
+
+    <string name="termo6">Para que os USUÁRIOS (cidadãos) possam desfrutar dos benefícios prestados pelo aplicativo, objeto do presente termo, faz-se necessário o seu prévio cadastro no mesmo.\n\n
+	O USUÁRIO (cidadão), neste Termo de Uso, concorda em:\n\n
+    a) Fornecer informações verdadeiras, exatas, atuais e completas sobre si mesmo quando do registro no formulário específico para acesso ao aplicativo;\n\n
+    b)	Conservar e atualizar imediatamente tais informações de Registro para mantê-las verdadeiras, exatas, atuais e completas. O USUÁRIO autoriza expressamente a Equipe da Plataforma CAMARA ALERTA a comunicar-se com o mesmo através de todos os canais de comunicação disponíveis, incluindo correio eletrônico(e-mail), Celular, SMS, entre outros, ficando ressaltado que a principal via de informação para o usuário é o Aplicativo CAMARA ALERTA (APP).\n\n
+    </string>
+
+    <string name="termo7">A Equipe da Plataforma CAMARA ALERTA se reserva ao direito de modificar a qualquer momento, visando uma melhoria contínua, o presente Termo e Condições de Uso, observando a comunicação ampla e prévia desta alteração aos usuários do serviço.\n\n</string>
+
+    <string name="termo8">Em decorrência de questões operacionais, de terceirização de serviços, o aplicativo e os serviços estão sujeitos a eventuais problemas de interrupção, falha técnica, ou de indisponibilidade de funcionamento temporário. Quando for razoavelmente possível, a Equipe da Plataforma CAMARA ALERTA buscará informar previamente as interrupções de funcionamento do aplicativo e dos serviços, aos seus USUÁRIOS.\n\n
+	O CAMARA ALERTA se exime, com toda a extensão permitida pelo ordenamento jurídico, de qualquer responsabilidade pelos danos e prejuízos de toda natureza que possam decorrer da falta de disponibilidade ou de continuidade do funcionamento do aplicativo e dos serviços, à defraudação da utilidade que os usuários possam ter atribuído ao site e aos serviços, à falibilidade do aplicativo e dos serviços e, em particular, ainda que não de modo exclusivo, às falhas de acesso às distintas páginas que compõem o aplicativo ou em que se prestam os serviços.\n\n
+    </string>
+
+    <string name="termo9">A tolerância do eventual descumprimento de quaisquer das cláusulas e condições do presente contrato não constituirá novação das obrigações aqui estipuladas e tampouco impedirá ou inibirá a exigibilidade das mesmas a qualquer tempo. O presente instrumento constitui o acordo integral entre as partes, prevalecendo sobre qualquer outro entendimento firmado anteriormente.\n\n
+	O presente termo vigorará por tempo indeterminado ou durante o período em que o sistema estiver disponível via Internet.\n\n
+    </string>
+
+    <string name="termo10">O presente Termo de Uso é regido única e exclusivamente pelas leis da República Federativa do Brasil e qualquer discussão judicial que surja tendo por base sua interpretação ou aplicação deverá ser julgado por tribunais brasileiros, estando desde logo eleito o foro da cidade de Lavras, Minas Gerais, Brasil, por mais privilegiado que outro seja ou possa vir a ser.\n\n</string>
 
     <!-- Button text -->
 
