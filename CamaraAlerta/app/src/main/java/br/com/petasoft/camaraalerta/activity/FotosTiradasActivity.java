@@ -4,11 +4,13 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -44,10 +46,18 @@ public class FotosTiradasActivity extends AppCompatActivity {
         String[] paths = b.getStringArray("fotos");
         id = b.getInt("id");
 
-        LinearLayout layout = (LinearLayout)findViewById(R.id.layoutFotos);
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+
+        int sizeFotos = (width/3) - 10;
+
+        LinearLayout layout = (LinearLayout)findViewById(R.id.layoutFotosTiradas);
+        LinearLayout layout2 = (LinearLayout)findViewById(R.id.layoutFotosTiradas2);
         for (int i = 0; i < paths.length; i++) {
             ImageView image = new ImageView(getApplicationContext());
-            image.setLayoutParams(new android.view.ViewGroup.LayoutParams(360, 360));
+            image.setLayoutParams(new android.view.ViewGroup.LayoutParams(sizeFotos, sizeFotos));
             image.setId(78+i);
 
             image.setScaleType(CENTER_CROP);
@@ -65,10 +75,24 @@ public class FotosTiradasActivity extends AppCompatActivity {
                 new DownloadFilesTaskFotosTiradas().execute(url, ("" + image.getId()), arquivo.getAbsolutePath());
 
             } else {
-                Bitmap myBitmapGrande = BitmapFactory.decodeFile(arquivo.getPath());
-                Bitmap myBitmap = Bitmap.
-                        createScaledBitmap(myBitmapGrande, myBitmapGrande.getWidth() / 6, myBitmapGrande.getHeight() / 6, false);
-                image.setImageBitmap(myBitmap);
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inJustDecodeBounds = true;
+                //options.inInputShareable = true;
+                //options.inPurgeable = true;
+
+                BitmapFactory.decodeFile(arquivo.getPath(), options);
+                if ((options.outWidth == -1) || (options.outHeight == -1)) {
+
+                } else {
+                    int originalSize = (options.outHeight > options.outWidth) ? options.outHeight
+                            : options.outWidth;
+
+                    BitmapFactory.Options opts = new BitmapFactory.Options();
+                    opts.inSampleSize = originalSize / 275;
+
+                    Bitmap myBitmap = BitmapFactory.decodeFile(arquivo.getPath(), opts);
+                    image.setImageBitmap(myBitmap);
+                }
             }
 
             //redimensaionar o bitmap
@@ -86,15 +110,21 @@ public class FotosTiradasActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     Intent intent = new Intent(FotosTiradasActivity.this, FotoFullscreenActivity.class);
                     intent.putExtra("pathFoto", currentPath);
-                    /*TODO: Deletar Fotos
                     intent.putExtra("source", "F");
-                    */
                     startActivity(intent);
                 }
             });
 
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(sizeFotos, sizeFotos);
+            layoutParams.setMargins(5,5,5,5);
+
+
             // Adds the view to the layout
-            layout.addView(image);
+            if(i<3) {
+                layout.addView(image, layoutParams);
+            } else {
+                layout2.addView(image, layoutParams);
+            }
 
         }
     }

@@ -1,6 +1,7 @@
 package br.com.petasoft.camaraalerta.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
@@ -98,6 +99,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
     private boolean vendoFotos = false;
     private boolean solicitacaoSent = false;
     private List<String> listaDeFotos;
+    private final int ACTIVITY_FULLSCREEN = 95;
 
 
     //Variaveis relacionadas a localização ---------------------------------------------------------
@@ -144,9 +146,6 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*TODO: Deletar Fotos
-        Configuration.fotosDeletadas = new ArrayList<String>();
-        */
         super.onCreate(savedInstanceState);
         f1 = new FirstFrameDenuncia();
         f2 = new SecondFrameDenuncia();
@@ -458,7 +457,52 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
             //}
             //------------------------------------------------------------------------------
 
+        } else if(requestCode == ACTIVITY_FULLSCREEN && resultCode == Activity.RESULT_OK) {
+            String returnValue = data.getStringExtra("path");
+            for (int i = 0; i < listaPaths.size(); i++) {
+                if (listaPaths.get(i).equals(returnValue)) {
+                    if(i == listaPaths.size() - 1 && i > 0){
+                        ImageView fotoSobreposta = (ImageView) findViewById(R.id.fotosDenuncia);
+                        Bitmap myBitmap = BitmapFactory.decodeFile(listaPaths.get(i-1));
+                        myBitmap = Bitmap.createScaledBitmap(myBitmap, myBitmap.getScaledWidth(100), myBitmap.getScaledHeight(100), false);
+                        fotoSobreposta.setImageBitmap(myBitmap);
+                    }
+                    listaPaths.remove(i);
+                }
+            }
+            if(listaPaths.size()==0) {
+                ImageView fotoSobreposta = (ImageView) findViewById(R.id.fotosDenuncia);
+                fotoSobreposta.setImageResource(android.R.color.transparent);
+                Log.d("Aqui", "entrou");
+                returnFotos();
+                vendoFotos = false;
+                botaoVerFotos.setText("VIZUALIZAR FOTOS");
+                botaoVerFotos.setBackgroundResource(R.drawable.gray_button_background);
+                botaoVerFotos.setTextColor(Color.BLACK);
+            } else {
+
+                String[] strings = new String[listaPaths.size()];
+                strings = listaPaths.toArray(strings);
+
+                Bundle b = new Bundle();
+                b.putStringArray("fotos", strings);
+
+                FragmentManager fragmentManager = getFragmentManager();
+                ThirdFrameDenuncia f3 = new ThirdFrameDenuncia();
+                f3.setArguments(b);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.denuncia_frame
+                                , f3, "FOTO_FRAGMENT")
+                        .commit();
+            }
         }
+    }
+
+    public void verFullScreen(String currentPath){
+        Intent intent = new Intent(this, FotoFullscreenActivity.class);
+        intent.putExtra("pathFoto", currentPath);
+        intent.putExtra("source", "N");
+        startActivityForResult(intent, ACTIVITY_FULLSCREEN);
     }
 
     public void proximoFrame() {
@@ -584,6 +628,7 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
         }
     }
 
+
     public void enviarDenuncia() {
         boolean stuckLoading = false;
 
@@ -602,15 +647,8 @@ public class NovaDenuncia extends AppCompatActivity implements FirstFrameDenunci
             progress.setProgress(0);
 
 
-            /*TODO: Deletar Fotos
-            for(String path : Configuration.fotosDeletadas){
-                for(int i = 0; i<listaPaths.size(); i++){
-                    if(path.equals(listaPaths.get(i))){
-                        listaPaths.remove(i);
-                    }
-                }
-            }
-            */
+
+
             if (locationTracker.hasLocation()) {
                 Location location = locationTracker.getLocation();
                 latitude = location.getLatitude();

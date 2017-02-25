@@ -56,6 +56,7 @@ public class MostrarDenuncia extends AppCompatActivity {
     private TextView statusTexto;
     private TextView relatorio;
     private TextView data;
+    private TextView vereador;
     private Button botao;
     private ProgressDialog progress;
     private MensagensDTO mensagensDTO;
@@ -72,6 +73,7 @@ public class MostrarDenuncia extends AppCompatActivity {
         statusTexto = (TextView)findViewById(R.id.statusTexto);
         relatorio = (TextView)findViewById(R.id.relatorioDenuncia);
         data = (TextView)findViewById(R.id.dataTexto);
+        vereador = (TextView)findViewById(R.id.vereadorDenuncia);
         botao = (Button)findViewById(R.id.buttonMensagens);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarDenuncia);
         setSupportActionBar(toolbar);
@@ -180,6 +182,7 @@ public class MostrarDenuncia extends AppCompatActivity {
 
         titulo.setText(denuncia.getTitulo());
         descricao.setText(denuncia.getDescricao());
+        vereador.setText(denuncia.getVereador().getNome());
         /**
          * TODO: Mostrar relatorio da solicitação
          */

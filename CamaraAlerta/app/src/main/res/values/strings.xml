@@ -21,24 +21,14 @@
     </string>
     <string name="facebook_app_id">344027042606387</string>
 
-    <string name="termoCompromisso">Lorem ipsum dolor sit amet, at omnis persius sit. Te nec officiis invenire eleifend, errem virtute ponderum pro ex. Nec eu magna constituto. Id has alii malis scripta. An mel labores indoctum conclusionemque, mazim aeterno viderer et vis. Duo dicat sadipscing at, ex modus utamur electram sit, vim debet blandit iracundia at.
-
-    Ea sea augue tibique, his te quot dissentiunt, in iriure maluisset per. Clita accusata tincidunt est et. Nam in ludus nobis fabulas, vel assum commodo te. Natum ancillae at cum. Vim agam sale intellegebat ea. Eam suas justo quaeque te.
-
-    Has habeo assum graeci ut, repudiare conclusionemque usu cu. Meliore eloquentiam in mei, mei offendit tacimates accommodare ut. Vim esse eros intellegat ea. Per in quas audiam. Sea an stet illud disputando, sint facilis in his, eam ne verear scripta. Eam oratio nostro id, id qui molestie ullamcorper, sed similique scribentur ad.
-
-    Autem choro appetere vel ut, wisi nulla urbanitas eu eos. Sea quidam nominati ad. Vis duis regione labitur no, veri probatus per ea. Eu elitr facete honestatis vel, alii fastidii ut pri, et aperiri epicuri democritum sit.</string>
-
     <string name="termoIntro">Utilizando o CAMARA ALERTA, o usuário aceita os termos aqui dispostos e concorda em se submeter integralmente às condições mencionadas a seguir.</string>
 
-    <string name="termo1">O CAMARA ALERTA é uma plataforma (App + Nuvem +  Web)  voltada á  gestão do relacionamento entre os cidadãos e vereadores. Busca-se formalizar, organizar e otimizar a interação com foco na  resolução de solicitações-problema dos cidadãos.\n\n
-    A PLATAFORMA CAMARA ALERTA compõe-se, portanto, de Aplicativo App (Smartphones dos cidadãos), Computação em nuvem (Ambiente Administrativo e de Armazenamento da Plataforma) e Aplicação Web (software no computador dos vereadores). Com isto, os vereadores podem se relacionar diretamente e gerenciar as demandas dos cidadãos de forma ágil, prática e inteligente.\n\n</string>
+    <string name="termo1">O CAMARA ALERTA é uma plataforma (App + Nuvem +  Web)  voltada á  gestão do relacionamento entre os cidadãos e vereadores. Busca-se formalizar, organizar e otimizar a interação com foco na  resolução de solicitações-problema dos cidadãos.\n\nA PLATAFORMA CAMARA ALERTA compõe-se, portanto, de Aplicativo App (Smartphones dos cidadãos), Computação em nuvem (Ambiente Administrativo e de Armazenamento da Plataforma) e Aplicação Web (software no computador dos vereadores). Com isto, os vereadores podem se relacionar diretamente e gerenciar as demandas dos cidadãos de forma ágil, prática e inteligente.\n\n</string>
 
     <string name="termo2">A PLATAFORMA CAMARA ALERTA disponibiliza os seguintes serviços:\n\n
     a) Aplicativo App (smartphones) para que cidadãos possam enviar aos vereadores  suas solicitações-problema;\n\n
     b) Ambiente em Nuvem onde os dados e informações de usuários e solicitações-problema serão armazenados, tratados e gerenciados;\n\n
-    c) Aplicação Web (software) de uso e acesso exclusivo dos vereadores visando respostas às solicitações-problema, interação com o cidadão e gestão analítica e inteligente de dados e informações;\n\n
-    d) Entrega de alertas através de email e/ou “push notifications” em smartphones.\n\n</string>
+    c) Aplicação Web (software) de uso e acesso exclusivo dos vereadores visando respostas às solicitações-problema, interação com o cidadão e gestão analítica e inteligente de dados e informações;\n\n</string>
 
     <string name="termo3">O acesso ao CAMARA ALERTA APP é gratuito e permite aos usuários (cidadãos)  devidamente cadastrados:\n\n
     a) Registrar solicitações-problema direcionadas a um determinado  vereador;\n\n
@@ -55,12 +45,12 @@
 	\t\t\t\t\t\t\t\tb.1.2) As imagens das solicitações-problema devem estar relacionadas aos problemas efetivamente identificados, pelo usuário (cidadão);\n\n
 	\t\t\t\t\t\t\t\tb.1.3) Os textos das solicitações-problema devem estar relacionados ao contexto proposto, a partir do provimento de informações relevantes sobre o assunto;\n\n
         \t\t\t\t\t\t\t\tb.1.4) A localização e descrição das solicitações-problema devem ser verídicas;\n\n
-	\t\t\t\tb.2)	A equipe do CAMARA ALERTA ou os vereadores podem assinalar as solicitações-problema como recusadas, em se tratando de conteúdo 	inadequado;\n\n
+	\t\t\t\tb.2) A equipe do CAMARA ALERTA ou os vereadores podem assinalar as solicitações-problema como recusadas, em se tratando de conteúdo inadequado;\n\n
 		\t\t\t\t\t\t\t\tb.2.1) São considerados inadequadas aquelas solicitações-problema que ferirem os termos de uso, bem como aquelas que possuam linguagem inapropriada, desrespeitosa, de cunho racista, preconceituoso, ilegal e imoral;\n\n
     c) O usuário do CAMARA ALERTA não poderá:\n\n
 	\t\t\t\tc.1) Inserir informações falsas e/ou errôneas; usar endereços de computadores, de rede ou de correio eletrônico falsos; empregar informações parcialmente ou 	inteiramente falsas, ou ainda informações cuja procedência não possa ser verificada;\n\n
 	\t\t\t\tc.2) Utilizar os serviços do CAMARA ALERTA para fins diversos das finalidades do site;\n\n
-	\t\t\t\tc.3) Utilizar, no campo destinado aos anexos, arquivo com vírus de computador, com conteúdo invasivo, destrutivo ou que cause dano temporário ou permanente nos equipamentos do destinatário e/ou do CAMARA ALERTA, ou 	ainda materiais protegidos por propriedade intelectual ou sigilo comercial, excetuando-se os casos em que o realizador do carregamento seja o próprio detentor destes direitos;\n\n
+	\t\t\t\tc.3) Utilizar, no campo destinado aos anexos, arquivo com vírus de computador, com conteúdo invasivo, destrutivo ou que cause dano temporário ou permanente nos equipamentos do destinatário e/ou do CAMARA ALERTA, ou ainda materiais protegidos por propriedade intelectual ou sigilo comercial, excetuando-se os casos em que o realizador do carregamento seja o próprio detentor destes direitos;\n\n
 	\t\t\t\tc.4) Nos campos destinados ao preenchimento de textos, utilizar-se de termos ou materiais ilegais, agressivos, caluniosos, abusivos, difamatórios, obscenos, invasivos à privacidade de terceiros, que atentem contra os bons costumes, a moral ou ainda que contrariem a ordem pública;\n\n
 	\t\t\t\tc.5) Realizar cadastro utilizando dados ou identificando-se como terceiro sem a autorização deste último;\n\n
 	\t\t\t\tc.6) Alterar, excluir e/ou corromper dados e informações do site com o simples intuito de dificultar ou obstruir o registro e/ou solução de solicitações-problema;\n\n

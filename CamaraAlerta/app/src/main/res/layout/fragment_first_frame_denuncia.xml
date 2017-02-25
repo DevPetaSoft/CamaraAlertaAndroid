@@ -37,7 +37,6 @@
             android:inputType="textCapSentences"
             android:maxLines="1"
             android:scrollHorizontally="true"
-            android:textColor="@color/grey"
             android:backgroundTint="@color/grey"
             android:textCursorDrawable="@null"
             android:textSize="20dp"
@@ -63,7 +62,6 @@
                 android:layout_weight="9"
                 android:layout_height="wrap_content"
                 android:maxLines="3"
-                android:textColor="@color/grey"
                 android:backgroundTint="@color/grey"
                 android:textCursorDrawable="@null"/>
             <Button

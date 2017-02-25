@@ -4,10 +4,12 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,9 +41,17 @@ public class ThirdFrameDenuncia extends Fragment {
         paths = b.getStringArray("fotos");
 
         LinearLayout layoutFotos = (LinearLayout)myView.findViewById(R.id.layoutFotos);
+        LinearLayout layoutFotos2 = (LinearLayout)myView.findViewById(R.id.layoutFotos2);
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+
+        int sizeFotos = (width/3) - 10;
+
         for(i=0;i<paths.length;i++){
             ImageView image = new ImageView(getActivity());
-            image.setLayoutParams(new android.view.ViewGroup.LayoutParams(360,360));
+            image.setLayoutParams(new android.view.ViewGroup.LayoutParams(sizeFotos,sizeFotos));
             image.setScaleType(CENTER_CROP);
 
 
@@ -73,24 +83,26 @@ public class ThirdFrameDenuncia extends Fragment {
 
             Bitmap myBitmap = BitmapFactory.decodeFile(arquivo.getPath(), opts);
 
-
             image.setImageBitmap(myBitmap);
 
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), FotoFullscreenActivity.class);
-                    intent.putExtra("pathFoto", currentPath);
-                    /*TODO: Deletar Fotos
-                    intent.putExtra("source", "N");
-                    */
-                    startActivity(intent);
+                    ((NovaDenuncia)getActivity()).verFullScreen(currentPath);
                 }
             });
 
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    sizeFotos, sizeFotos);
+
+            layoutParams.setMargins(5,5,5,5);
 
             // Adds the view to the layout
-            layoutFotos.addView(image);
+            if(i<3) {
+                layoutFotos.addView(image, layoutParams);
+            } else {
+                layoutFotos2.addView(image, layoutParams);
+            }
 
         }
 

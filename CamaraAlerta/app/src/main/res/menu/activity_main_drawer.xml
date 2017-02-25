@@ -18,14 +18,18 @@
             android:id="@+id/nav_fourth_layout"
             android:icon="@drawable/minhasdenuncias"
             android:title="Minhas Solicitações" />
+        <!--
         <item
             android:id="@+id/nav_fifth_layout"
             android:icon="@drawable/configuracao"
             android:title="Configurações" />
+        -->
+        <!--
         <item
             android:id="@+id/nav_sixth_layout"
             android:icon="@drawable/info"
             android:title="Informação" />
+        -->
         <item
             android:id="@+id/nav_seventh_layout"
             android:icon="@drawable/sair"

@@ -25,16 +25,17 @@
         <ImageView
             android:id="@+id/fotosDenuncia"
             android:layout_width="match_parent"
-            android:layout_height="230dp"
+            android:layout_height="match_parent"
             android:scaleType="centerCrop"/>
 
         <Button
             android:id="@+id/botaoVerFotos"
-            android:layout_width="wrap_content"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:text="VIZUALIZAR FOTOS"
             android:layout_margin="10dp"
+            android:background="@drawable/gray_button_background"
             android:onClick="listaDeFotos"/>
     </RelativeLayout>
 

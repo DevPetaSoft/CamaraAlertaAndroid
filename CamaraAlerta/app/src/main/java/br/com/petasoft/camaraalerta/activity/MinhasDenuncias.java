@@ -390,15 +390,15 @@ public class MinhasDenuncias extends Fragment{
             //0 - Pendentes, 1 - Em Andamento, 2 - Finalizado com sucesso, 3 - Não resolvida(ou recusada), 4 - Todas
             if(flagMostrou == false){
                 if(statusSpinner == 0) {
-                    naoPossui.setText("Você não possui nenhuma solicitação pendente");
+                    naoPossui.setText("Você não possui solicitações pendentes");
                 } else if(statusSpinner == 1){
-                    naoPossui.setText("Você não possui nenhuma solicitação em andamento");
+                    naoPossui.setText("Você não possui solicitações em andamento");
                 } else if(statusSpinner == 2){
-                    naoPossui.setText("Você não possui nenhuma solicitação finalizada com sucesso");
+                    naoPossui.setText("Você não possui solicitações finalizadas com sucesso");
                 } else if(statusSpinner == 3){
-                    naoPossui.setText("Você não possui nenhuma solicitação não resolvida(ou recusada)");
+                    naoPossui.setText("Você não possui solicitações não resolvidas(ou recusadas)");
                 } else if(statusSpinner == 4){
-                    naoPossui.setText("Você não possui nenhuma solicitação");
+                    naoPossui.setText("Você não possui solicitações");
                 }
                 naoPossui.setVisibility(View.VISIBLE);
             }

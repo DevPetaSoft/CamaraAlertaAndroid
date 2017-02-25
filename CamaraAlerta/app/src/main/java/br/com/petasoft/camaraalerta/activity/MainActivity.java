@@ -270,10 +270,10 @@ public class MainActivity extends AppCompatActivity
                 }
             });
             drawer.closeDrawers();
-        } else if (id == R.id.nav_fifth_layout){
-            mDrawerToggle.runWhenIdle(new Runnable(){
+        }/*else if (id == R.id.nav_fifth_layout) {
+            mDrawerToggle.runWhenIdle(new Runnable() {
                 @Override
-                public void run(){
+                public void run() {
                     fragmentManager.beginTransaction()
                             .replace(R.id.content_frame
                                     , new MyPreferenceFragment(), "FRAME_PREFE")
@@ -281,9 +281,7 @@ public class MainActivity extends AppCompatActivity
                 }
             });
             drawer.closeDrawers();
-        } else if (id == R.id.nav_sixth_layout) {
-
-        } else if (id == R.id.nav_seventh_layout){
+        }*/else if (id == R.id.nav_seventh_layout){
             if(Configuration.loginNormal) {
                 new AlertDialog.Builder(this)
                         .setTitle("Fazer Logout")

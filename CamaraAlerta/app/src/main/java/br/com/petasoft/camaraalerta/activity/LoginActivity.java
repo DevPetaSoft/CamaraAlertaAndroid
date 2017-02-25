@@ -500,7 +500,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                            Toast toast = Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG);
+                            Toast toast = Toast.makeText(getApplicationContext(), "E-mail ou senha incorretos", Toast.LENGTH_LONG);
                             toast.show();
                         }
 
@@ -616,6 +616,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         } else {
                             Toast toast = Toast.makeText(getApplicationContext(), "Não foi possível se conectar com o servidor", Toast.LENGTH_LONG);
                             toast.show();
+                            LoginManager.getInstance().logOut();
                         }
                     }
                 }

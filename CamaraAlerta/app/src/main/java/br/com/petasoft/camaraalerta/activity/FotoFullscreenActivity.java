@@ -1,5 +1,6 @@
 package br.com.petasoft.camaraalerta.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -44,9 +45,7 @@ public class FotoFullscreenActivity extends AppCompatActivity {
                 path = null;
             } else {
                 path = extras.getString("pathFoto");
-                /*TODO: Deletar Fotos
                 source = extras.getString("source");
-                */
             }
         } else {
             path = (String) savedInstanceState.getSerializable("pathFoto");
@@ -82,16 +81,15 @@ public class FotoFullscreenActivity extends AppCompatActivity {
 
 
             imagem.setImageBitmap(myBitmap);
-            /*TODO: Deletar Fotos
             if(source.equals("N")) {
                 imagem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (clicado) {
-                            imagemDelete.setImageResource(android.R.color.transparent);
+                            imagemDelete.setVisibility(View.GONE);
                             clicado = false;
                         } else {
-                            imagemDelete.setImageResource(R.drawable.botao_delete);
+                            imagemDelete.setVisibility(View.VISIBLE);
                             clicado = true;
                             imagemDelete.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -103,8 +101,10 @@ public class FotoFullscreenActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     File arquivo = new File(path);
-                                                    Configuration.fotosDeletadas.add(path);
                                                     arquivo.delete();
+                                                    Intent resultIntent = new Intent();
+                                                    resultIntent.putExtra("path", path);
+                                                    setResult(Activity.RESULT_OK, resultIntent);
                                                     finish();
                                                 }
 
@@ -117,7 +117,6 @@ public class FotoFullscreenActivity extends AppCompatActivity {
                     }
                 });
             }
-            */
         }
     }
 

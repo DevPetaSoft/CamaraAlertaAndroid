@@ -93,10 +93,27 @@
                 android:layout_margin="16dp"/>
 
             <TextView
-                android:id="@+id/relatorioTexto"
+                android:id="@+id/vereadorTexto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/descricaoDenuncia"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:text="Vereador:"/>
+
+            <TextView
+                android:id="@+id/vereadorDenuncia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/vereadorTexto"
+                android:layout_margin="16dp"/>
+
+            <TextView
+                android:id="@+id/relatorioTexto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/vereadorDenuncia"
                 android:textColor="@android:color/black"
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
@@ -123,6 +140,7 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="16dp"
                 android:enabled="true"
                 android:textColor="@color/white"
                 android:background="@drawable/green_button_background"

@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_gravity="center_horizontal"
-            android:text="Você não possui nenhuma solicitação"
+            android:text="Você não possui solicitações"
             android:textSize="14dp"
             android:textColor="@color/grey"
             android:visibility="gone"/>
